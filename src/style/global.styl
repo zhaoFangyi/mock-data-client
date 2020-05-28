@@ -1,0 +1,37 @@
+$arrow-color = #888
+$brand = #4A7BF7
+
+.arrow
+  display inline-block
+  width 0
+  height 0
+  &.up
+    border-left 4px solid transparent
+    border-right 4px solid transparent
+    border-bottom 6px solid $arrow-color
+  &.down
+    border-left 4px solid transparent
+    border-right 4px solid transparent
+    border-top 6px solid $arrow-color
+  &.right
+    border-top 4px solid transparent
+    border-bottom 4px solid transparent
+    border-left 6px solid $arrow-color
+  &.left
+    border-top 4px solid transparent
+    border-bottom 4px solid transparent
+    border-right 6px solid $arrow-color
+
+a, .el-link.el-link--primary
+  &, &:hover, &:focus, &:active, &:visited
+    color: $brand
+    outline: 0
+    text-decoration: none
+  &[disabled],
+  &.disabled
+    pointer-events: none
+    cursor: not-allowed
+
+a.text-decoration
+  &:hover
+    border-bottom: 1px solid $brand

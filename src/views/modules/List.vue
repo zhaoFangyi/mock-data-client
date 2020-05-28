@@ -1,0 +1,169 @@
+<template>
+  <section class="moduleListWrapper">
+    <nav class="toolbar">
+      <el-input
+        v-model="query"
+        placeholder="搜索模块: 名称"
+      />
+      <el-button class="create" type="primary" @click="openFrom">新建仓库</el-button>
+    </nav>
+    <div class="body">
+      <div class="moduleList">
+        <div
+          v-for="item in moduleList"
+          :key="item.id">
+          <el-card class="module card" >
+            <div slot="header" class="card-block">
+              <router-link tag="el-link" :to="{ name: 'block-list', params: {name: item.moduleName} }">
+                <i class="el-icon-s-management"></i>
+                <span>{{item.name}}</span>
+              </router-link>
+              <div class="actions">
+                <el-link class="mr6" icon="el-icon-upload"></el-link>
+                <el-link class="mr6" icon="el-icon-edit" @click="handleEditModule(item)"></el-link>
+                <el-link class="mr6" icon="el-icon-delete" @click="handleDeleteModule(item)"></el-link>
+              </div>
+            </div>
+            <div>
+              {{item.moduleName}}
+            </div>
+          </el-card>
+        </div>
+      </div>
+    </div>
+    <el-dialog
+      title="新建仓库"
+      width="500px"
+      lock-scroll
+      :visible.sync="showForm">
+      <el-form :model="model" size="mini" ref="form">
+        <el-form-item lable="名称">
+          <el-input v-model="model.name" placeholder="请输入名称"></el-input>
+        </el-form-item>
+        <el-form-item label="仓库名称">
+          <el-input v-model="model.moduleName" placeholder="请输入仓库名称"></el-input>
+        </el-form-item>
+      </el-form>
+      <div class="dialog-footer" slot="footer">
+        <el-button  @click="showForm=false" size="mini">取消</el-button>
+        <el-button size="mini" type="primary" @click="createModule">确定</el-button>
+      </div>
+    </el-dialog>
+  </section>
+</template>
+
+<script>
+import api from '@/data/api.js'
+export default {
+  name: 'ModulesList',
+  data () {
+    return {
+      query: '',
+      moduleList: '',
+      showForm: false,
+      model: {
+        name: '',
+        moduleName: ''
+      }
+    }
+  },
+  mounted () {
+    this.getList()
+  },
+  methods: {
+    openFrom () {
+      this.showForm = true
+    },
+    getList () {
+      api.getRepositoryList()
+        .then(res => {
+          console.log('getList -> res', res)
+          this.moduleList = res.data
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    createModule () {
+      api.createRepository(this.model)
+        .then(res => {
+          this.model = {
+            name: '',
+            moduleName: ''
+          }
+          this.showForm = false
+          this.getList()
+        })
+    },
+    handleEditModule ({ name, moduleName, id }) {
+      this.model = {
+        name,
+        moduleName,
+        id
+      }
+      this.showForm = true
+    },
+    handleDeleteModule (item) {
+      this.$confirm(`确认删除${item.name}吗？`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          this.deleteRepository({
+            id: item.id
+          })
+        })
+    },
+    deleteRepository (params) {
+      api.deleteRepository(params)
+        .then(res => {
+          console.log(res)
+          this.getList()
+        })
+    }
+  }
+}
+</script>
+
+<style lang="less" scoped>
+.mr6 {
+  margin-right: 6px;
+}
+.moduleListWrapper {
+  padding: 20px;
+  .toolbar {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e1e4e8;
+    display: flex;
+    .create {
+      margin-left: 20px;
+    }
+  }
+  .body {
+    margin-bottom: 20px;
+  }
+}
+
+.moduleList {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-column-gap: 20px;
+  padding: 0 15px;
+  .module.card {
+    margin-bottom: 10px;
+    width: 260px;
+    &:hover {
+
+    }
+  }
+  .card-block {
+    display: flex;
+    align-items: center;
+    .actions {
+      margin-left: auto;
+    }
+  }
+}
+</style>
