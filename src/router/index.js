@@ -26,7 +26,7 @@ const routes = [
     component: Modules.List
   },
   {
-    path: '/block/list/:name',
+    path: '/block/list/:id',
     name: 'block-list',
     component: Block.List
   }

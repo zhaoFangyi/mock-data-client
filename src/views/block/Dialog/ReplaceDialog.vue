@@ -19,7 +19,7 @@
 
 <script>
 export default {
-  name: 'ResDialog',
+  name: 'ReplaceDialog',
   props: {
     visible: {
       type: Boolean,

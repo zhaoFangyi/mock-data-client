@@ -2,9 +2,12 @@
   <section class="moduleListWrapper">
     <nav class="toolbar">
       <el-input
-        v-model="query"
+        v-model.lazy="query"
+        clearable
         placeholder="搜索模块: 名称"
-      />
+      >
+        <el-button slot="append" icon="el-icon-search" @click="getList"></el-button>
+      </el-input>
       <el-button class="create" type="primary" @click="openFrom">新建仓库</el-button>
     </nav>
     <div class="body">
@@ -14,7 +17,8 @@
           :key="item.id">
           <el-card class="module card" >
             <div slot="header" class="card-block">
-              <router-link tag="el-link" :to="{ name: 'block-list', params: {name: item.moduleName} }">
+              <router-link tag="el-link"
+                :to="{ name: 'block-list', params: { id: item.id}, query: {name: item.moduleName,} }">
                 <i class="el-icon-s-management"></i>
                 <span>{{item.name}}</span>
               </router-link>
@@ -38,10 +42,13 @@
       :visible.sync="showForm">
       <el-form :model="model" size="mini" ref="form">
         <el-form-item lable="名称">
-          <el-input v-model="model.name" placeholder="请输入名称"></el-input>
+          <el-input
+            v-model="model.name"
+            placeholder="请输入名称"
+            clearable></el-input>
         </el-form-item>
         <el-form-item label="仓库名称">
-          <el-input v-model="model.moduleName" placeholder="请输入仓库名称"></el-input>
+          <el-input clearable v-model="model.moduleName" placeholder="请输入仓库名称"></el-input>
         </el-form-item>
       </el-form>
       <div class="dialog-footer" slot="footer">
@@ -70,38 +77,46 @@ export default {
   mounted () {
     this.getList()
   },
+  watch: {
+    showForm (flag) {
+      if (flag) {
+        this.model = {
+          name: '',
+          moduleName: ''
+        }
+      }
+    }
+  },
   methods: {
     openFrom () {
       this.showForm = true
     },
     getList () {
-      api.getRepositoryList()
+      api.getRepositoryList({ key: this.query })
         .then(res => {
-          console.log('getList -> res', res)
           this.moduleList = res.data
         })
         .catch(err => {
-          console.log(err)
+          console.log('getList -> err', err)
         })
     },
     createModule () {
-      api.createRepository(this.model)
+      const apiName = this.model.id ? 'updateRepository' : 'createRepository'
+      api[apiName](this.model)
         .then(res => {
-          this.model = {
-            name: '',
-            moduleName: ''
-          }
           this.showForm = false
           this.getList()
         })
     },
     handleEditModule ({ name, moduleName, id }) {
-      this.model = {
-        name,
-        moduleName,
-        id
-      }
       this.showForm = true
+      this.$nextTick(() => {
+        this.model = {
+          name,
+          moduleName,
+          id
+        }
+      })
     },
     handleDeleteModule (item) {
       this.$confirm(`确认删除${item.name}吗？`, '提示', {
@@ -118,7 +133,6 @@ export default {
     deleteRepository (params) {
       api.deleteRepository(params)
         .then(res => {
-          console.log(res)
           this.getList()
         })
     }
