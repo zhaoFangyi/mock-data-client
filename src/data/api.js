@@ -1,8 +1,14 @@
 import axios from 'axios'
 
 export default {
+  // repository
   getRepositoryList (params) {
-    return axios.get('/repository/getList', {
+    return axios.get('/repository/owned', {
+      params
+    })
+  },
+  getRepositoryById (params) {
+    return axios.get('/repository/getById', {
       params
     })
   },
@@ -17,8 +23,9 @@ export default {
   updateRepository (params) {
     return axios.post('/repository/update', params)
   },
-  getInterfaceList (params) {
-    return axios.get('/interface/getList', {
+  // interface
+  getInterfaceById (params) {
+    return axios.get('/interface/getById', {
       params
     })
   },

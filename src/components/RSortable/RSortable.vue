@@ -19,7 +19,6 @@ export default {
     }
   },
   mounted () {
-    console.log(this, this.$refs['sortable-box'])
     const $sortable = Sortable.create(this.$slots.default[0].elm, {
       handle: '.sortable',
       animation: 150,

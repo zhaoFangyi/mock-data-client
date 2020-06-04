@@ -32,7 +32,6 @@
 
 <script>
 import { Methods } from '@/contants'
-import api from '@/data/api.js'
 
 export default {
   name: 'AddItfDialog',
@@ -71,16 +70,25 @@ export default {
     submit () {
       this.$refs.form.validate()
         .then(() => {
-          const apiName = this.model.id ? 'updateInterface' : 'createInterface'
-          api[apiName]({
+          const actionName = this.model.id ? 'updateInterface' : 'createInterface'
+          const params = {
             repositoryId: this.$route.params.id,
             ...this.model
-          })
-            .then(res => {
-              console.log(res)
+          }
+          this.$store.dispatch(actionName, params)
+            .then(() => {
               this.$emit('close')
-              this.$emit('update')
             })
+
+          // api[apiName]({
+          //   repositoryId: this.$route.params.id,
+          //   ...this.model
+          // })
+          //   .then(res => {
+          //     console.log(res)
+          //     this.$emit('close')
+          //     this.$emit('update')
+          //   })
         })
     }
   }

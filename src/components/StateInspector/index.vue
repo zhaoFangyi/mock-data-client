@@ -67,7 +67,6 @@ export default {
       return typeof value === 'undefined' || value
     },
     toggle (event = null) {
-      console.log('toggle -> event', event)
       if (event) {
         if (event.ctrlKey || event.metaKey) {
           return this.setExpandToAll(false)

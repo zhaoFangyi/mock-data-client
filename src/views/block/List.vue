@@ -3,15 +3,16 @@
     <div class="header">
       <span class="title">
         <i class="el-icon-s-management"></i>
-        <span>{{block.name}}</span>
+        <span>{{repository.name}}</span>
       </span>
       <div class="toolbar">
         <span class="fake-link edit el-icon-edit">编辑</span>
       </div>
       <div class="blockSearcher">
-        <el-input
+        <custom-search></custom-search>
+        <!-- <el-input
           class="input"
-          placeholder="搜索"></el-input>
+          placeholder="搜索"></el-input> -->
       </div>
     </div>
     <div class="body">
@@ -77,7 +78,7 @@
               <RSortable :onChange="onChangeRSortable">
                 <ul class="ModuleList clearfix">
                   <li
-                    v-for="item in curItf.mockData"
+                    v-for="item in mockData"
                     :key="item.id"
                     :class="['sortable', {'active': item.id === curMockData.id}]">
                     <div class="Module clearfix" @click="onClickRes(item)">
@@ -135,11 +136,9 @@
     </div>
     <AddItfDialog :visible="showItfDialog"
       :data="editItfModel"
-      @update="getInterfaceList"
       @close="showItfDialog=false"></AddItfDialog>
     <ResDialog
       :visible="showResDialog"
-      @update="getInterfaceList"
       :id="curItf.id"
       :data="resDialogData"
       @close="showResDialog=false"></ResDialog>
@@ -150,6 +149,7 @@
 import VueJsonPretty from 'vue-json-pretty'
 import StateInspector from '@/components/StateInspector/index'
 import CopyToClipboard from '@/components/CopyToClipboard/index'
+import CustomSearch from '@/components/CustomSearch/index'
 import RSortable from '@/components/RSortable/RSortable'
 import store from '@/store/store.js'
 import { parse, set } from '@/utils/util.js'
@@ -157,12 +157,16 @@ import ResDialog from './Dialog/ResDialog'
 import ReplaceDialog from './Dialog/ReplaceDialog'
 import AddItfDialog from './Dialog/AddItfDialog'
 import api from '@/data/api.js'
+import { mapState, mapGetters } from 'vuex'
+import URI from 'urijs'
+import * as types from '@/store/mutation-types.js'
 
 export default {
   name: 'Bolck',
   components: {
     CopyToClipboard,
     StateInspector,
+    CustomSearch,
     VueJsonPretty,
     RSortable,
     ResDialog,
@@ -176,26 +180,21 @@ export default {
       showItfDialog: false,
       resDialogData: '',
       editItfModel: '',
-      repositoryId: '',
-      block: {
-        name: '预警布控'
-      },
-      curMockData: {},
-      res: [
-        {
-          id: 'res1',
-          name: 'res1'
-        },
-        {
-          id: 'res2',
-          name: 'res2'
-        }
-      ],
-      curItf: '',
-      itfs: []
+      repositoryId: ''
     }
   },
   computed: {
+    ...mapState([
+      'repository',
+      'curItfId',
+      'mockData',
+      'curMockId'
+    ]),
+    ...mapGetters([
+      'curItf',
+      'curMockData',
+      'itfs'
+    ])
   },
   created () {
     this.repositoryId = this.$route.params.id
@@ -208,7 +207,7 @@ export default {
         if (value) {
           parsedValue = parse(value, true)
         }
-        set(this.curItf.mockData, path, parsedValue, (obj, field, value) => {
+        set(this.curMockData.value, path, parsedValue, (obj, field, value) => {
           (remove || newKey) && this.$delete(obj, field)
           !remove && this.$set(obj, newKey || field, value)
         })
@@ -216,9 +215,7 @@ export default {
         console.error(e)
       }
     })
-    this.getInterfaceList({
-      repositoryId: this.repositoryId
-    })
+    this.getRepositoryById()
   },
   methods: {
     handleReplaceWith () {
@@ -244,26 +241,21 @@ export default {
     deleteMockData (params) {
       api.deleteMockData(params)
         .then(res => {
-          this.getInterfaceList()
+          this.getRepositoryById()
         })
     },
     openItfDialog () {
       this.showItfDialog = true
     },
-    getInterfaceList (params) {
-      const postData = Object.assign({}, { repositoryId: this.repositoryId }, params)
-      api.getInterfaceList(postData)
-        .then(res => {
-          this.itfs = res.data
-          this.initData(res.data)
+    getRepositoryById () {
+      this.$store.dispatch('getRepository', this.repositoryId)
+        .then(() => {
+          const selectHref = new URI(this.$route.fullPath)
+            .setSearch('itf', this.curItfId)
+            .setSearch('mock', this.curMockId)
+            .href()
+          this.$router.replace(selectHref)
         })
-    },
-    initData (data = [{}]) {
-      this.curItf = data.find(item => item.id === this.curItf.id) || data[0]
-      if (Object.keys(this.curItf).length > 0) {
-        this.curMockData = this.curItf.mockData.find(item => item.id === this.curMockData) || (this.curItf.mockData || [])[0]
-        this.curMockData.value = JSON.parse(this.curMockData.value || '{}')
-      }
     },
     handleClickEdit ({ name, url, method, id }) {
       this.showItfDialog = true
@@ -275,7 +267,7 @@ export default {
       }
     },
     handleClickDel (item) {
-      this.$confirm(`确认删除${item.name}吗？`, '提示', {
+      this.$confirm(`确认删除接口-${item.name}吗？`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -287,14 +279,24 @@ export default {
         })
     },
     deleteItf (params) {
-      api.deleteInterface(params)
-        .then(res => {
-          this.getInterfaceList()
+      const isDelSelf = params.id === this.curItfId
+      this.$store.dispatch('deleteInterface', params)
+        .then(() => {
+          if (isDelSelf) {
+            const selectHref = new URI(this.$route.fullPath)
+              .setSearch('itf', this.curItfId)
+              .setSearch('mock', this.curMockId)
+              .href()
+            this.$router.replace(selectHref)
+          }
         })
     },
     onClickRes (item) {
-      this.curMockData = item
-      this.curMockData.value = JSON.parse(item.value || '{}')
+      const selectHref = new URI(this.$route.fullPath)
+        .setSearch('mock', item.id)
+        .href()
+      this.$router.replace(selectHref)
+      this.$store.commit(types.MOCKDATA_ID_CUR_SET, item)
     },
     openResDialog () {
       this.resDialogData = ''
@@ -302,11 +304,22 @@ export default {
     },
     handleClick () {},
     handleInterfaceClick (item) {
-      this.curItf = item
-      this.curMockData = (this.curItf.mockData || [])[0] || {}
-      this.curMockData.value = JSON.parse(this.curMockData.value || '{}')
+      this.$store.commit(types.INTERFACE_ID_CUR_SET, item)
+      this.$store.dispatch('getCurItf', { id: item.id }).then(() => {
+        console.log(this.curMockId)
+
+        const selectHref = new URI(this.$route.fullPath)
+          .setSearch('itf', item.id)
+          .setSearch('mock', this.curMockId)
+          .href()
+        console.log('handleInterfaceClick -> selectHref', selectHref)
+        this.$router.replace(selectHref)
+      })
     },
     onChangeRSortable () {}
+    // ...mapActions([
+    //   'getRepository'
+    // ])
   }
 }
 </script>

@@ -5,7 +5,12 @@ module.exports = {
       patterns: []
     }
   },
+  configureWebpack: {},
   devServer: {
+    overlay: {
+      warnings: false,
+      errors: false
+    },
     proxy: {
       '/api': {
         pathRewrite: {

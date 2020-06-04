@@ -24,7 +24,6 @@
 </template>
 
 <script>
-import api from '@/data/api.js'
 
 export default {
   name: 'ResDialog',
@@ -88,13 +87,11 @@ export default {
               value: this.model.value
             }
           )
-          const apiName = this.model.id ? 'updateMockData' : 'createMockData'
-          api[apiName](params)
-            .then(res => {
-              console.log(res)
-              this.showModel = false
+          const actionName = this.model.id ? 'updateMockData' : 'createMockData'
+          this.$store.dispatch(actionName, params)
+            .then(() => {
               this.$emit('close')
-              this.$emit('update')
+              this.model = {}
             })
         })
     }
