@@ -1,5 +1,8 @@
 import * as CircularJSON from './transfer'
 import path from 'path'
+
+const Base64 = require('js-base64').Base64
+
 function cached (fn) {
   const cache = Object.create(null)
   return function cachedFn (str) {
@@ -416,3 +419,27 @@ export function copyToClipboard (state) {
   document.execCommand('copy')
   document.body.removeChild(dummyTextArea)
 }
+
+export function jsonParse (json) {
+  try {
+    return JSON.parse(json)
+  } catch (err) {
+    return json
+  }
+}
+
+export function jsonFormat (json) {
+  try {
+    return JSON.stringify(JSON.parse(json), null, '   ')
+  } catch (e) {
+    return json
+  }
+}
+
+export function unbase64 (base64Str) {
+  try {
+    return Base64.decode(base64Str);
+  } catch (err) {
+    return base64Str;
+  }
+};

@@ -28,22 +28,7 @@ export default {
   props: {
     state: {
       type: Object,
-      required: true,
       default: () => ({
-        id: '12333',
-        name: 'gogo',
-        obj: {
-          class: '3',
-          desc: '我是测试数据'
-        },
-        list: [1, 4, 6, 0],
-        data: [{
-          key: 555,
-          name: '好的'
-        }, {
-          key: 666,
-          name: '你好'
-        }]
       })
     },
     dimAfter: {

@@ -23,7 +23,7 @@
                 <span>{{item.name}}</span>
               </router-link>
               <div class="actions">
-                <el-link class="mr6" icon="el-icon-upload"></el-link>
+                <el-link class="mr6" icon="el-icon-upload" @click="importData(item)"></el-link>
                 <el-link class="mr6" icon="el-icon-edit" @click="handleEditModule(item)"></el-link>
                 <el-link class="mr6" icon="el-icon-delete" @click="handleDeleteModule(item)"></el-link>
               </div>
@@ -88,6 +88,12 @@ export default {
     }
   },
   methods: {
+    importData (item) {
+      this.$router.push({
+        name: 'About',
+        params: { id: item.id }
+      })
+    },
     openFrom () {
       this.showForm = true
     },

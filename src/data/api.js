@@ -40,6 +40,9 @@ export default {
   updateInterface (params) {
     return axios.post('/interface/update', params)
   },
+  saveItfAndMock (params) {
+    return axios.post('/interface/saveAndMock', params)
+  },
   // getInterfaceList (params) {
   //   return axios.get('/interface/getList', {
   //     params
