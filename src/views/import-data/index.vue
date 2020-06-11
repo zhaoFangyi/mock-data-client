@@ -9,14 +9,6 @@
       <i class="el-icon-upload"></i>
       <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
     </el-upload>
-    <a :href="downHref"
-      target="_black"
-      rel="noopener noreferrer">
-      <el-button type="primary" icon="el-icon-upload">
-        {{' '}}
-        导出{{' '}}
-      </el-button>
-    </a>
   </div>
 </template>
 
@@ -37,16 +29,13 @@ import api from '@/data/api'
 //   return schemaData;
 // };
 export default {
-  name: 'About',
+  name: 'ImportData',
   data () {
     return {
       repositoryId: this.$route.params.id
     }
   },
   computed: {
-    downHref () {
-      return `http://localhost:9999/plugin/export?type=json&pid=${this.repositoryId}`
-    }
   },
   methods: {
     handleExport () {
@@ -59,21 +48,11 @@ export default {
           console.log(22222222)
         })
     },
-    handleExport1 () {
-      const down = document.createElement('a')
-      down.href = this.downHref
-      console.log(down)
-      down.download = 'test.json'
-      document.body.appendChild(down)
-      down.click()
-      down.remove()
-    },
     handleFile (info) {
       const reader = new FileReader()
       reader.readAsText(info.file)
       reader.onload = async res => {
         res = await this.importDataModule(res.target.result)
-        console.log('handleFile -> res', res)
         await this.handleAddInterface(res)
       }
     },

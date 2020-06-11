@@ -63,5 +63,8 @@ export default {
     return axios.get('/plugin/export', {
       params
     })
+  },
+  getTaskTypeList (params) {
+    return axios.post('/api/monitor/task/getTaskTypeList', params)
   }
 }

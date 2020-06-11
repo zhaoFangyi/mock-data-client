@@ -9,6 +9,7 @@
         <el-button slot="append" icon="el-icon-search" @click="getList"></el-button>
       </el-input>
       <el-button class="create" type="primary" @click="openFrom">新建仓库</el-button>
+      <el-button class="create" type="primary" @click="mockData">mock data</el-button>
     </nav>
     <div class="body">
       <div class="moduleList">
@@ -23,6 +24,11 @@
                 <span>{{item.name}}</span>
               </router-link>
               <div class="actions">
+                <a :href="`http://localhost:9999/plugin/export?type=json&pid=${item.id}`"
+                  target="_black"
+                  rel="noopener noreferrer">
+                  <el-link class="mr6" icon="el-icon-download"></el-link>
+                </a>
                 <el-link class="mr6" icon="el-icon-upload" @click="importData(item)"></el-link>
                 <el-link class="mr6" icon="el-icon-edit" @click="handleEditModule(item)"></el-link>
                 <el-link class="mr6" icon="el-icon-delete" @click="handleDeleteModule(item)"></el-link>
@@ -88,9 +94,15 @@ export default {
     }
   },
   methods: {
+    mockData () {
+      api.getTaskTypeList()
+        .then(res => {
+          console.log('mockData -> res', res)
+        })
+    },
     importData (item) {
       this.$router.push({
-        name: 'About',
+        name: 'import-data',
         params: { id: item.id }
       })
     },

@@ -86,6 +86,8 @@ export function stringifyStrict (data, replacer, space) {
 }
 
 export function parse (data, reviver) {
+  // eslint-disable-next-line no-debugger
+  debugger
   if (Array.isArray(data)) {
     data = data.join('')
   }
