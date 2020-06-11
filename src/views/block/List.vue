@@ -101,12 +101,12 @@
               <div class="component-state-inspector">
                 <vue-json-pretty
                   :deep="3"
-                  :data="curMockData.value"
+                  :data="curMockData.res_body"
                   @click="handleClick">
                 </vue-json-pretty>
                 <div class="toolbar">
                   <copy-to-clipboard
-                    :text="curMockData.value"
+                    :text="curMockData.res_body"
                     type="right"
                     class="copyJson">
                     <span>复制</span>
@@ -128,7 +128,7 @@
                     @close="showReplaceDialog=false"></ReplaceDialog>
                 </div>
                 <state-inspector
-                  :state="curMockData.value"
+                  :state="curMockData.res_body"
                 ></state-inspector>
               </div>
             </div>
@@ -210,7 +210,7 @@ export default {
         if (value) {
           parsedValue = parse(value, true)
         }
-        set(this.curMockData.value, path, parsedValue, (obj, field, value) => {
+        set(this.curMockData.res_body, path, parsedValue, (obj, field, value) => {
           (remove || newKey) && this.$delete(obj, field)
           !remove && this.$set(obj, newKey || field, value)
         })

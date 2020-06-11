@@ -13,7 +13,7 @@ const mutations = {
   [types.MOCKDATA_SET] (state, mockData) {
     state.mockData = mockData
       .map(item => {
-        return Object.assign({}, item, { value: JSON.parse(item.value || '{}') })
+        return Object.assign({}, item, { res_body: JSON.parse(item.res_body || '{}') })
       })
   },
   [types.MOCKDATA_ID_CUR_SET] (state, payload = {}) {
@@ -43,7 +43,7 @@ const mutations = {
     state.repository = repository
   },
   [types.UPDATE_MOCKDATA_SUCCEEDED] (state, data) {
-    data.value = JSON.parse(data.value || '{}')
+    data.res_body = JSON.parse(data.res_body || '{}')
     let mockData = state.mockData
     const itfId = data.id
     mockData = mockData.map(itf => {
@@ -57,7 +57,7 @@ const mutations = {
     state.mockData = mockData
   },
   [types.CREATE_MOCKDATA_SUCCEEDED] (state, data) {
-    data.value = JSON.parse(data.value || '{}')
+    data.res_body = JSON.parse(data.res_body || '{}')
     let mockData = state.mockData
     mockData = [...mockData, data]
     state.mockData = mockData

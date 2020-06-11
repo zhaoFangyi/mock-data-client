@@ -13,10 +13,9 @@
 </template>
 
 <script>
-import URL from 'url'
-import { unbase64 } from '@/utils/util'
 import api from '@/data/api'
 import importHar from './import-har'
+import importJson from './import-json'
 // const GenerateSchema = require('generate-schema/src/schemas/json.js')
 
 // const transformJsonToSchema = json => {
@@ -52,9 +51,12 @@ export default {
     handleFile (info) {
       const reader = new FileReader()
       reader.readAsText(info.file)
-      reader.onload = async res => {
-        res = await importHar(res.target.result)
-        await this.handleAddInterface(res)
+      reader.onload = async (res) => {
+        const res1 = await importHar(res.target.result)
+        const res2 = await importJson(res.target.result)
+        console.log(res1)
+        console.log(res2)
+        // await this.handleAddInterface(res)
       }
     },
 

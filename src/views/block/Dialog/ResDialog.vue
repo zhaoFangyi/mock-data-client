@@ -12,8 +12,8 @@
       <el-form-item label="描述">
         <el-input v-model="model.desc" placeholder="RES简介"></el-input>
       </el-form-item>
-      <el-form-item label="数据" prop="value">
-        <el-input type="textarea" v-model="model.value" placeholder="mock数据值"></el-input>
+      <el-form-item label="数据" prop="res_body">
+        <el-input type="textarea" v-model="model.res_body" placeholder="mock数据值"></el-input>
       </el-form-item>
     </el-form>
     <div class="dialog-footer" slot="footer">
@@ -53,7 +53,7 @@ export default {
     return {
       model: {},
       rules: {
-        value: [
+        res_body: [
           { validator: validateValue, trigger: 'blur' }
         ]
       },
@@ -66,7 +66,7 @@ export default {
     },
     data (n) {
       if (n) {
-        n.value = JSON.stringify(n.value)
+        n.res_body = JSON.stringify(n.res_body)
         this.model = n
       }
     }
@@ -84,7 +84,7 @@ export default {
             this.model,
             {
               interfaceId: this.id,
-              value: this.model.value
+              res_body: this.model.res_body
             }
           )
           const actionName = this.model.id ? 'updateMockData' : 'createMockData'
