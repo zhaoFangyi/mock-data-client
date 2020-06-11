@@ -3,10 +3,12 @@
     <div class="header">
       <span class="title">
         <i class="el-icon-s-management"></i>
+        <router-link :to="{name: 'modules-list'}">仓库</router-link>
+        <span class="slash"> / </span>
         <span>{{repository.name}}</span>
       </span>
       <div class="toolbar">
-        <span class="fake-link edit el-icon-edit">编辑</span>
+        <!-- <span class="fake-link edit el-icon-edit">编辑</span> -->
       </div>
       <div class="blockSearcher">
         <custom-search></custom-search>
@@ -344,6 +346,9 @@ export default {
     > .title {
       font-size: 20px;
       margin-right: 10px;
+      .slash {
+        color: #999;
+      }
     }
     > .toolbar {
       display: inline-block;

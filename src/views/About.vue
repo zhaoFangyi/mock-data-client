@@ -74,7 +74,7 @@ export default {
       reader.onload = async res => {
         res = await this.importDataModule(res.target.result)
         console.log('handleFile -> res', res)
-        // await this.handleAddInterface(res)
+        await this.handleAddInterface(res)
       }
     },
     importDataModule (res) {

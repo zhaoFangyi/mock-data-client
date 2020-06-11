@@ -8,15 +8,14 @@
       </a>
       <template v-if="nextData.nextRespository.interfaces && nextData.nextRespository.interfaces.length">
         <div v-for="itf in nextData.nextRespository.interfaces" :key="itf.id">
-          <router-link
-            tag="a"
+          <a
             class="dropdown-item dropdown-item-interface"
-            :to="genToRoute(itf)">
+            @click="handleGoItf(itf)">
             <span class="label">接口</span>
             <Highlight class="dropdown-item-clip" :clip="itf.name" :seed="seed"></Highlight>
             <Highlight class="dropdown-item-clip" :clip="itf.method" :seed="seed"></Highlight>
             <Highlight class="dropdown-item-clip" :clip="itf.url" :seed="seed"></Highlight>
-          </router-link>
+          </a>
         </div>
       </template>
       <!-- <div class="dropdown-divider" v-if="data.length -1 > index"></div> -->
@@ -26,6 +25,8 @@
 
 <script>
 import Highlight from './Highlight'
+import * as types from '@/store/mutation-types.js'
+
 export default {
   name: 'DropdownMenu',
   components: {
@@ -81,13 +82,23 @@ export default {
     genToRoute (item) {
       const { name, params, query } = this.$route
       const newQuery = Object.assign({}, query, {
-        itf: item.id
+        itf: item.id,
+        mock: ''
       })
       return {
         name,
         params,
         query: newQuery
       }
+    },
+    handleGoItf (itf) {
+      const newRoute = this.genToRoute(itf)
+
+      this.$store.commit(types.INTERFACE_ID_CUR_SET, itf)
+      this.$store.dispatch('getCurItf', { id: itf.id })
+        .then(res => {
+          this.$router.replace(newRoute)
+        })
     }
   }
 }

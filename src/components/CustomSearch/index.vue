@@ -1,9 +1,10 @@
 <template>
   <div class="dropdown CustomSearch">
-    <input
+    <el-input
       v-model="seed"
       @change="handleInputChange"
-      class="dropdown-input form-control"
+      clearable
+      class="dropdown-input"
       placeholder="输入搜索"/>
     <dropdown-menu
       v-show="seed"
@@ -43,11 +44,11 @@ export default {
 <style lang="less" scoped>
 .CustomSearch.dropdown {
   position: absolute;
-  top: 20px;
   right: 20px;
   left: auto;
   > .dropdown-input {
     margin-bottom: 0;
+    height: 32px;
     width: 200px;
   }
 }
