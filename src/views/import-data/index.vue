@@ -115,6 +115,7 @@ export default {
           // }
         }
         if (count === len) {
+          console.log(`成功导入接口 ${successNum} 个, 已存在的接口 ${existNum} 个`)
         }
       }
     },

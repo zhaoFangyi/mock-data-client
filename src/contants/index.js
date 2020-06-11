@@ -1,3 +1,4 @@
+import config from '@/config'
 export const Methods = [
   {
     label: 'GET',
@@ -16,3 +17,5 @@ export const Methods = [
     value: 'DELETE'
   }
 ]
+
+export const serve = config.serve

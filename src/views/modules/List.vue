@@ -24,7 +24,7 @@
                 <span>{{item.name}}</span>
               </router-link>
               <div class="actions">
-                <a :href="`http://localhost:9999/plugin/export?type=json&pid=${item.id}`"
+                <a :href="`${serve}/plugin/export?type=json&pid=${item.id}`"
                   target="_black"
                   rel="noopener noreferrer">
                   <el-link class="mr6" icon="el-icon-download"></el-link>
@@ -67,11 +67,13 @@
 
 <script>
 import api from '@/data/api.js'
+import { serve } from '@/contants'
 export default {
   name: 'ModulesList',
   data () {
     return {
       query: '',
+      serve,
       moduleList: '',
       showForm: false,
       model: {
