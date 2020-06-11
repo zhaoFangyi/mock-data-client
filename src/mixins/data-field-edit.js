@@ -178,7 +178,7 @@ export default {
 
     sendEdit (args) {
       console.log('sendEdit -> args', args)
-      store.$emit('field:change', {
+      store.$emit('field-change', {
         path: this.path,
         ...args
       })

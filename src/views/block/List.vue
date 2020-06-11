@@ -203,7 +203,7 @@ export default {
     console.log(this.$route)
   },
   mounted () {
-    store.$on('field:change', ({ path, value, newKey, remove }) => {
+    store.$on('field-change', ({ path, value, newKey, remove }) => {
       console.log(99999, path, value, newKey, remove)
       try {
         let parsedValue
