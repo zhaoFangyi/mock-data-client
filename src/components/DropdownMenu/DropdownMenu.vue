@@ -1,18 +1,22 @@
 <template>
   <div class="custom-dropdown-menu dropdown-menu" v-if="nextData.counter !== 0">
     <div>
-      <a class="dropdown-item dropdown-item-module">
+      <a
+        class="dropdown-item dropdown-item-module">
         <span class="label">仓库</span>
         <Highlight class="dropdown-item-clip" :clip="nextData.nextRespository.name" :seed="seed"></Highlight>
       </a>
       <template v-if="nextData.nextRespository.interfaces && nextData.nextRespository.interfaces.length">
         <div v-for="itf in nextData.nextRespository.interfaces" :key="itf.id">
-          <a class="dropdown-item dropdown-item-interface">
+          <router-link
+            tag="a"
+            class="dropdown-item dropdown-item-interface"
+            :to="genToRoute(itf)">
             <span class="label">接口</span>
             <Highlight class="dropdown-item-clip" :clip="itf.name" :seed="seed"></Highlight>
             <Highlight class="dropdown-item-clip" :clip="itf.method" :seed="seed"></Highlight>
             <Highlight class="dropdown-item-clip" :clip="itf.url" :seed="seed"></Highlight>
-          </a>
+          </router-link>
         </div>
       </template>
       <!-- <div class="dropdown-divider" v-if="data.length -1 > index"></div> -->
@@ -41,11 +45,21 @@ export default {
   },
   data () {
     return {
+      id: this.$route.params.id
       // nextData: []
       // seed: 'get'
     }
   },
   computed: {
+    routeName () {
+      return this.$route.name
+    },
+    routeParams () {
+      return this.$route.params
+    },
+    routeQuery () {
+      return this.$route.query
+    },
     nextData () {
       const nextRespository = { ...this.data, interfaces: [] }
       let counter = 0
@@ -61,6 +75,19 @@ export default {
         }
       })
       return { nextRespository, counter }
+    }
+  },
+  methods: {
+    genToRoute (item) {
+      const { name, params, query } = this.$route
+      const newQuery = Object.assign({}, query, {
+        itf: item.id
+      })
+      return {
+        name,
+        params,
+        query: newQuery
+      }
     }
   }
 }

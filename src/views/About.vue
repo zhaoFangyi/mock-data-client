@@ -1,5 +1,5 @@
 <template>
-  <div class="about">
+  <div class="handle-data">
     <el-upload
       class="upload-demo"
       drag
@@ -9,6 +9,14 @@
       <i class="el-icon-upload"></i>
       <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
     </el-upload>
+    <a :href="downHref"
+      target="_black"
+      rel="noopener noreferrer">
+      <el-button type="primary" icon="el-icon-upload">
+        {{' '}}
+        导出{{' '}}
+      </el-button>
+    </a>
   </div>
 </template>
 
@@ -35,13 +43,38 @@ export default {
       repositoryId: this.$route.params.id
     }
   },
+  computed: {
+    downHref () {
+      return `http://localhost:9999/plugin/export?type=json&pid=${this.repositoryId}`
+    }
+  },
   methods: {
+    handleExport () {
+      api.exportOneRepo({
+        pid: this.repositoryId,
+        type: 'json'
+      })
+        .then(res => {
+          // console.log(res)
+          console.log(22222222)
+        })
+    },
+    handleExport1 () {
+      const down = document.createElement('a')
+      down.href = this.downHref
+      console.log(down)
+      down.download = 'test.json'
+      document.body.appendChild(down)
+      down.click()
+      down.remove()
+    },
     handleFile (info) {
       const reader = new FileReader()
       reader.readAsText(info.file)
       reader.onload = async res => {
         res = await this.importDataModule(res.target.result)
-        await this.handleAddInterface(res)
+        console.log('handleFile -> res', res)
+        // await this.handleAddInterface(res)
       }
     },
     importDataModule (res) {
@@ -150,15 +183,7 @@ export default {
           console.log(data.request)
           res[item] = this.handlePath(reqTarget)
         } else if (item === 'title') {
-          const path = this.handlePath(reqTarget)
-          if (reqTarget.indexOf('path') > -1) {
-            res[item] = path
-            if (res[item] && res[item].indexOf('/:') > -1) {
-              res[item] = res[item].substr(0, res[item].indexOf('/:'))
-            }
-          } else {
-            res[item] = reqTarget
-          }
+          res[item] = this.handlePath(reqTarget)
         } else if (item === 'res_body_type') {
           res[item] = 'json'
         } else if (item === 'res_body') {
@@ -261,3 +286,11 @@ export default {
   }
 }
 </script>
+
+<style lang="less" scoped>
+.handle-data {
+  padding: 20px;
+  display: flex;
+  justify-content: space-evenly;
+}
+</style>

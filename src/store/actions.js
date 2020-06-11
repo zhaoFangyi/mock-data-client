@@ -29,12 +29,12 @@ export const getCurItf = async function ({ state, getters, commit }, payload) {
 
 export const updateInterface = async function ({ commit }, payload) {
   const result = await api.updateInterface(payload)
-  commit(types.UPDATE_INTERFACE_SUCCEEDED, result.data.itf)
+  commit(types.UPDATE_INTERFACE_SUCCEEDED, result.data)
 }
 
 export const createInterface = async function ({ commit }, payload) {
   const result = await api.createInterface(payload)
-  commit(types.CREATE_INTERFACE_SUCCEEDED, result.data.itf)
+  commit(types.CREATE_INTERFACE_SUCCEEDED, result.data)
 }
 
 export const deleteInterface = async function ({ getters, commit, dispatch }, payload) {

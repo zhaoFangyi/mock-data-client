@@ -31,10 +31,10 @@
                   :key="item.id">
                   <div class="interface">
                     <span>
-                      <el-link type="primary" @click="handleInterfaceClick(item)">
+                      <a type="primary" @click="handleInterfaceClick(item)">
                         <div class="name">{{item.name}}</div>
                         <div class="url">{{item.url}}</div>
-                      </el-link>
+                      </a>
                     </span>
                     <div class="toolbar">
                       <el-link class="mr6" icon="el-icon-edit" @click="handleClickEdit(item)"></el-link>
@@ -198,6 +198,7 @@ export default {
   },
   created () {
     this.repositoryId = this.$route.params.id
+    console.log(this.$route)
   },
   mounted () {
     store.$on('field:change', ({ path, value, newKey, remove }) => {
@@ -245,6 +246,7 @@ export default {
         })
     },
     openItfDialog () {
+      this.editItfModel = ''
       this.showItfDialog = true
     },
     getRepositoryById () {
@@ -415,7 +417,7 @@ export default {
     max-height: calc(100vh - 115px);
     li {
       position: relative;
-      padding: 12px;
+      padding: 10px;
       border-bottom: 1px solid rgba(63, 81, 181, 0.5);
       &:first-child {
         border-top-left-radius: 3px;

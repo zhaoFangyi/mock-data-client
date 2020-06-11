@@ -58,5 +58,10 @@ export default {
   },
   updateMockData (params) {
     return axios.post('/mockData/update', params)
+  },
+  exportOneRepo (params) {
+    return axios.get('/plugin/export', {
+      params
+    })
   }
 }

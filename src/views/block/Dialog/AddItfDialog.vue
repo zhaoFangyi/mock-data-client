@@ -3,7 +3,7 @@
     :visible.sync="showModel"
     width="500px"
     lock-scroll
-    title="新建接口"
+    :title="title"
     @close="closeModal">
     <el-form :model="model" size="mini" ref="form">
       <el-form-item label="接口名称">
@@ -48,6 +48,7 @@ export default {
   data () {
     return {
       Methods,
+      title: '新建接口',
       model: {},
       showModel: false
     }
@@ -57,9 +58,7 @@ export default {
       this.showModel = n
     },
     data (v) {
-      if (v && Object.keys(v).length > 0) {
-        this.model = v
-      }
+      this.model = v
     }
   },
   methods: {
