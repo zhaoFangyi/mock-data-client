@@ -21,7 +21,6 @@ export const getCurItf = async function ({ state, getters, commit }, payload) {
     ...payload
   }
   const res = await api.getInterfaceById(params)
-  console.log('res', res)
   // commit(types.INTERFACE_CUR_SET, res.data)
   commit(types.MOCKDATA_SET, res.data.mockData)
   commit(types.MOCKDATA_ID_CUR_SET, res.data.mockData[0])
@@ -38,7 +37,6 @@ export const createInterface = async function ({ commit }, payload) {
 }
 
 export const deleteInterface = async function ({ getters, commit, dispatch }, payload) {
-  console.log('payload', payload)
   await api.deleteInterface(payload)
   commit(types.DELETE_INTERFACE_SUCCEEDED, payload.id)
   commit(types.INTERFACE_ID_CUR_SET, getters.curItf)
@@ -48,18 +46,15 @@ export const deleteInterface = async function ({ getters, commit, dispatch }, pa
 }
 export const updateMockData = async function ({ commit }, payload) {
   const result = await api.updateMockData(payload)
-  console.log('result', result)
   commit(types.UPDATE_MOCKDATA_SUCCEEDED, result.data)
 }
 
 export const createMockData = async function ({ commit }, payload) {
   const result = await api.createMockData(payload)
-  console.log('result', result)
   commit(types.CREATE_MOCKDATA_SUCCEEDED, result.data)
 }
 
 export const deleteMockData = async function ({ getters, commit, dispatch }, payload) {
-  console.log('payload', payload)
   await api.deleteMockData(payload)
   commit(types.DELETE_MOCKDATA_SUCCEEDED, payload.id)
   commit(types.MOCKDATA_ID_CUR_SET, getters.curMockData)

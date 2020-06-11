@@ -200,7 +200,6 @@ export default {
   },
   created () {
     this.repositoryId = this.$route.params.id
-    console.log(this.$route)
   },
   mounted () {
     store.$on('field-change', ({ path, value, newKey, remove }) => {
@@ -310,13 +309,10 @@ export default {
     handleInterfaceClick (item) {
       this.$store.commit(types.INTERFACE_ID_CUR_SET, item)
       this.$store.dispatch('getCurItf', { id: item.id }).then(() => {
-        console.log(this.curMockId)
-
         const selectHref = new URI(this.$route.fullPath)
           .setSearch('itf', item.id)
           .setSearch('mock', this.curMockId)
           .href()
-        console.log('handleInterfaceClick -> selectHref', selectHref)
         this.$router.replace(selectHref)
       })
     },

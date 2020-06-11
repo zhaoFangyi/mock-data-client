@@ -15,7 +15,7 @@
 <script>
 import api from '@/data/api'
 import importHar from './import-har'
-import importJson from './import-json'
+// import importJson from './import-json'
 // const GenerateSchema = require('generate-schema/src/schemas/json.js')
 
 // const transformJsonToSchema = json => {
@@ -52,20 +52,20 @@ export default {
       const reader = new FileReader()
       reader.readAsText(info.file)
       reader.onload = async (res) => {
-        const res1 = await importHar(res.target.result)
-        const res2 = await importJson(res.target.result)
-        console.log(res1)
-        console.log(res2)
-        // await this.handleAddInterface(res)
+        res = await importHar(res.target.result)
+        // const res2 = await importJson(res.target.result)
+        console.log(res)
+        // console.log(res2)
+        await this.handleAddInterface(res)
       }
     },
 
     async handleAddInterface (info, basePath, dataSync = 'good', token) {
-      console.log('handleAddInterface -> info', info)
       // const cats = await this.handleAddCat(info.cats)
       // if (cats === false) {}
 
       const res = info.apis
+      console.log('handleAddInterface -> res', res)
       const len = res.length
       let count = 0
       let successNum = len;
@@ -115,7 +115,6 @@ export default {
           // }
         }
         if (count === len) {
-          console.log(`成功导入接口 ${successNum} 个, 已存在的接口 ${existNum} 个`)
         }
       }
     },

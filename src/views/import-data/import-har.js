@@ -7,7 +7,6 @@ function parseUrl (url) {
 }
 
 function handlePath (path) {
-  console.log('handlePath -> path', path)
   path = parseUrl(path).pathname;
   path = decodeURIComponent(path);
   if (!path) return '';
@@ -128,7 +127,6 @@ const importHar = function importHar (res) {
       return item.response.content.mimeType.indexOf('application/json') === 0
     })
     const interfaceData = { apis: [] }
-    console.log('importDataModule -> res', res)
     // const interfaceData = { apis: [] }
     res = checkInterRepeat(res)
     if (res && res.length) {
@@ -141,7 +139,6 @@ const importHar = function importHar (res) {
     return interfaceData
   } catch (e) {
     console.error(e)
-    console.log('数据格式有误')
   }
 }
 export default importHar
