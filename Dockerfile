@@ -1,6 +1,9 @@
 # BUILDING 
 FROM node:lts-alpine AS builder
 
+LABEL maintainer="fangyieagle@qq.com"
+LABEL description="mock data center from frontend"
+
 WORKDIR /app
 
 COPY . ./
