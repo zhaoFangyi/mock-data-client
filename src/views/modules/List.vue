@@ -9,6 +9,7 @@
         <el-button slot="append" icon="el-icon-search" @click="getList"></el-button>
       </el-input>
       <el-button class="create" type="primary" @click="openFrom">新建仓库</el-button>
+      <el-button class="create" type="primary" @click="importData()">导入API</el-button>
       <el-button class="create" type="primary" @click="mockData">mock data</el-button>
     </nav>
     <div class="body">
@@ -47,7 +48,7 @@
       lock-scroll
       :visible.sync="showForm">
       <el-form :model="model" size="mini" ref="form">
-        <el-form-item lable="名称">
+        <el-form-item label="名称">
           <el-input
             v-model="model.name"
             placeholder="请输入名称"
@@ -67,7 +68,10 @@
 
 <script>
 import api from '@/data/api.js'
-import { serve } from '@/contants'
+import { serve } from '@/constants'
+import { mapState, mapMutations } from 'vuex'
+import * as types from '@/store/mutation-types'
+
 export default {
   name: 'ModulesList',
   data () {
@@ -95,7 +99,11 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapState(['repositories'])
+  },
   methods: {
+    ...mapMutations({ setRepositories: types.REPOSITORIES_SET }),
     mockData () {
       api.getTaskTypeList()
         .then(res => {
@@ -105,7 +113,7 @@ export default {
     importData (item) {
       this.$router.push({
         name: 'import-data',
-        params: { id: item.id }
+        query: { id: item && item.id }
       })
     },
     openFrom () {
@@ -115,6 +123,7 @@ export default {
       api.getRepositoryList({ key: this.query })
         .then(res => {
           this.moduleList = res.data
+          this.setRepositories(res.data)
         })
         .catch(err => {
           console.log('getList -> err', err)

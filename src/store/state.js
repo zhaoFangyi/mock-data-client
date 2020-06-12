@@ -4,6 +4,7 @@ const curQuery = queryString.parse(window.location.search)
 
 const state = {
   test: {},
+  repositories: [],
   repository: {},
   curItfId: curQuery.itf,
   mockData: [],

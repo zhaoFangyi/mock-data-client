@@ -14,7 +14,7 @@ const routes = [
     // component: Home
   },
   {
-    path: '/import-data/:id',
+    path: '/import-data',
     name: 'import-data',
     // route level code-splitting
     // this generates a separate chunk (import-data.[hash].js) for this route

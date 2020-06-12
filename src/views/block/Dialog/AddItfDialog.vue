@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { Methods } from '@/contants'
+import { Methods } from '@/constants'
 
 export default {
   name: 'AddItfDialog',

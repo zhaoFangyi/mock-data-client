@@ -1,6 +1,9 @@
 import * as types from './mutation-types'
 
 const mutations = {
+  [types.REPOSITORIES_SET] (state, list) {
+    state.repositories = list
+  },
   [types.REPOSITORY_SET] (state, repository) {
     state.repository = repository
   },
