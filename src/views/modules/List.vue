@@ -30,7 +30,7 @@
                   rel="noopener noreferrer">
                   <el-link class="mr6" icon="el-icon-download"></el-link>
                 </a>
-                <el-link class="mr6" icon="el-icon-upload" @click="importData(item)"></el-link>
+                <!-- <el-link class="mr6" icon="el-icon-upload" @click="importData(item)"></el-link> -->
                 <el-link class="mr6" icon="el-icon-edit" @click="handleEditModule(item)"></el-link>
                 <el-link class="mr6" icon="el-icon-delete" @click="handleDeleteModule(item)"></el-link>
               </div>

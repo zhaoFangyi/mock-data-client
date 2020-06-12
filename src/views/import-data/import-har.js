@@ -83,7 +83,7 @@ function handleHar (data, key) {
     } else if (item === 'req_body_type') {
       res[item] = reqType
     } else if (item === 'path') {
-      console.log(data.request)
+      // console.log(data.request)
       res[item] = handlePath(reqTarget)
     } else if (item === 'title') {
       res[item] = handlePath(reqTarget)

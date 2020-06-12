@@ -3,7 +3,13 @@ const importJson = function importJson (res) {
     const interfaceData = { apis: [] }
     res = JSON.parse(res)
     res.interfaces.forEach(item => {
-      interfaceData.apis = interfaceData.apis.concat(item.mockData)
+      const res = {
+        method: item.method,
+        path: item.url,
+        res_body: (item.mockData || [{ res_body: '' }])[0].res_body,
+        title: item.name
+      }
+      interfaceData.apis = interfaceData.apis.concat(res)
     })
     return interfaceData
   } catch (e) {

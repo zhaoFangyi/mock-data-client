@@ -18,8 +18,8 @@
       <el-form-item v-if="form.isCreate" label="仓库名称" placeholder="请输入仓库名称">
         <el-input v-model="form.repositoryName" clearable></el-input>
       </el-form-item>
-      <el-form-item v-else label="选择仓库" placeholder="请选择仓库">
-        <el-select v-model="form.repositoryId">
+      <el-form-item v-else label="选择仓库">
+        <el-select v-model="form.repositoryId" placeholder="请选择仓库">
           <el-option
             v-for="repository in repositories"
             :key="repository.id"
@@ -46,22 +46,10 @@
 <script>
 import api from '@/data/api'
 import importHar from './import-har'
-// import importJson from './import-json'
 import importJson from './import-json'
 import { mapState, mapMutations } from 'vuex'
 import * as types from '@/store/mutation-types'
-// const GenerateSchema = require('generate-schema/src/schemas/json.js')
 
-// const transformJsonToSchema = json => {
-//   json = json || {};
-//   let jsonData = jsonParse(json);
-
-//   jsonData = GenerateSchema(jsonData);
-
-//   const schemaData = JSON.stringify(jsonData);
-
-//   return schemaData;
-// };
 const parsers = {
   json: importJson,
   har: importHar
@@ -74,7 +62,7 @@ export default {
       repositoryId,
       form: {
         type: 'json',
-        repositoryId: Number(repositoryId) || '',
+        repositoryId: Number(repositoryId),
         file: null,
         isCreate: false,
         repositoryName: ''
@@ -90,6 +78,11 @@ export default {
   },
   computed: {
     ...mapState(['repositories'])
+  },
+  mounted () {
+    if (this.repositories && this.repositories.length) {
+      this.form.repositoryId = this.repositories[0].id
+    }
   },
   beforeRouteEnter (to, from, next) {
     next((vm) => {
@@ -111,7 +104,7 @@ export default {
     },
     handleExport () {
       api.exportOneRepo({
-        pid: this.repositoryId,
+        pid: this.form.repositoryId,
         type: 'json'
       })
         .then(res => {
@@ -123,7 +116,6 @@ export default {
       const reader = new FileReader()
       reader.readAsText(info.file)
       reader.onload = async (res) => {
-        console.log(res.target.result)
         const parser = parsers[this.form.type]
         const result = parser(res.target.result)
         console.log(result)
@@ -146,7 +138,7 @@ export default {
       for (let index = 0; index < res.length; index++) {
         const item = res[index]
         const data = Object.assign(item, {
-          repositoryId: this.repositoryId
+          repositoryId: this.form.repositoryId
           // catid: selectCatid
         })
         // if (basePath) {
@@ -164,6 +156,7 @@ export default {
           data.dataSync = dataSync
 
           const result = await api.saveItfAndMock(data)
+          console.log('handleAddInterface -> result', result)
           if (result) {
             successNum--
             // callback({ showLoading: false})
