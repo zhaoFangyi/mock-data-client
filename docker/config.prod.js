@@ -5,3 +5,5 @@ const config = {
     key: 'mock:sess'
   },
 }
+
+export default config
