@@ -46,3 +46,4 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 这里用proxy_pass做了前端接口转发，注意 location ^~ /api/ 中后面需要有斜杆，否则会出现Malicious Path问题
 
+https://blog.csdn.net/yy3306553/article/details/103253254

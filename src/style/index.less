@@ -1,0 +1,150 @@
+@import './shortcuts.less';
+
+html {
+  font-family: sans-serif;
+  line-height: 1.15;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+*, :after, :before {
+  box-sizing: border-box;
+}
+
+.clearfix:after {
+  display: block;
+  clear: both;
+  content: "";
+}
+    
+
+img, svg {
+
+  vertical-align: middle;
+}
+
+a {
+  cursor: pointer;
+} 
+
+body {
+  font-size: 12px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+  font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  text-align: left;
+  background-color: #fff;
+
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 3px;
+
+}
+
+.form-control {
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+  padding: 6px 9px;
+  border: 1px solid #d1d5da;
+  border-radius: 4px;
+  box-shadow: none;
+  font-size: 12px;
+  background-color: white;
+  &:focus {
+    border-color: #4A7BF7;
+    outline: 0;
+  }
+
+}
+
+input.form-control,
+select.form-control {
+  height: 32px;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  display: none;
+  float: left;
+  min-width: 100px;
+  padding: 5px 0;
+  margin: 13px 0 0;
+  font-size: 12px;
+  color: #212529;
+  text-align: left;
+  list-style: none;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 3px;
+
+}
+
+.dropdown-menu {
+  &[x-placement^="top"], &[x-placement^="right"], &[x-placement^="bottom"], &[x-placement^="left"] {
+    right: auto;
+    bottom: auto;
+  }
+}
+
+.dropdown-divider {
+  height: 0;
+  margin: 5px 0;
+  overflow: hidden;
+  border-top: 1px solid #e9ecef;
+
+}
+
+.dropdown-item {
+  display: block;
+  width: 100%;
+  padding: 3px 15px;
+  clear: both;
+  font-weight: 400;
+  color: #212529;
+  text-align: inherit;
+  white-space: nowrap;
+  background-color: transparent;
+  border: 0;
+  &:hover, &:focus {
+
+    color: #16181b;
+    text-decoration: none;
+    background-color: #f8f9fa;
+  }
+  &.active, &:active {
+
+    color: #fff;
+    text-decoration: none;
+    background-color: #007bff;
+  }
+  &.disabled, &:disabled {
+
+    color: #6c757d;
+    pointer-events: none;
+    background-color: transparent;
+  }
+
+}
+
+.dropdown-menu.show {
+  display: block;
+}
+

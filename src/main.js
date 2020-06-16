@@ -10,7 +10,7 @@ import VueUi from '@vue/ui'
 import '@vue/ui/dist/vue-ui.css'
 import 'element-ui/lib/theme-chalk/index.css';
 import '@/style/global.styl'
-import '@/style/index.sass'
+import '@/style/index.less'
 
 import '@/data/interceptors'
 
