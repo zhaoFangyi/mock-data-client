@@ -1,5 +1,34 @@
 import URL from 'url'
-import { unbase64 } from '@/utils/util'
+import { jsonParse, unbase64 } from '@/utils/util'
+const GenerateSchema = require('generate-schema/src/schemas/json.js');
+
+const TYPES = { string: 'String', number: 'Number', boolean: 'Boolean', object: 'Object', array: 'Array', function: 'Function', regexp: 'RegExp', null: 'Null' }
+
+const transformJsonToSchema = json => {
+  console.log('json', json)
+  let res = []
+  json = json || {}
+  const jsonData = jsonParse(json)
+  console.log('jsonData', jsonData)
+
+  const jsonTypeData = GenerateSchema(jsonData)
+  console.log('jsonData', jsonData)
+  const keys = Object.keys(jsonData)
+  if (keys.length) {
+    res = keys.map(item => {
+      return {
+        scope: 'request',
+        type: TYPES[jsonTypeData.properties[item].type],
+        value: jsonData[item],
+        description: '',
+        name: item
+      }
+    })
+  }
+  // const schemaData = JSON.stringify(jsonData)
+
+  return res
+}
 
 function parseUrl (url) {
   // eslint-disable-next-line node/no-deprecated-api
@@ -18,6 +47,7 @@ function handlePath (path) {
   }
   return path;
 }
+
 function handleHar (data, key) {
   const reflect = {
     title: 'url',
@@ -68,11 +98,12 @@ function handleHar (data, key) {
     item = key[item]
     const reqTarget = data.request[reflect[item]]
     if (item === 'req_query') {
-      // res[item] = this.handleReq(reqTarget)
+      res[item] = handleReqQuery(reqTarget)
     } else if (item === 'req_body_form' && reqType === 'form' && data.request.postData) {
 
     } else if (item === 'req_body_other' && reqType === 'json' && data.request.postData) {
-
+      res.req_body_is_json_schema = true
+      res[item] = transformJsonToSchema(data.request.postData.text)
     } else if (item === 'req_header') {
       res[item] = [
         {
@@ -117,6 +148,19 @@ function checkInterRepeat (interData) {
   return arr
 }
 
+function handleReqQuery (query) {
+  const res = []
+  if (query && query.length) {
+    for (const item in query) {
+      res.push({
+        name: query[item].name,
+        value: query[item].value
+      })
+    }
+  }
+  return res
+}
+
 const importHar = function importHar (res) {
   try {
     res = JSON.parse(res)
@@ -131,7 +175,7 @@ const importHar = function importHar (res) {
     res = checkInterRepeat(res)
     if (res && res.length) {
       for (const item in res) {
-        const data = handleHar(res[item], ['title', 'path', 'method', 'res_body'])
+        const data = handleHar(res[item], ['title', 'path', 'method', 'res_body', 'req_query', 'req_body_other'])
         interfaceData.apis.push(data)
       }
     }
