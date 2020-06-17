@@ -127,9 +127,9 @@
                     :visible="showReplaceDialog"
                     @close="showReplaceDialog=false"></ReplaceDialog>
                 </div>
-                <state-inspector
+                <!-- <state-inspector
                   :state="curMockData.res_body"
-                ></state-inspector>
+                ></state-inspector> -->
               </div>
             </div>
           </div>
@@ -149,7 +149,7 @@
 
 <script>
 import VueJsonPretty from 'vue-json-pretty'
-import StateInspector from '@/components/StateInspector/index'
+// import StateInspector from '@/components/StateInspector/index'
 import CopyToClipboard from '@/components/CopyToClipboard/index'
 import CustomSearch from '@/components/CustomSearch/index'
 import RSortable from '@/components/RSortable/RSortable'
@@ -167,7 +167,7 @@ export default {
   name: 'Bolck',
   components: {
     CopyToClipboard,
-    StateInspector,
+    // StateInspector,
     CustomSearch,
     VueJsonPretty,
     RSortable,
@@ -223,9 +223,6 @@ export default {
     handleReplaceWith () {
       this.resDialogData = JSON.parse(JSON.stringify(this.curMockData))
       this.showResDialog = true
-      // this.$nextTick(() => {
-      //   this
-      // })
     },
     handleDeleteMock () {
       const item = this.curMockData
@@ -302,7 +299,9 @@ export default {
       this.$store.commit(types.MOCKDATA_ID_CUR_SET, item)
     },
     openResDialog () {
-      this.resDialogData = ''
+      this.resDialogData = {
+        res_body: JSON.parse(JSON.stringify({}))
+      }
       this.showResDialog = true
     },
     handleClick () {},
@@ -390,7 +389,7 @@ export default {
   .component-state-inspector {
     display: grid;
     // grid-template-columns: repeat(2, 1fr);
-    grid-template-columns: 1fr 50px 1fr;
+    grid-template-columns: 1fr 80px;
     padding: 20px;
   }
 }
