@@ -194,12 +194,23 @@ export default {
 
 .moduleList {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   grid-column-gap: 20px;
   padding: 0 15px;
+  @media screen and (max-width: 1080px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  @media screen and (max-width: 980px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media screen and (max-width: 780px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media screen and (max-width: 480px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
   .module.card {
     margin-bottom: 10px;
-    width: 260px;
     &:hover {
 
     }
