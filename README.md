@@ -60,4 +60,5 @@ https://blog.csdn.net/yy3306553/article/details/103253254
 - [x] 8. 地址复制后，复制结果左右不应该有 “”，还得手动去除
 - [x] 9.  将本地 mock 数据作为接口数据，都不符合 JSON 规范（因为 key 没有用 “” 包裹，可以集成个 JSON 格式化工具，或者推荐个JSON 格式化插件）
 - [ ] 10.  导入API的时候支持创建一个新仓库
+- [ ] 10.  新建仓库 需要修改数据库字段 name -> moduleName desc -> name
 
