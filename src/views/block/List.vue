@@ -110,10 +110,11 @@
                 </vue-json-pretty>
                 <div class="toolbar">
                   <copy-to-clipboard
-                    :text="copyData"
-                    type="right"
-                    class="copyJson">
-                    <span>复制</span>
+                    :text="copyData">
+                    <el-link
+                      size="mini"
+                      type="text"
+                      icon="el-icon-copy-document">复制</el-link>
                   </copy-to-clipboard>
                   <el-link
                     size="mini"
