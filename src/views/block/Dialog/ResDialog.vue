@@ -10,7 +10,8 @@
         <el-input v-model="model.name" placeholder="请输入RES名称"></el-input>
       </el-form-item>
       <el-form-item label="数据" prop="res_body">
-        <el-link size="mini" class="ft-12" type="primary" @click="handleBeautify">格式化</el-link>
+        <el-link size="mini" class="ft-12" type="primary" @click="handleBeautify">Beautify</el-link>
+        <el-link size="mini" class="ft-12 ml-10" type="primary" @click="handleUglify">Uglify</el-link>
         <RCodeMirror ref="rCode" v-model="model.res_body"></RCodeMirror>
       </el-form-item>
 
@@ -113,6 +114,14 @@ export default {
         this.$refs.rCode.cm.setValue(beautified)
       }
     },
+    handleUglify (e) {
+      e.preventDefault()
+      if (this.$refs.rCode) {
+        const result = JSON.parse(this.model.res_body)
+        const beautified = JSON.stringify(result)
+        this.$refs.rCode.cm.setValue(beautified)
+      }
+    },
     closeModal () {
       this.$refs.form.resetFields()
       this.$emit('close')
@@ -141,6 +150,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.ml-10 {
+  margin-left: 10px;
+}
 .ft-12 {
   font-size: 12px;
 }

@@ -45,6 +45,7 @@ export const deleteInterface = async function ({ getters, commit, dispatch }, pa
   // commit(types.INTERFACE_CUR_SET)
 }
 export const updateMockData = async function ({ commit }, payload) {
+  console.log('payload', payload)
   const result = await api.updateMockData(payload)
   commit(types.UPDATE_MOCKDATA_SUCCEEDED, result.data)
 }
