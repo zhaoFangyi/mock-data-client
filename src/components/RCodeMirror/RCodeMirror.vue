@@ -3,8 +3,7 @@
     name="myCodeMirror"
     :autoFocus="true"
     id="myCodeMirror"
-    v-model="code"
-    style="height: 200px;width:600px;"
+    v-model="value"
     ref="myCodeMirror"></textarea>
 </template>
 
@@ -34,7 +33,7 @@ export default {
   },
   watch: {
     value (n) {
-      this.code = n
+      // this.code = n
       this.cm.setValue(n)
     }
   },
@@ -42,11 +41,11 @@ export default {
     // const ele = document.getElementById('myCodeMirror')
     this.cm = CodeMirror.fromTextArea(this.$refs.myCodeMirror, this.options)
 
-    this.cm.setValue(this.value || this.code)
+    this.cm.setValue(this.value)
 
-    this.cm.on('change', () => {
-      this.$emit('input', this.cm.getValue())
-    })
+    // this.cm.on('change', () => {
+    //   this.$emit('input', this.cm.getValue())
+    // })
   }
 }
 </script>

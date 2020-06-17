@@ -142,6 +142,7 @@
     <ResDialog
       :visible="showResDialog"
       :id="curItf.id"
+      :mode="resActionMode"
       :data="resDialogData"
       @close="showResDialog=false"></ResDialog>
   </article>
@@ -177,6 +178,7 @@ export default {
   },
   data () {
     return {
+      resActionMode: 'add',
       showResDialog: false,
       showReplaceDialog: false,
       showItfDialog: false,
@@ -220,8 +222,23 @@ export default {
     this.getRepositoryById()
   },
   methods: {
+    // 编辑res Mock
     handleReplaceWith () {
-      this.resDialogData = JSON.parse(JSON.stringify(this.curMockData))
+      this.$nextTick(() => {
+        this.resActionMode = 'edit'
+        this.resDialogData = Object.assign({}, this.curMockData, {
+          res_body: JSON.stringify(this.curMockData.res_body, null, 2)
+        })
+        this.showResDialog = true
+      })
+    },
+    // 新增res mock
+    openResDialog () {
+      this.resActionMode = 'add'
+      this.resDialogData = {
+        name: '',
+        res_body: JSON.stringify({})
+      }
       this.showResDialog = true
     },
     handleDeleteMock () {
@@ -298,12 +315,7 @@ export default {
       this.$router.replace(selectHref)
       this.$store.commit(types.MOCKDATA_ID_CUR_SET, item)
     },
-    openResDialog () {
-      this.resDialogData = {
-        res_body: JSON.parse(JSON.stringify({}))
-      }
-      this.showResDialog = true
-    },
+
     handleClick () {},
     handleInterfaceClick (item) {
       this.$store.commit(types.INTERFACE_ID_CUR_SET, item)

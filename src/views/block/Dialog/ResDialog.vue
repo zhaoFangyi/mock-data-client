@@ -3,7 +3,7 @@
     :visible.sync="showModel"
     width="600px"
     lock-scroll
-    title="新建数据RES"
+    :title="title"
     @close="closeModal">
     <el-form :model="model" :rules="rules" size="mini" ref="form">
       <el-form-item label="RES名称">
@@ -25,6 +25,7 @@
 
 <script>
 import RCodeMirror from '@/components/RCodeMirror/RCodeMirror'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'ResDialog',
@@ -43,6 +44,10 @@ export default {
     data: {
       type: Object,
       default: null
+    },
+    mode: {
+      type: String,
+      default: 'add'
     }
   },
   data () {
@@ -67,17 +72,37 @@ export default {
       showModel: false
     }
   },
+  computed: {
+    title () {
+      return this.mode === 'add' ? '新建数据RES' : '编辑数据Res'
+    },
+    ...mapGetters([
+      'curMockData'
+    ])
+  },
   watch: {
     visible (n) {
       this.showModel = n
     },
+    // mode (n) {
+    //   if (n === 'add') {
+    //     this.model.res_body = JSON.stringify({}, null, 2)
+    //   } else if (n === 'edit') {
+    //     this.model.res_body = JSON.stringify(this.curMockData, null, 2)
+    //   }
+    // }
     data (n) {
       console.log('data -> n', n)
-      n.res_body = JSON.stringify((n || {}).res_body || {})
       this.model = n
-      console.log('data -> this.model', this.model)
-      this.$refs.rCode && this.$refs.rCode.cm && this.$refs.rCode.cm.setValue(n.res_body)
+      // console.log('data -> n', n)
+      // n.res_body = JSON.stringify((n || {}).res_body || {})
+      // this.model = n
+      // console.log('data -> this.model', this.model)
+      // this.$refs.rCode && this.$refs.rCode.cm && this.$refs.rCode.cm.setValue(n.res_body)
     }
+  },
+  mounted () {
+    console.log(11111111)
   },
   methods: {
     handleBeautify (e) {
@@ -100,7 +125,7 @@ export default {
             this.model,
             {
               interfaceId: this.id,
-              res_body: this.model.res_body
+              res_body: this.$refs.rCode.cm.getValue()
             }
           )
           const actionName = this.model.id ? 'updateMockData' : 'createMockData'
