@@ -10,7 +10,7 @@
       </el-input>
       <el-button class="create" type="primary" @click="openFrom">新建仓库</el-button>
       <el-button class="create" type="primary" @click="importData()">导入API</el-button>
-      <el-button class="create" type="primary" @click="mockData">mock data</el-button>
+      <!-- <el-button class="create" type="primary" @click="mockData">mock data</el-button> -->
     </nav>
     <div class="body">
       <div class="moduleList">
