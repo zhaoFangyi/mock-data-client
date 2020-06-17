@@ -43,19 +43,19 @@
       </div>
     </div>
     <el-dialog
-      title="新建仓库"
+      :title="mode === 'create'? '新建仓库' : '编辑仓库'"
       width="500px"
       lock-scroll
       :visible.sync="showForm">
       <el-form :model="model" size="mini" ref="form">
-        <el-form-item label="名称">
+        <el-form-item label="仓库名称">
           <el-input
             v-model="model.name"
-            placeholder="请输入名称"
+            placeholder="请输入仓库名称"
             clearable></el-input>
         </el-form-item>
-        <el-form-item label="仓库名称">
-          <el-input clearable v-model="model.moduleName" placeholder="请输入仓库名称"></el-input>
+        <el-form-item label="备注名称">
+          <el-input clearable v-model="model.desc" placeholder="请输入备注名称"></el-input>
         </el-form-item>
       </el-form>
       <div class="dialog-footer" slot="footer">
@@ -80,9 +80,10 @@ export default {
       serve,
       moduleList: '',
       showForm: false,
+      mode: '',
       model: {
         name: '',
-        moduleName: ''
+        desc: ''
       }
     }
   },
@@ -94,7 +95,7 @@ export default {
       if (flag) {
         this.model = {
           name: '',
-          moduleName: ''
+          desc: ''
         }
       }
     }
@@ -118,6 +119,7 @@ export default {
     },
     openFrom () {
       this.showForm = true
+      this.mode = 'create'
     },
     getList () {
       api.getRepositoryList({ key: this.query })
@@ -139,10 +141,11 @@ export default {
     },
     handleEditModule ({ name, moduleName, id }) {
       this.showForm = true
+      this.mode = 'edit'
       this.$nextTick(() => {
         this.model = {
-          name,
-          moduleName,
+          desc: name,
+          name: moduleName,
           id
         }
       })

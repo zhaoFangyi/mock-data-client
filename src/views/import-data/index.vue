@@ -4,11 +4,15 @@
       el-form.form(label-suffix=": ", label-width="150px", :rules="rules", :model="form")
         h2 导入API
         br
-        el-form-item(label="是否导入至已有仓库")
-          el-checkbox(v-model="form.isSelectAlready")
+        el-form-item(label="是否新建仓库")
+          el-checkbox(v-model="form.isCreateNew")
 
-        el-form-item(v-if="!form.isSelectAlready", label="新建仓库", prop="repositoryName")
-          el-input(v-model="form.repositoryName", clearable, placeholder="请输入仓库名称")
+        template(v-if="form.isCreateNew")
+          el-form-item(label="新建仓库名", prop="name")
+            el-input.w-380(v-model="form.name", clearable, placeholder="请输入仓库名；支持英文、数字、下划线")
+
+          el-form-item(label="备注名", prop="desc")
+            el-input.w-380(v-model="form.desc", clearable, placeholder="请输入仓库备注名；例如：预警管理")
 
         el-form-item(v-else, label="选择已有仓库", prop="repositoryId")
           el-select(filterable, v-model="form.repositoryId", placeholder="请选择仓库")
@@ -63,16 +67,18 @@ export default {
       apiList: [],
       loading: false,
       form: {
-        isSelectAlready: true,
+        isCreateNew: true,
         repositoryId: '',
-        repositoryName: '',
+        desc: '',
+        name: '',
         file: null,
         selectedList: []
       },
       extList: ['json', 'har'],
       rules: {
         repositoryId: [{ required: true, trigger: 'change', message: '请选择仓库' }],
-        repositoryName: [{ required: true, trigger: 'input', message: '请输入新的仓库名' }],
+        desc: [{ required: true, trigger: 'input', message: '请输入备注名' }],
+        name: [{ required: true, trigger: 'input', message: '请输入仓库名' }],
         file: [{ required: true, trigger: 'change', message: '请导入文件' }],
         selectedList: [{ required: true, trigger: 'change', message: '请选择API' }]
       }
@@ -136,9 +142,20 @@ export default {
       })
     },
     saveItfAndMock (params) {
+      let form
+      if (this.form.isCreateNew) {
+        form = {
+          name: this.form.name,
+          desc: this.form.desc
+        }
+      } else {
+        form = {
+          repositoryId: this.form.repositoryId
+        }
+      }
       return api.saveItfAndMock({
         ...params,
-        repositoryId: this.form.repositoryId
+        ...form
       })
     },
     submit () {
@@ -170,5 +187,8 @@ export default {
 }
 .form {
   max-width: 800px;
+}
+.w-380 {
+  width: 380px;
 }
 </style>
