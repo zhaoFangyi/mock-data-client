@@ -1,70 +1,47 @@
-<template>
-  <div class="handle-data">
-    <div class="data-form">
-      <el-form class="form" label-suffix=": " label-width="120px" :rules="rules" :model="form">
-        <h2>上传</h2>
-        <br>
-        <el-form-item label="选择已有仓库" prop="isSelectAlready">
-          <el-checkbox v-model="form.isSelectAlready"></el-checkbox>
-        </el-form-item>
-        <el-form-item v-if="!form.isSelectAlready" label="新建仓库" prop="repositoryName">
-          <el-input v-model="form.repositoryName" clearable placeholder="请输入仓库名称"></el-input>
-        </el-form-item>
-        <el-form-item v-else label="选择仓库" prop="repositoryId">
-          <el-select filterable v-model="form.repositoryId" placeholder="请选择仓库">
-            <el-option
-              v-for="repository in repositories"
-              :key="repository.id"
-              :value="repository.id"
-              :label="repository.name"
-              ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="上传文件类型" prop="type">
-          <el-select filterable v-model="form.type">
-            <el-option
-              v-for="type in types"
-              :key="type.value"
-              :value="type.value"
-              :label="type.label"
-              ></el-option>
-          </el-select>
-        </el-form-item>
+<template lang="pug">
+  .handle-data
+    .data-form
+      el-form.form(label-suffix=": ", label-width="150px", :rules="rules", :model="form")
+        h2 导入API
+        br
+        el-form-item(label="是否导入至已有仓库")
+          el-checkbox(v-model="form.isSelectAlready")
 
-        <el-form-item label="上传文件">
-          <el-upload
-            class="upload-demo"
-            drag
-            :multiple="false"
-            :http-request="handleFile"
-            action="">
-            <i class="el-icon-upload"></i>
-            <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-          </el-upload>
-        </el-form-item>
+        el-form-item(v-if="!form.isSelectAlready", label="新建仓库", prop="repositoryName")
+          el-input(v-model="form.repositoryName", clearable, placeholder="请输入仓库名称")
 
-        <el-form-item label="选择分析结果">
-          <div class="itfs-result">
-            <el-table :data="apiList" @selection-change="handleSelectionChange">
-              <el-table-column type="selection">
-              </el-table-column>
-              <el-table-column width="80" prop="method" label="method">
-              </el-table-column>
-              <el-table-column prop="path" label="path">
-              </el-table-column>
-              <el-table-column prop="res_body" label="res_body" show-overflow-tooltip>
-              </el-table-column>
-            </el-table>
-          </div>
-        </el-form-item>
+        el-form-item(v-else, label="选择已有仓库", prop="repositoryId")
+          el-select(filterable, v-model="form.repositoryId", placeholder="请选择仓库")
+            el-option(
+              v-for="repository in repositories",
+              :key="repository.id",
+              :value="repository.id",
+              :label="repository.name",
+            )
 
-        <el-form-item>
-          <el-button @click="$router.back()">返回</el-button>
-          <el-button :disabled="!form.selected.length" type="primary" @click="submit">提交</el-button>
-        </el-form-item>
-      </el-form>
-    </div>
-  </div>
+        el-form-item(label="导入文件", prop="file")
+          el-upload(
+            class="upload-demo",
+            drag,
+            :multiple="false",
+            :http-request="handleFile",
+            action="")
+            i.el-icon-upload
+            .el-upload__text 将文件拖到此处，或<em>点击导入</em>，支持 {{extList.join('、')}} 格式
+
+        el-form-item(label="选择要导入的API", prop="selected")
+          .itfs-result
+            el-table(:data="apiList", @selection-change="handleSelectionChange")
+              el-table-column(type="selection")
+              el-table-column(width="80", prop="method", label="method")
+              el-table-column(prop="path", label="path")
+              el-table-column(prop="res_body", label="res_body", show-overflow-tooltip)
+        el-form-item
+          el-button(@click="$router.back()") 返回
+          el-button(
+            :disabled="!form.selectedList.length",
+            type="primary", @click="submit"
+            :loading="loading") 提交
 </template>
 
 <script>
@@ -78,33 +55,26 @@ const parsers = {
   json: importJson,
   har: importHar
 }
+
 export default {
   name: 'ImportData',
   data () {
     return {
       apiList: [],
+      loading: false,
       form: {
-        type: 'har',
-        repositoryId: '',
-        file: null,
         isSelectAlready: true,
+        repositoryId: '',
         repositoryName: '',
-        selected: []
+        file: null,
+        selectedList: []
       },
-      types: [
-        {
-          value: 'har',
-          label: 'HAR'
-        }, {
-          value: 'json',
-          label: 'JSON'
-        }
-      ],
+      extList: ['json', 'har'],
       rules: {
-        isSelectAlready: [{ required: true, trigger: 'change', message: '请选择新建方式' }],
-        type: [{ required: true, trigger: 'change', message: '请选择文件类型' }],
         repositoryId: [{ required: true, trigger: 'change', message: '请选择仓库' }],
-        repositoryName: [{ required: true, trigger: 'input', message: '请输入新的仓库名' }]
+        repositoryName: [{ required: true, trigger: 'input', message: '请输入新的仓库名' }],
+        file: [{ required: true, trigger: 'change', message: '请导入文件' }],
+        selectedList: [{ required: true, trigger: 'change', message: '请选择API' }]
       }
     }
   },
@@ -121,34 +91,35 @@ export default {
     ...mapMutations({ setRepositories: types.REPOSITORIES_SET }),
     getRepository () {
       api.getRepositoryList({})
-        .then(res => {
-          if (res.data && res.data.length) {
-            this.form.repositoryId = res.data[0].id
+        .then(({ data }) => {
+          if (data && data.length) {
+            this.form.repositoryId = data[0].id
           }
-          this.setRepositories(res.data)
+          this.setRepositories(data)
         })
         .catch(console.error)
     },
-    handleSelectionChange (val) {
-      this.form.selected = val
+    handleSelectionChange (selectedList) {
+      this.form.selectedList = selectedList
     },
-    handleFile (info) {
+    handleFile ({ file }) {
+      const ext = (file.name.split('.').pop() || '').toLowerCase()
+      if (!this.extList.includes(ext)) {
+        return this.$message.warning(`暂不支持 .${ext} 格式的文件`)
+      }
       const reader = new FileReader()
-      reader.readAsText(info.file)
-      reader.onload = async (res) => {
-        const parser = parsers[this.form.type]
-        const result = parser(res.target.result)
-        console.log(result)
-        this.apiList.push(...result.apis)
+      reader.readAsText(file)
+      reader.onload = event => {
+        const parser = parsers[ext]
+        const { apis } = parser(event.target.result)
+        this.apiList.push(...apis)
       }
     },
 
     async handleAddInterface (info, basePath, dataSync = 'good', token) {
       const apis = info.apis
       const count = apis.length
-      // const existNum = 0
 
-      console.log('handleAddInterface -> apis', apis)
       const PQueue = apis.map(api => {
         const params = {
           ...api,
@@ -171,8 +142,11 @@ export default {
       })
     },
     submit () {
+      this.loading = true
       this.handleAddInterface({
-        apis: this.form.selected
+        apis: this.form.selectedList
+      }).finally(() => {
+        this.loading = false
       })
     }
   }
