@@ -100,13 +100,17 @@
 
               <div class="component-state-inspector">
                 <vue-json-pretty
+                  selectableType="single"
+                  v-model="selectPath"
                   :deep="3"
+                  :showSelectController="false"
+                  :highlightMouseoverNode="true"
                   :data="curMockData.res_body"
                   @click="handleClick">
                 </vue-json-pretty>
                 <div class="toolbar">
                   <copy-to-clipboard
-                    :text="curMockData.res_body"
+                    :text="copyData"
                     type="right"
                     class="copyJson">
                     <span>复制</span>
@@ -184,7 +188,9 @@ export default {
       showItfDialog: false,
       resDialogData: '',
       editItfModel: '',
-      repositoryId: ''
+      repositoryId: '',
+      selectData: '',
+      selectPath: ''
     }
   },
   computed: {
@@ -198,7 +204,10 @@ export default {
       'curItf',
       'curMockData',
       'itfs'
-    ])
+    ]),
+    copyData () {
+      return this.selectData || this.curMockData.res_body
+    }
   },
   created () {
     this.repositoryId = this.$route.params.id
@@ -315,8 +324,6 @@ export default {
       this.$router.replace(selectHref)
       this.$store.commit(types.MOCKDATA_ID_CUR_SET, item)
     },
-
-    handleClick () {},
     handleInterfaceClick (item) {
       this.$store.commit(types.INTERFACE_ID_CUR_SET, item)
       this.$store.dispatch('getCurItf', { id: item.id }).then(() => {
@@ -327,10 +334,10 @@ export default {
         this.$router.replace(selectHref)
       })
     },
-    onChangeRSortable () {}
-    // ...mapActions([
-    //   'getRepository'
-    // ])
+    onChangeRSortable () {},
+    handleClick (path, data, treeName = '') {
+      this.selectData = !data ? data + '' : data // 处理 data = null 的情况
+    }
   }
 }
 </script>
