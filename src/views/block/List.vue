@@ -224,6 +224,10 @@ export default {
           (remove || newKey) && this.$delete(obj, field)
           !remove && this.$set(obj, newKey || field, value)
         })
+        const playload = Object.assign({}, this.curMockData, {
+          res_body: JSON.stringify(this.curMockData.res_body)
+        })
+        this.$store.dispatch('updateMockData', playload)
       } catch (e) {
         console.error(e)
       }

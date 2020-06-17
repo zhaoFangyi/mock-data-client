@@ -11,7 +11,7 @@
       </el-input>
       <el-button class="create mb-20" type="primary" @click="openFrom">新建仓库</el-button>
       <el-button class="create mb-20" type="primary" @click="importData()">导入API</el-button>
-      <el-button class="create" type="primary" @click="mockData">mock data</el-button>
+      <!-- <el-button class="create" type="primary" @click="mockData">mock data</el-button> -->
     </nav>
     <div class="body">
       <div class="moduleList">
@@ -181,7 +181,6 @@ export default {
   padding: 20px;
   .toolbar {
     margin-bottom: 20px;
-    padding-bottom: 20px;
     border-bottom: 1px solid #e1e4e8;
     display: flex;
     flex-wrap: wrap;
