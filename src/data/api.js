@@ -66,5 +66,8 @@ export default {
   },
   getTaskTypeList (params) {
     return axios.post('/api/monitor/task/getTaskTypeList', params)
+  },
+  bulkImport (params) {
+    return axios.post('/interface/bulkImport', params)
   }
 }

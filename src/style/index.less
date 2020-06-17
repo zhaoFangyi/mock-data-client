@@ -151,3 +151,33 @@ select.form-control {
   padding: 10px 20px;
 }
 
+
+// Tool Class
+
+@type: margin, padding;
+@typeAlias: m, p;
+@posi: left, right, top, bottom;
+@posiAlias: l, r, t, b;
+
+.loopPosi (@i, @index, @count) when (@i > 0) {
+  @p: extract(@posi, @i);
+  @pa: extract(@posiAlias, @i);
+  @t: extract(@type, @index);
+  @ta: extract(@typeAlias, @index);
+  .@{ta}@{pa}-@{counter} {
+    @{t}-@{p}: (@counter * 1px);
+  }
+  .loopPosi((@i - 1), @index, @count);
+}
+
+.loopType (@index, @counter) when (@index > 0) {
+  .loopPosi(length(@posi), @index, @counter);
+  .loopType((@index - 1), @counter);
+}
+
+.loop(@counter) when (@counter > 0) {
+  .loopType(length(@type), @counter);
+  .loop(@counter - 5);
+}
+
+.loop(20);

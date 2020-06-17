@@ -67,7 +67,7 @@ export default {
       apiList: [],
       loading: false,
       form: {
-        isCreateNew: true,
+        isCreateNew: false,
         repositoryId: '',
         desc: '',
         name: '',
@@ -126,22 +126,6 @@ export default {
       const apis = info.apis
       const count = apis.length
 
-      const PQueue = apis.map(api => {
-        const params = {
-          ...api,
-          token
-        }
-        return this.saveItfAndMock(params)
-          .catch(console.error)
-          .then(res => res)
-      })
-
-      Promise.all(PQueue).then(resList => {
-        const successNum = resList.filter(Boolean).length
-        this.$message.success(`导入 ${count} 个接口，成功 ${successNum} 个。`)
-      })
-    },
-    saveItfAndMock (params) {
       let form
       if (this.form.isCreateNew) {
         form = {
@@ -153,9 +137,16 @@ export default {
           repositoryId: this.form.repositoryId
         }
       }
-      return api.saveItfAndMock({
-        ...params,
+
+      const params = {
+        interfaces: apis,
         ...form
+      }
+      api.bulkImport(params).then(res => {
+        // const successNum = resList.filter(Boolean).length
+        // ，成功 ${'successNum'} 个。`
+        this.$message.success(`导入 ${count} 个接口`)
+        this.$router.back()
       })
     },
     submit () {
