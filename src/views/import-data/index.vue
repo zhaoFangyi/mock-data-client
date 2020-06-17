@@ -67,7 +67,7 @@ export default {
       apiList: [],
       loading: false,
       form: {
-        isCreateNew: true,
+        isCreateNew: false,
         repositoryId: '',
         desc: '',
         name: '',

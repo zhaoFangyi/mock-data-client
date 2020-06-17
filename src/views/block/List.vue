@@ -2,7 +2,7 @@
   <article class="blockEditor">
     <div class="header">
       <span class="title">
-        <i class="el-icon-s-management"></i>
+        <i class="el-icon-takeaway-box mr-10"></i>
         <router-link :to="{name: 'modules-list'}">仓库</router-link>
         <span class="slash"> / </span>
         <span>{{repository.name}}</span>
