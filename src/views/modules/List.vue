@@ -2,14 +2,15 @@
   <section class="moduleListWrapper">
     <nav class="toolbar">
       <el-input
+        class="search-input"
         v-model.lazy="query"
         clearable
         placeholder="搜索模块: 名称"
       >
         <el-button slot="append" icon="el-icon-search" @click="getList"></el-button>
       </el-input>
-      <el-button class="create" type="primary" @click="openFrom">新建仓库</el-button>
-      <el-button class="create" type="primary" @click="importData()">导入API</el-button>
+      <el-button class="create mb-20" type="primary" @click="openFrom">新建仓库</el-button>
+      <el-button class="create mb-20" type="primary" @click="importData()">导入API</el-button>
       <!-- <el-button class="create" type="primary" @click="mockData">mock data</el-button> -->
     </nav>
     <div class="body">
@@ -180,12 +181,18 @@ export default {
   padding: 20px;
   .toolbar {
     margin-bottom: 20px;
-    padding-bottom: 20px;
     border-bottom: 1px solid #e1e4e8;
     display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
     .create {
       margin-left: 20px;
     }
+  }
+  .search-input {
+    flex: 1;
+    min-width: 300px;
+    margin-bottom: 20px;
   }
   .body {
     margin-bottom: 20px;
