@@ -40,13 +40,14 @@ export default {
   },
   methods: {
     onCopy () {
-      const content = this.text
-      copy(JSON.stringify(content))
+      const { text } = this
+      const content = typeof text === 'string' ? text : JSON.stringify(text)
+      copy(content)
         .then(() => {
           const maxLength = 30
           const cutContent =
             content.length > maxLength
-              ? content.substr(0, maxLength)
+              ? `${content.substr(0, maxLength)}...`
               : content
           this.$message({
             message: `成功复制 ${cutContent} 到剪贴板`,

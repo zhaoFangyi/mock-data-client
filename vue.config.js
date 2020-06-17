@@ -16,7 +16,7 @@ module.exports = {
         pathRewrite: {
           '^/api': ''
         },
-        target: 'http://localhost:9999'
+        target: 'http://47.96.110.34:38080/'
       },
     }
   }
