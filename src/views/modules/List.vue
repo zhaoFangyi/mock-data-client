@@ -23,7 +23,7 @@
               <router-link tag="el-link"
                 :to="{ name: 'block-list', params: { id: item.id}, query: {name: item.description,} }">
                 <i class="el-icon-s-management"></i>
-                <span>{{item.description}}</span>
+                <span>{{item.name}}</span>
               </router-link>
               <div class="actions">
                 <a :href="`${serve}/plugin/export?type=json&pid=${item.id}`"
@@ -37,7 +37,7 @@
               </div>
             </div>
             <div>
-              {{item.name}}
+              {{item.description}}
             </div>
           </el-card>
         </div>

@@ -1,21 +1,21 @@
 <template lang="pug">
   .handle-data
     .data-form
-      el-form.form(label-suffix=": ", label-width="150px", :rules="rules", :model="form")
+      el-form.form(ref="form", label-suffix=": ", label-width="150px", :rules="rules", :model="form")
         h2 导入API
         br
         el-form-item(label="是否新建仓库")
-          el-checkbox(v-model="form.isCreateNew")
+          el-checkbox(v-model="isCreateNew")
 
-        template(v-if="form.isCreateNew")
+        template(v-if="isCreateNew")
           el-form-item(label="新建仓库名", prop="name")
-            el-input.w-380(v-model="form.name", clearable, placeholder="请输入仓库名；支持英文、数字、下划线")
+            el-input.w-380(v-model="form.name", show-word-limit, :maxlength="40", clearable, placeholder="以字母开始，支持字母，数字以及-_.")
 
           el-form-item(label="备注名", prop="description")
-            el-input.w-380(v-model="form.description", clearable, placeholder="请输入仓库备注名；例如：预警管理")
+            el-input.w-380(v-model="form.description", show-word-limit, :maxlength="40", clearable, placeholder="例如：预警管理")
 
         el-form-item(v-else, label="选择已有仓库", prop="repositoryId")
-          el-select(filterable, v-model="form.repositoryId", placeholder="请选择仓库")
+          el-select(filterable, v-model="form.repositoryId", placeholder="选择仓库")
             el-option(
               v-for="repository in repositories",
               :key="repository.id",
@@ -33,7 +33,7 @@
             i.el-icon-upload
             .el-upload__text 将文件拖到此处，或<em>点击导入</em>，支持 {{extList.join('、')}} 格式
 
-        el-form-item(label="选择要导入的API", prop="selected")
+        el-form-item(label="选择要导入的API", prop="selectedList", key="select")
           .itfs-result
             el-table(:data="apiList", @selection-change="handleSelectionChange")
               el-table-column(type="selection")
@@ -66,8 +66,8 @@ export default {
     return {
       apiList: [],
       loading: false,
+      isCreateNew: false,
       form: {
-        isCreateNew: false,
         repositoryId: '',
         description: '',
         name: '',
@@ -76,11 +76,14 @@ export default {
       },
       extList: ['json', 'har'],
       rules: {
-        repositoryId: [{ required: true, trigger: 'change', message: '请选择仓库' }],
-        description: [{ required: true, trigger: 'input', message: '请输入备注名' }],
-        name: [{ required: true, trigger: 'input', message: '请输入仓库名' }],
-        file: [{ required: true, trigger: 'change', message: '请导入文件' }],
-        selectedList: [{ required: true, trigger: 'change', message: '请选择API' }]
+        repositoryId: [{ required: true, trigger: 'change', message: '选择仓库' }],
+        description: [{ required: true, trigger: 'input', message: '输入备注名' }],
+        name: [
+          { required: true, trigger: 'input', message: '输入仓库名' },
+          { pattern: /^[a-zA-Z][a-zA-Z0-9-_.]*$/, message: '以字母开始，名称支持字母，数字以及-_.的组合' }
+        ],
+        file: [{ required: true, trigger: 'change', validator: this.validFile, message: '导入文件' }],
+        selectedList: [{ required: true, trigger: 'change', message: '选择API' }]
       }
     }
   },
@@ -95,6 +98,9 @@ export default {
   },
   methods: {
     ...mapMutations({ setRepositories: types.REPOSITORIES_SET }),
+    validFile (rule, val, cb) {
+      return this.form.file ? cb() : cb(new Error('导入文件'))
+    },
     getRepository () {
       api.getRepositoryList({})
         .then(({ data }) => {
@@ -109,6 +115,7 @@ export default {
       this.form.selectedList = selectedList
     },
     handleFile ({ file }) {
+      this.form.file = file
       const ext = (file.name.split('.').pop() || '').toLowerCase()
       if (!this.extList.includes(ext)) {
         return this.$message.warning(`暂不支持 .${ext} 格式的文件`)
@@ -122,11 +129,11 @@ export default {
       }
     },
 
-    async handleAddInterface (info, basePath, dataSync = 'good', token) {
+    handleAddInterface (info, basePath, dataSync = 'good', token) {
       const apis = info.apis
 
       let form
-      if (this.form.isCreateNew) {
+      if (this.isCreateNew) {
         form = {
           name: this.form.name,
           description: this.form.description
@@ -141,7 +148,7 @@ export default {
         interfaces: apis,
         ...form
       }
-      api.bulkImport(params).then(res => {
+      return api.bulkImport(params).then(res => {
         const {
           exisNum,
           successNum,
@@ -151,31 +158,35 @@ export default {
 
         this.$message.success(`导入 ${total} 个接口，成功 ${successNum} 个，已存在 ${exisNum} 个`)
 
-        let query = {}
-        if (this.form.isCreateNew) {
-          query = {
-            name: this.form.description
-          }
-        } else {
-          query = {
-            name: this.repositories.find(v => this.form.repositoryId === v.id).name
-          }
-        }
-        this.$router.push({
-          name: 'block-list',
-          params: {
-            id: repositoryId
-          },
-          query
-        })
+        return repositoryId
       })
     },
     submit () {
-      this.loading = true
-      this.handleAddInterface({
-        apis: this.form.selectedList
-      }).finally(() => {
-        this.loading = false
+      this.$refs.form.validate().then(() => {
+        this.loading = true
+        this.handleAddInterface({
+          apis: this.form.selectedList
+        }).then(repositoryId => {
+          let query = {}
+          if (this.isCreateNew) {
+            query = {
+              name: this.form.description
+            }
+          } else {
+            query = {
+              name: this.repositories.find(v => this.form.repositoryId === v.id).name
+            }
+          }
+          this.$router.push({
+            name: 'block-list',
+            params: {
+              id: repositoryId
+            },
+            query
+          })
+        }).finally(() => {
+          this.loading = false
+        })
       })
     }
   }
