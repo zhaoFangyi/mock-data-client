@@ -25,7 +25,7 @@
           </div>
           <div class="scrollWrapper">
             <el-scrollbar>
-              <RSortable @change="handleSortItf">
+              <RSortable :onChange="handleSortItf">
                 <ul class="body">
                   <li
                     class="sortable"
@@ -348,7 +348,7 @@ export default {
       this.$store.dispatch('sortMockDataList', ids)
     },
     handleSortItf (event, sortable) {
-      const ids = sortable.toArray().filter(item => item !== 'addMock')
+      const ids = sortable.toArray()
       this.$store.dispatch('sortInterfaceList', ids)
     },
     handleClick (path, data, treeName = '') {
