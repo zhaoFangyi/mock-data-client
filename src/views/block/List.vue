@@ -25,26 +25,29 @@
           </div>
           <div class="scrollWrapper">
             <el-scrollbar>
-              <ul class="body">
-                <li
-                  class="sortable"
-                  :class="{'active': item.id === curItf.id}"
-                  v-for="item in itfs"
-                  :key="item.id">
-                  <div class="interface">
-                    <span>
-                      <a type="primary" @click="handleInterfaceClick(item)">
-                        <div class="name">{{item.name}}</div>
-                        <div class="url">{{item.url}}</div>
-                      </a>
-                    </span>
-                    <div class="toolbar">
-                      <el-link class="mr6" icon="el-icon-edit" @click="handleClickEdit(item)"></el-link>
-                      <el-link class="mr6" icon="el-icon-delete" @click="handleClickDel(item)"></el-link>
+              <RSortable @change="handleSortItf">
+                <ul class="body">
+                  <li
+                    class="sortable"
+                    :class="{'active': item.id === curItf.id}"
+                    v-for="item in itfs"
+                    :data-id="item.id"
+                    :key="item.id">
+                    <div class="interface">
+                      <span>
+                        <a type="primary" @click="handleInterfaceClick(item)">
+                          <div class="name">{{item.name}}</div>
+                          <div class="url">{{item.url}}</div>
+                        </a>
+                      </span>
+                      <div class="toolbar">
+                        <el-link class="mr6" icon="el-icon-edit" @click="handleClickEdit(item)"></el-link>
+                        <el-link class="mr6" icon="el-icon-delete" @click="handleClickDel(item)"></el-link>
+                      </div>
                     </div>
-                  </div>
-                </li>
-              </ul>
+                  </li>
+                </ul>
+              </RSortable>
             </el-scrollbar>
           </div>
         </article>
@@ -81,6 +84,7 @@
                 <ul class="ModuleList clearfix">
                   <li
                     v-for="item in mockData"
+                    :data-id="item.id"
                     :key="item.id"
                     :class="['sortable', {'active': item.id === curMockData.id}]">
                     <div class="Module clearfix" @click="onClickRes(item)">
@@ -89,7 +93,7 @@
                       </span>
                     </div>
                   </li>
-                  <li>
+                  <li data-id="addMock">
                     <span class="fake-link" @click="openResDialog">
                       <i class="el-icon-folder-add"></i>
                       新建Mock
@@ -339,7 +343,14 @@ export default {
         this.$router.replace(selectHref)
       })
     },
-    onChangeRSortable () {},
+    onChangeRSortable (event, sortable) {
+      const ids = sortable.toArray().filter(item => item !== 'addMock')
+      this.$store.dispatch('sortMockDataList', ids)
+    },
+    handleSortItf (event, sortable) {
+      const ids = sortable.toArray().filter(item => item !== 'addMock')
+      this.$store.dispatch('sortInterfaceList', ids)
+    },
     handleClick (path, data, treeName = '') {
       this.selectData = !data ? data + '' : data // 处理 data = null 的情况
     }

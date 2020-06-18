@@ -63,3 +63,25 @@ export const deleteMockData = async function ({ getters, commit, dispatch }, pay
 
   // commit(types.INTERFACE_CUR_SET)
 }
+
+export const sortMockDataList = async function ({ commit }, ids) {
+  try {
+    const count = await api.sortMockDataList({ ids })
+    console.log('count', count)
+    commit(types.SORT_MOCKDATA_SUCCEEDED, { count, ids })
+  } catch (error) {
+    console.error(error)
+    // commit(types.SORT_MOCKDATA_FAILED, error)
+  }
+}
+
+export const sortInterfaceList = async function ({ commit }, ids) {
+  try {
+    const count = await api.sortInterfaceList({ ids })
+    console.log('count', count)
+    commit(types.SORT_INTERFACE_SUCCEEDED, { count, ids })
+  } catch (error) {
+    console.error(error)
+    // commit(types.SORT_MOCKDATA_FAILED, error)
+  }
+}

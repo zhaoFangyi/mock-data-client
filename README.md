@@ -68,7 +68,7 @@ https://blog.csdn.net/yy3306553/article/details/103253254
 - [ ] 1. 使用手册编写
 - [x] 2. 【client】操作res中复制JSON样式统一
 - [x] 3. 【server】批量导入接口返回导入成功数量
-- [ ] 4. 【client】拖拽res的时候更新resMock的updateAt
-- [ ] 5. 【server】提供sort接口，可以对接口 mock repo排序
+- [x] 4. 【client】拖拽res的时候更新resMock的updateAt
+- [x] 5. 【server】提供sort接口，可以对接口 mock repo排序
 - [ ] 6. 【server】升级的shell脚本
 
