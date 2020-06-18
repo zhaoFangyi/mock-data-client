@@ -40,6 +40,9 @@ export default {
   updateInterface (params) {
     return axios.post('/interface/update', params)
   },
+  sortInterfaceList (params) {
+    return axios.post('/interface/sort', params)
+  },
   saveItfAndMock (params) {
     return axios.post('/interface/saveAndMock', params)
   },
@@ -58,6 +61,9 @@ export default {
   },
   updateMockData (params) {
     return axios.post('/mockData/update', params)
+  },
+  sortMockDataList (params) {
+    return axios.post('/mockData/sort', params)
   },
   exportOneRepo (params) {
     return axios.get('/plugin/export', {

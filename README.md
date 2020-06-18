@@ -50,15 +50,26 @@ https://blog.csdn.net/yy3306553/article/details/103253254
 
 ### TODO 追踪
 
-- [x] 1. 导入API 页面，再次刷新之后，选择仓库显示 NaN
-- [x] 2. 文件类型选择 JSON，上传 .har 文件，目前是控制台报错，可以做个文件后缀校验
-- [x] 3. 目前复制功能不起作用，同时复制成功的提示语显示 [object Object]
-- [x] 4. 希望可以复制单行
-- [x] 5. 先点击左侧接口编辑按钮，不做任何操作关闭弹窗，再点击新建 Mock, 弹窗中数据 项不可输入
-- [x] 6. 编辑数据点击 - + 后没保存，页面刷新后还是旧数据
-- [x] 7. 修改接口名称，鼠标滑动准备选择文本，导致弹框关闭
-- [x] 8. 地址复制后，复制结果左右不应该有 “”，还得手动去除
-- [x] 9.  将本地 mock 数据作为接口数据，都不符合 JSON 规范（因为 key 没有用 “” 包裹，可以集成个 JSON 格式化工具，或者推荐个JSON 格式化插件）
-- [x] 10.  导入API的时候支持创建一个新仓库
-- [x] 10.  新建仓库 需要修改数据库字段 name -> moduleName description -> name
+- [x] 1. 【client】导入API 页面，再次刷新之后，选择仓库显示 NaN
+- [x] 2. 【client】文件类型选择 JSON，上传 .har 文件，目前是控制台报错，可以做个文件后缀校验
+- [x] 3. 【client】 目前复制功能不起作用，同时复制成功的提示语显示 [object Object]
+- [x] 4. 【client】希望可以复制单行
+- [x] 5. 【client】先点击左侧接口编辑按钮，不做任何操作关闭弹窗，再点击新建 Mock, 弹窗中数据 项不可输入
+- [x] 6. 【client】编辑数据点击 - + 后没保存，页面刷新后还是旧数据
+- [x] 7. 【client】修改接口名称，鼠标滑动准备选择文本，导致弹框关闭
+- [x] 8. 【client】地址复制后，复制结果左右不应该有 “”，还得手动去除
+- [x] 9.  【client】将本地 mock 数据作为接口数据，都不符合 JSON 规范（因为 key 没有用 “” 包裹，可以集成个 JSON 格式化工具，或者推荐个JSON 格式化插件）
+- [x] 10.  【client+server】导入API的时候支持创建一个新仓库
+- [x] 11.  【server】新建仓库 需要修改数据库字段 name -> moduleName desc -> name
+- [x] 12. 【server】内网第二次升级
+
+#### 6-18 TODO
+
+- [ ] 1. 使用手册编写
+- [x] 2. 【client】操作res中复制JSON样式统一
+- [x] 3. 【server】批量导入接口返回导入成功数量
+- [x] 4. 【client】拖拽res的时候更新resMock的updateAt
+- [x] 5. 【server】提供sort接口，可以对接口 mock repo排序
+- [ ] 6. 【server】升级的shell脚本
+- [x] 7. 【client】导入接口自动跳转到仓库 修改数据库字段 desc -> description
 
