@@ -71,4 +71,5 @@ https://blog.csdn.net/yy3306553/article/details/103253254
 - [x] 4. 【client】拖拽res的时候更新resMock的updateAt
 - [x] 5. 【server】提供sort接口，可以对接口 mock repo排序
 - [ ] 6. 【server】升级的shell脚本
+- [x] 7. 【client】导入接口自动跳转到仓库 修改数据库字段 desc -> description
 
