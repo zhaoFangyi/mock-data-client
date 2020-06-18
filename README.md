@@ -1,28 +1,41 @@
-# mock-data-center
+# Mig Mock
+
+Mig Mock 是一个基于 Vue + Node.js 实现的 API Mock 工具
+
+## feature
+
+- 拥有仓库、API、Mock三个维度，展示每个仓库下的所有 API，以及 API 已保存的多种 Mock 数据
+- API 支持 JSON、HAR 格式文件的导入，导入结果可以选则性上传，支出导入到已有仓库以及新建仓库
+- Mock 数据支持在线编辑、复制与下载
 
 ## Project setup
 
-```
+```bash
 npm install
 ```
 
 ### Compiles and hot-reloads for development
-```
+
+```bash
 npm run serve
 ```
 
 ### Compiles and minifies for production
-```
+
+```bash
 npm run build
 ```
 
 ### Lints and fixes files
-```
+
+```bash
 npm run lint
 ```
 
 ### Customize configuration
+
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
 
 ## 数据导入
 
@@ -46,7 +59,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 这里用proxy_pass做了前端接口转发，注意 location ^~ /api/ 中后面需要有斜杆，否则会出现Malicious Path问题
 
-https://blog.csdn.net/yy3306553/article/details/103253254
+<https://blog.csdn.net/yy3306553/article/details/103253254>
 
 ### TODO 追踪
 
