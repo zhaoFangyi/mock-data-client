@@ -50,6 +50,10 @@ https://blog.csdn.net/yy3306553/article/details/103253254
 
 ### TODO 追踪
 
+#### 6-17 TODO
+
+**版本号：V0.02**
+
 - [x] 1. 【client】导入API 页面，再次刷新之后，选择仓库显示 NaN
 - [x] 2. 【client】文件类型选择 JSON，上传 .har 文件，目前是控制台报错，可以做个文件后缀校验
 - [x] 3. 【client】 目前复制功能不起作用，同时复制成功的提示语显示 [object Object]
@@ -65,6 +69,8 @@ https://blog.csdn.net/yy3306553/article/details/103253254
 
 #### 6-18 TODO
 
+**版本号：V0.03**
+
 - [ ] 1. 使用手册编写
 - [x] 2. 【client】操作res中复制JSON样式统一
 - [x] 3. 【server】批量导入接口返回导入成功数量
@@ -72,4 +78,13 @@ https://blog.csdn.net/yy3306553/article/details/103253254
 - [x] 5. 【server】提供sort接口，可以对接口 mock repo排序
 - [ ] 6. 【server】升级的shell脚本
 - [x] 7. 【client】导入接口自动跳转到仓库 修改数据库字段 desc -> description
+- [x] 8. 【server】参数校验
+
+####  6-19 TODO
+
+- [ ] 1. 【server】处理多个仓库的接口重复情况下，请求的时候，取哪个返回值
+
+####  二期需求
+
+- [ ] 1.  直接发送请求，获取到resposne 且可以保存
 
