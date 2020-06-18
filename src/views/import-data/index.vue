@@ -11,8 +11,8 @@
           el-form-item(label="新建仓库名", prop="name")
             el-input.w-380(v-model="form.name", clearable, placeholder="请输入仓库名；支持英文、数字、下划线")
 
-          el-form-item(label="备注名", prop="desc")
-            el-input.w-380(v-model="form.desc", clearable, placeholder="请输入仓库备注名；例如：预警管理")
+          el-form-item(label="备注名", prop="description")
+            el-input.w-380(v-model="form.description", clearable, placeholder="请输入仓库备注名；例如：预警管理")
 
         el-form-item(v-else, label="选择已有仓库", prop="repositoryId")
           el-select(filterable, v-model="form.repositoryId", placeholder="请选择仓库")
@@ -69,7 +69,7 @@ export default {
       form: {
         isCreateNew: false,
         repositoryId: '',
-        desc: '',
+        description: '',
         name: '',
         file: null,
         selectedList: []
@@ -77,7 +77,7 @@ export default {
       extList: ['json', 'har'],
       rules: {
         repositoryId: [{ required: true, trigger: 'change', message: '请选择仓库' }],
-        desc: [{ required: true, trigger: 'input', message: '请输入备注名' }],
+        description: [{ required: true, trigger: 'input', message: '请输入备注名' }],
         name: [{ required: true, trigger: 'input', message: '请输入仓库名' }],
         file: [{ required: true, trigger: 'change', message: '请导入文件' }],
         selectedList: [{ required: true, trigger: 'change', message: '请选择API' }]
@@ -124,13 +124,12 @@ export default {
 
     async handleAddInterface (info, basePath, dataSync = 'good', token) {
       const apis = info.apis
-      const count = apis.length
 
       let form
       if (this.form.isCreateNew) {
         form = {
           name: this.form.name,
-          desc: this.form.desc
+          description: this.form.description
         }
       } else {
         form = {
@@ -143,10 +142,32 @@ export default {
         ...form
       }
       api.bulkImport(params).then(res => {
-        // const successNum = resList.filter(Boolean).length
-        // ，成功 ${'successNum'} 个。`
-        this.$message.success(`导入 ${count} 个接口`)
-        this.$router.back()
+        const {
+          exisNum,
+          successNum,
+          total,
+          repositoryId
+        } = res.data
+
+        this.$message.success(`导入 ${total} 个接口，成功 ${successNum} 个，已存在 ${exisNum} 个`)
+
+        let query = {}
+        if (this.form.isCreateNew) {
+          query = {
+            name: this.form.description
+          }
+        } else {
+          query = {
+            name: this.repositories.find(v => this.form.repositoryId === v.id).name
+          }
+        }
+        this.$router.push({
+          name: 'block-list',
+          params: {
+            id: repositoryId
+          },
+          query
+        })
       })
     },
     submit () {

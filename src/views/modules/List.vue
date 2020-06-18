@@ -21,9 +21,9 @@
           <el-card class="module card" >
             <div slot="header" class="card-block">
               <router-link tag="el-link"
-                :to="{ name: 'block-list', params: { id: item.id}, query: {name: item.moduleName,} }">
+                :to="{ name: 'block-list', params: { id: item.id}, query: {name: item.description,} }">
                 <i class="el-icon-s-management"></i>
-                <span>{{item.name}}</span>
+                <span>{{item.description}}</span>
               </router-link>
               <div class="actions">
                 <a :href="`${serve}/plugin/export?type=json&pid=${item.id}`"
@@ -37,7 +37,7 @@
               </div>
             </div>
             <div>
-              {{item.moduleName}}
+              {{item.name}}
             </div>
           </el-card>
         </div>
@@ -56,7 +56,7 @@
             clearable></el-input>
         </el-form-item>
         <el-form-item label="备注名称">
-          <el-input clearable v-model="model.desc" placeholder="请输入备注名称"></el-input>
+          <el-input clearable v-model="model.description" placeholder="请输入备注名称"></el-input>
         </el-form-item>
       </el-form>
       <div class="dialog-footer" slot="footer">
@@ -84,7 +84,7 @@ export default {
       mode: '',
       model: {
         name: '',
-        desc: ''
+        description: ''
       }
     }
   },
@@ -96,7 +96,7 @@ export default {
       if (flag) {
         this.model = {
           name: '',
-          desc: ''
+          description: ''
         }
       }
     }
@@ -112,10 +112,9 @@ export default {
           console.log('mockData -> res', res)
         })
     },
-    importData (item) {
+    importData () {
       this.$router.push({
-        name: 'import-data',
-        query: { id: item && item.id }
+        name: 'import-data'
       })
     },
     openFrom () {
@@ -137,22 +136,29 @@ export default {
       api[apiName](this.model)
         .then(res => {
           this.showForm = false
-          this.getList()
+          if (this.mode === 'create') {
+            this.$router.push({
+              name: 'block-list',
+              params: { id: res.data.id }
+            })
+          } else {
+            this.getList()
+          }
         })
     },
-    handleEditModule ({ name, moduleName, id }) {
+    handleEditModule ({ name, description, id }) {
       this.showForm = true
       this.mode = 'edit'
       this.$nextTick(() => {
         this.model = {
-          desc: name,
-          name: moduleName,
+          description,
+          name,
           id
         }
       })
     },
     handleDeleteModule (item) {
-      this.$confirm(`确认删除${item.name}吗？`, '提示', {
+      this.$confirm(`确认删除 ${item.description} 吗？`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
