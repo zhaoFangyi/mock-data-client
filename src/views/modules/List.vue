@@ -1,5 +1,5 @@
 <template>
-  <section class="moduleListWrapper">
+  <section class="moduleListWrapper" v-loading="loading">
     <nav class="toolbar">
       <el-input
         class="search-input"
@@ -23,7 +23,7 @@
               <router-link tag="el-link"
                 :to="{ name: 'block-list', params: { id: item.id}, query: {name: item.description,} }">
                 <i class="el-icon-s-management"></i>
-                <span>{{item.name}}</span>
+                <span class="break-all">{{item.name}}</span>
               </router-link>
               <div class="actions">
                 <a :href="`${serve}/plugin/export?type=json&pid=${item.id}`"
@@ -36,12 +36,13 @@
                 <el-link class="mr6" icon="el-icon-delete" @click="handleDeleteModule(item)"></el-link>
               </div>
             </div>
-            <div>
+            <div class="break-all">
               {{item.description}}
             </div>
           </el-card>
         </div>
       </div>
+      <div class="no-data-tooltip" v-if="!moduleList.length">这里是空空的，快去新建仓库吧~</div>
     </div>
     <el-dialog
       :title="mode === 'create'? '新建仓库' : '编辑仓库'"
@@ -78,6 +79,7 @@ export default {
   data () {
     return {
       query: '',
+      loading: false,
       serve,
       moduleList: '',
       showForm: false,
@@ -122,6 +124,7 @@ export default {
       this.mode = 'create'
     },
     getList () {
+      this.loading = true
       api.getRepositoryList({ key: this.query })
         .then(res => {
           this.moduleList = res.data
@@ -129,20 +132,23 @@ export default {
         })
         .catch(err => {
           console.log('getList -> err', err)
+        }).finally(() => {
+          this.loading = false
         })
     },
     createModule () {
       const apiName = this.model.id ? 'updateRepository' : 'createRepository'
       api[apiName](this.model)
         .then(res => {
+          this.$message.success('创建成功！')
           this.showForm = false
+          this.getList()
           if (this.mode === 'create') {
             this.$router.push({
               name: 'block-list',
-              params: { id: res.data.id }
+              params: { id: res.data.id },
+              query: { name: this.model.description }
             })
-          } else {
-            this.getList()
           }
         })
     },
@@ -184,6 +190,8 @@ export default {
   margin-right: 6px;
 }
 .moduleListWrapper {
+  height: 100vh;
+  overflow: auto;
   padding: 20px;
   .toolbar {
     margin-bottom: 20px;
@@ -203,6 +211,12 @@ export default {
   .body {
     margin-bottom: 20px;
   }
+}
+
+.no-data-tooltip {
+  margin-top: 200px;
+  text-align: center;
+  color: #888;
 }
 
 .moduleList {
@@ -230,10 +244,14 @@ export default {
   }
   .card-block {
     display: flex;
-    align-items: center;
     .actions {
       margin-left: auto;
+      padding-left: 3px;
+      white-space: nowrap;
     }
   }
+}
+.break-all {
+  word-break: break-all;
 }
 </style>
