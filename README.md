@@ -97,6 +97,14 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 - [ ] 1. 【server】处理多个仓库的接口重复情况下，请求的时候，取哪个返回值
 
+     + 方案一，请求的时候指定仓库名 /find-crowd/api/getData
+
+     + 方案二，统一管理公用接口，或者有一个config页面，可以指定返回某个mockdata
+
+     + 方案三，对于getLoginInfo这个接口可以默认返回一个超级权限
+
+     + 方案四，请求的时候，加入一个header,读取header中仓库名字，返回指定的仓库中的res
+
 ####  二期需求
 
 - [ ] 1.  直接发送请求，获取到resposne 且可以保存
