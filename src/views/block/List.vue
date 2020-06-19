@@ -226,13 +226,18 @@ export default {
           parsedValue = parse(value, true)
         }
         set(this.curMockData.res_body, path, parsedValue, (obj, field, value) => {
-          (remove || newKey) && this.$delete(obj, field)
-          !remove && this.$set(obj, newKey || field, value)
+          this.$store.commit(types.CHANGE_MOCKDATA_FIELD, {
+            obj,
+            field,
+            value,
+            newKey,
+            remove
+          })
         })
-        const playload = Object.assign({}, this.curMockData, {
+        const payload = Object.assign({}, this.curMockData, {
           res_body: JSON.stringify(this.curMockData.res_body)
         })
-        this.$store.dispatch('updateMockData', playload)
+        this.$store.dispatch('updateMockData', payload)
       } catch (e) {
         console.error(e)
       }
