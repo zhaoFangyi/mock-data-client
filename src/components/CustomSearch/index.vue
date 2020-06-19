@@ -43,12 +43,8 @@ export default {
 
 <style lang="less" scoped>
 .CustomSearch.dropdown {
-  position: absolute;
-  right: 20px;
-  left: auto;
   > .dropdown-input {
     margin-bottom: 0;
-    height: 32px;
     width: 200px;
   }
 }

@@ -60,6 +60,10 @@ const mutations = {
   [types.MOCKDATA_ID_CUR_SET] (state, payload = {}) {
     state.curMockId = payload.id
   },
+  [types.CHANGE_MOCKDATA_FIELD] (state, { obj, field, value, newKey, remove } = {}) {
+    (remove || newKey) && delete obj[field]
+    !remove && (obj[newKey || field] = value)
+  },
   [types.UPDATE_MOCKDATA_SUCCEEDED] (state, data) {
     data.res_body = JSON.parse(data.res_body || '{}')
     let mockData = state.mockData
@@ -69,6 +73,7 @@ const mutations = {
         return itf
       }
       return {
+        ...itf,
         ...data
       }
     })

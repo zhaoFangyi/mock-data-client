@@ -75,9 +75,9 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 - [x] 6. 【client】编辑数据点击 - + 后没保存，页面刷新后还是旧数据
 - [x] 7. 【client】修改接口名称，鼠标滑动准备选择文本，导致弹框关闭
 - [x] 8. 【client】地址复制后，复制结果左右不应该有 “”，还得手动去除
-- [x] 9.  【client】将本地 mock 数据作为接口数据，都不符合 JSON 规范（因为 key 没有用 “” 包裹，可以集成个 JSON 格式化工具，或者推荐个JSON 格式化插件）
-- [x] 10.  【client+server】导入API的时候支持创建一个新仓库
-- [x] 11.  【server】新建仓库 需要修改数据库字段 name -> moduleName desc -> name
+- [x] 9. 【client】将本地 mock 数据作为接口数据，都不符合 JSON 规范（因为 key 没有用 “” 包裹，可以集成个 JSON 格式化工具，或者推荐个JSON 格式化插件）
+- [x] 10. 【client+server】导入API的时候支持创建一个新仓库
+- [x] 11. 【server】新建仓库 需要修改数据库字段 name -> moduleName desc -> name
 - [x] 12. 【server】内网第二次升级
 
 #### 6-18 TODO
@@ -96,6 +96,8 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 ####  6-19 TODO
 
 - [ ] 1. 【server】处理多个仓库的接口重复情况下，请求的时候，取哪个返回值
+- [x] 2. 【client】调整了布局，首页加载时 loading
+- [x] 2. 【client】修复 response 字段不发正常编辑的问题
 
      + 方案一，请求的时候指定仓库名 /find-crowd/api/getData
 
@@ -107,5 +109,5 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ####  二期需求
 
-- [ ] 1.  直接发送请求，获取到resposne 且可以保存
+- [ ] 1.  直接发送请求，获取到 response 且可以保存
 

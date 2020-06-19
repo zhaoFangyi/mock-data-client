@@ -226,13 +226,18 @@ export default {
           parsedValue = parse(value, true)
         }
         set(this.curMockData.res_body, path, parsedValue, (obj, field, value) => {
-          (remove || newKey) && this.$delete(obj, field)
-          !remove && this.$set(obj, newKey || field, value)
+          this.$store.commit(types.CHANGE_MOCKDATA_FIELD, {
+            obj,
+            field,
+            value,
+            newKey,
+            remove
+          })
         })
-        const playload = Object.assign({}, this.curMockData, {
+        const payload = Object.assign({}, this.curMockData, {
           res_body: JSON.stringify(this.curMockData.res_body)
         })
-        this.$store.dispatch('updateMockData', playload)
+        this.$store.dispatch('updateMockData', payload)
       } catch (e) {
         console.error(e)
       }
@@ -368,11 +373,11 @@ export default {
 }
 .blockEditor {
   > .header {
+    display: flex;
+    align-items: center;
     position: relative;
-    padding: 20px 20px 10px 20px;
+    padding: 20px 30px;
     background: #fafbfc;
-    text-align: left;
-    min-height: 80px;
     > .title {
       font-size: 20px;
       margin-right: 10px;
@@ -381,6 +386,7 @@ export default {
       }
     }
     > .toolbar {
+      flex: 1;
       display: inline-block;
       a, .fake-link {
         margin-right: 10px;
@@ -392,10 +398,6 @@ export default {
       color: #666;
     }
     .blockSearcher {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      left: auto;
       .input {
         margin-bottom: 0;
         width: 200px;
@@ -424,7 +426,7 @@ export default {
   .component-state-inspector {
     display: grid;
     // grid-template-columns: repeat(2, 1fr);
-    grid-template-columns: 1fr 80px 1fr;
+    grid-template-columns: 1fr 60px 1fr;
     padding: 20px;
   }
 }
@@ -486,7 +488,6 @@ export default {
           right: 0;
           top: 0;
           font-size: 14px;
-
         }
       }
       &:hover {
@@ -541,6 +542,8 @@ export default {
   > .body {
     .component-state-inspector {
       .toolbar {
+        padding-right: 10px;
+        border-right: 1px solid #eee;
         .copyJson {
           color: rgb(153, 153, 153);
         }
