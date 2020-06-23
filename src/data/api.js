@@ -46,6 +46,10 @@ export default {
   saveItfAndMock (params) {
     return axios.post('/interface/saveAndMock', params)
   },
+  // 1 move 2 copy
+  moveInterface (params) {
+    return axios.post('/interface/move', params)
+  },
   // getInterfaceList (params) {
   //   return axios.get('/interface/getList', {
   //     params

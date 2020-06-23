@@ -15,6 +15,10 @@ export const getRepository = async function ({ getters, commit, dispatch }, id) 
   }
 }
 
+// export const refreshRepository = async function () {
+
+// }
+
 export const getCurItf = async function ({ state, getters, commit }, payload) {
   const params = {
     id: state.curItfId,
@@ -41,7 +45,22 @@ export const deleteInterface = async function ({ getters, commit, dispatch }, pa
   commit(types.DELETE_INTERFACE_SUCCEEDED, payload.id)
   commit(types.INTERFACE_ID_CUR_SET, getters.curItf)
   await dispatch('getCurItf')
+  // commit(types.INTERFACE_CUR_SET)
+}
 
+export const moveInterface = async function ({ state, getters, commit, dispatch }, payload) {
+  try {
+    payload.interfaceId = state.curItfId
+    await api.moveInterface(payload)
+    const repository = state.repository
+    // commit(types.MOVE_INTERFACE_SUCCEEDED, payload)
+    dispatch('getRepository', repository.id)
+  } catch (error) {
+    console.log(error)
+    // commit(types.MOVE_INTERFACE_FAILED, payload)
+  }
+  // commit(types.INTERFACE_ID_CUR_SET, getters.curItf)
+  // await dispatch('getCurItf')
   // commit(types.INTERFACE_CUR_SET)
 }
 export const updateMockData = async function ({ commit }, payload) {

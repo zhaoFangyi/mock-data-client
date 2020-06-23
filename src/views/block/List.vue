@@ -52,7 +52,9 @@
           </div>
         </article>
         <article class="interfaceEditor">
-          <div class="interfaceEditorToolbar"></div>
+          <div class="interfaceEditorToolbar">
+            <el-button type="primary" size="mini" @click="showMoveItfDialog=true">移动/复制接口</el-button>
+          </div>
           <div class="interfaceSummary">
             <div class="header">
               <copy-to-clipboard :text="curItf.name">
@@ -154,6 +156,9 @@
       :mode="resActionMode"
       :data="resDialogData"
       @close="showResDialog=false"></ResDialog>
+    <MoveItfDialog
+      :visible="showMoveItfDialog"
+      @close="showMoveItfDialog=false"></MoveItfDialog>
   </article>
 </template>
 
@@ -167,6 +172,7 @@ import store from '@/store/store.js'
 import { parse, set } from '@/utils/util.js'
 import ResDialog from './Dialog/ResDialog'
 import ReplaceDialog from './Dialog/ReplaceDialog'
+import MoveItfDialog from './Dialog/MoveItfDialog'
 import AddItfDialog from './Dialog/AddItfDialog'
 import api from '@/data/api.js'
 import { mapState, mapGetters } from 'vuex'
@@ -183,7 +189,8 @@ export default {
     RSortable,
     ResDialog,
     ReplaceDialog,
-    AddItfDialog
+    AddItfDialog,
+    MoveItfDialog
   },
   data () {
     return {
@@ -191,6 +198,7 @@ export default {
       showResDialog: false,
       showReplaceDialog: false,
       showItfDialog: false,
+      showMoveItfDialog: false,
       resDialogData: '',
       editItfModel: '',
       repositoryId: '',
@@ -423,6 +431,15 @@ export default {
 .interfaceEditor {
   margin-left: 20px;
   position: relative;
+  .interfaceEditorToolbar {
+    position: absolute;
+    top: 0;
+    right: 0;
+    text-align: center;
+    /deep/ .el-button {
+      margin: 8px;
+    }
+  }
   .component-state-inspector {
     display: grid;
     // grid-template-columns: repeat(2, 1fr);
