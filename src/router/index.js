@@ -1,42 +1,60 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-// import Home from '../views/Home.vue'
-import Modules from '../views/modules'
-import Block from '../views/block'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import Layout from '../views/layout';
+import Home from '../views/home';
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    redirect: 'modules/list'
-    // component: Home
-  },
-  {
-    path: '/import-data',
-    name: 'import-data',
-    // route level code-splitting
-    // this generates a separate chunk (import-data.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "import-data" */ '../views/import-data')
-  },
-  {
-    path: '/modules/list',
-    name: 'modules-list',
-    component: Modules.List
-  },
-  {
-    path: '/block/list/:id',
-    name: 'block-list',
-    component: Block.List
+    name: 'layout',
+    redirect: '/home',
+    component: Layout,
+    children: [
+      {
+        path: '/home',
+        name: 'home',
+        component: Home
+      },
+      {
+        path: '/modules/list',
+        name: 'modules-list',
+        component: () =>
+          import(/* webpackChunkName: "modules" */ '../views/modules/List')
+      },
+      {
+        path: '/block/list/:id',
+        name: 'block-list',
+        component: () =>
+          import(/* webpackChunkName: "block" */ '../views/block/List')
+      },
+      {
+        path: '/import-data',
+        name: 'import-data',
+        component: () =>
+          import(/* webpackChunkName: "import-data" */ '../views/import-data')
+      },
+      {
+        path: '/test-api',
+        name: 'test-api',
+        component: () =>
+          import(/* webpackChunkName: "test-api" */ '../views/test-api')
+      },
+      {
+        path: '/manual',
+        name: 'manual',
+        component: () =>
+          import(/* webpackChunkName: "manual" */ '../views/manual')
+      }
+    ]
   }
-]
+];
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
-})
+});
 
-export default router
+export default router;

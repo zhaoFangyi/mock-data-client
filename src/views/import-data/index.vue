@@ -195,13 +195,11 @@ export default {
 
 <style lang="less" scoped>
 .handle-data {
-  height: 100vh;
   display: flex;
   justify-content: space-evenly;
   background: #f7f7f7;
 }
 .data-form {
-  overflow: auto;
   width: 100%;
   padding: 40px;
   margin: 20px;
