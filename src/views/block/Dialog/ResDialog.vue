@@ -27,6 +27,7 @@
 <script>
 import RCodeMirror from '@/components/RCodeMirror/RCodeMirror'
 import { mapGetters } from 'vuex'
+import { isJson } from '@/utils/util.js'
 
 export default {
   name: 'ResDialog',
@@ -53,12 +54,11 @@ export default {
   },
   data () {
     const validateValue = (rule, value, callback) => {
-      try {
-        JSON.parse(value)
-      } catch (error) {
+      if (!isJson(value)) {
         return callback(new Error('必须是JSON格式'))
+      } else {
+        callback()
       }
-      callback()
     }
     return {
       model: {

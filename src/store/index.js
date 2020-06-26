@@ -4,6 +4,7 @@ import * as actions from './actions'
 import * as getters from './getters'
 import state from './state'
 import mutations from './mutations'
+import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
 
@@ -14,7 +15,15 @@ const store = new Vuex.Store({
   getters,
   state,
   mutations,
-  strict: debug
+  strict: debug,
+  plugins: [createPersistedState({
+    storage: window.sessionStorage,
+    reducer (val) {
+      return {
+        repositories: val.repositories
+      }
+    }
+  })]
 })
 
 export default store

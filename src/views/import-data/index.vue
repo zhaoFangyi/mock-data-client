@@ -125,6 +125,7 @@ export default {
       reader.onload = event => {
         const parser = parsers[ext]
         const { apis } = parser(event.target.result)
+        console.log('handleFile -> apis', apis)
         this.apiList.push(...apis)
       }
     },

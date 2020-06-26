@@ -1,5 +1,6 @@
 import * as CircularJSON from './transfer'
 import path from 'path'
+import json5 from 'json5'
 
 const Base64 = require('js-base64').Base64
 
@@ -243,6 +244,40 @@ export function parse (data, revive) {
   return revive
     ? CircularJSON.parse(data, reviver)
     : CircularJSON.parse(data)
+}
+
+export function isJson (json) {
+  if (!json) return false
+  try {
+    json = JSON.parse(json)
+    return json
+  } catch (e) {
+    return false
+  }
+}
+export function isJson5 (json) {
+  if (!json) return false
+  try {
+    json = json5.parse(json)
+    return json
+  } catch (e) {
+    return false
+  }
+}
+
+export const joinPath = (domain, joinPath) => {
+  const l = domain.length
+  if (domain[l - 1] === '/') {
+    domain = domain.substr(0, l - 1)
+  }
+  if (joinPath[0] !== '/') {
+    joinPath = joinPath.substr(1)
+  }
+  return domain + joinPath
+}
+
+export const safeArray = (arr) => {
+  return Array.isArray(arr) ? arr : []
 }
 
 export function set (object, path, value, cb = null) {
