@@ -12,7 +12,7 @@ COPY . ./
 COPY docker/config.prod.js ./src/config/config.prod.js
 
 # NPM加速
-RUN npm config set registry https://registry.npm.taobao.org/ && npm config set sass-binary-site http://npm.taobao.org/mirrors/node-sass
+# RUN npm config set registry https://registry.npm.taobao.org/ && npm config set sass-binary-site http://npm.taobao.org/mirrors/node-sass
 
 RUN npm install && \
   npm run lint && \
