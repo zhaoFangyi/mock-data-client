@@ -6,6 +6,17 @@ module.exports = {
     }
   },
   configureWebpack: {},
+  chainWebpack: (config) => {
+    config.module
+      .rule('md')
+      .test(/\.md$/)
+      .use('html-loader')
+      .loader('html-loader')
+      .end()
+      .use('markdown-loader')
+      .loader('markdown-loader')
+      .end()
+  },
   devServer: {
     overlay: {
       warnings: false,
@@ -17,8 +28,9 @@ module.exports = {
           '^/api': ''
         },
         // target: 'http://47.96.110.34:38080/'
+        // target: 'http://192.168.75.243:9999'
         target: 'http://localhost:9999'
       },
     }
-  }
+  },
 }

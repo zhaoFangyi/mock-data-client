@@ -9,6 +9,7 @@ import VueUi from '@vue/ui'
 
 import '@vue/ui/dist/vue-ui.css'
 import 'element-ui/lib/theme-chalk/index.css';
+import '@/style/pie.less';
 import '@/style/global.styl'
 import '@/style/index.less'
 
