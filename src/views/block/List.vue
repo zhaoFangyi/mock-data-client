@@ -116,6 +116,8 @@
                 </vue-json-pretty>
                 <div class="toolbar">
                   <copy-to-clipboard
+                    type="right"
+                    :showDefaultIcon="false"
                     :text="copyData">
                     <el-link
                       size="mini"

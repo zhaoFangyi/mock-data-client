@@ -11,9 +11,14 @@ export default {
     text: {
       type: String,
       default: ''
+    },
+    showDefaultIcon: {
+      type: Boolean,
+      default: true
     }
   },
   render (h) {
+    const showDefaultIcon = this.showDefaultIcon
     if (this.type === 'hover') {
       return (
         <el-tooltip placement="right">
@@ -32,7 +37,7 @@ export default {
         <div>
           <span class="copy-link edit" onClick={() => this.onCopy()} title="复制名称">
             { this.$slots.default }
-            <i class="el-icon-copy-document"></i>
+            { showDefaultIcon ? <i class="el-icon-copy-document"></i> : null}
           </span>
         </div>
       )
