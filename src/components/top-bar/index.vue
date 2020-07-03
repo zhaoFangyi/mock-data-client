@@ -3,6 +3,7 @@
     <el-menu :default-active="activeIndex" router mode="horizontal">
       <el-menu-item index="/">
         <img class="logo" src="/logo@2x.png" alt="">
+        <span class="logo-name">Mock Data</span>
       </el-menu-item>
       <el-menu-item :index="m[1]" v-for="m in menus" :key="m[1]">{{m[0]}}</el-menu-item>
     </el-menu>
@@ -41,6 +42,13 @@ export default {
   z-index: 2001;
 }
 .logo {
-  width: 50px;
+  width: 40px;
+}
+.logo-name {
+  font-size: 17px;
+  font-weight: bold;
+  font-family: 'Helvetica Neue';
+  margin-left: 10px;
+  color: #555;
 }
 </style>

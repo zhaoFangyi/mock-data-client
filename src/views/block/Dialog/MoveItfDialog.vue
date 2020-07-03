@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     :visible.sync="showModel"
-    width="85%"
+    width="500px"
     lock-scroll
     title="移动/复制接口"
     @close="closeModal">
