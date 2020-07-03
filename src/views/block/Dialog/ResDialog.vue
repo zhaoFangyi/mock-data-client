@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     :visible.sync="showModel"
-    width="600px"
+    width="85%"
     lock-scroll
     :title="title"
     @close="closeModal">
