@@ -1,6 +1,6 @@
-# Mig Mock
+# Mock Data
 
-Mig Mock 是一个基于 Vue + Node.js 实现的 API Mock 工具
+Mock Data 是一个基于 Vue + Node.js 实现的 API Mock 工具
 
 ## feature
 

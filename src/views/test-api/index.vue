@@ -10,8 +10,8 @@
       el-form-item(label="地址")
         el-input(v-model="model.path")
       el-form-item(label="")
-        el-button( v-loading="loading" type="primary" @click="reqRealInterface") 发送
-        el-button( v-loading="loading" type="primary" @click="reqRealInterface") 保存
+        el-button(:loading="loading" type="primary" @click="reqRealInterface") 发送
+        el-button(:loading="loading" type="primary" @click="reqRealInterface") 保存
     div.response-box
       el-tabs(v-model="activeName" @tab-click="handleClick")
         el-tab-pane(label="body" name="first")
