@@ -2,6 +2,22 @@
 
 Mock Data 是一个基于 Vue + Node.js 实现的 API Mock 工具
 
+client:
+
++ vue
++ element
+
+server
+
++ node
++ koa
++ typescript
++ mysql
+
+## DEMO
+
+`http://47.96.110.34:9999`
+
 ## feature
 
 - 拥有仓库、API、Mock三个维度，展示每个仓库下的所有 API，以及 API 已保存的多种 Mock 数据
@@ -117,3 +133,8 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 - [ ] 1.  直接发送请求，获取到 response 且可以保存
 
+##### 7-6 周TODO
+
+- [ ] 1.  显示更新时间
+- [ ] 2.  code mirror bug fix
+- [ ] 3. 优化API导入方式--重复api的合并策略
