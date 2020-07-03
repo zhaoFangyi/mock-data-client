@@ -14,7 +14,6 @@
         <el-link size="mini" class="ft-12 ml-10" type="primary" @click="handleUglify">Uglify</el-link>
         <RCodeMirror ref="rCode" v-model="model.res_body"></RCodeMirror>
       </el-form-item>
-
     </el-form>
 
     <div class="dialog-footer" slot="footer">
@@ -101,9 +100,6 @@ export default {
       // console.log('data -> this.model', this.model)
       // this.$refs.rCode && this.$refs.rCode.cm && this.$refs.rCode.cm.setValue(n.res_body)
     }
-  },
-  mounted () {
-    console.log(11111111)
   },
   methods: {
     handleBeautify (e) {
