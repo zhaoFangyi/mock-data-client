@@ -1,5 +1,6 @@
 <template>
   <div class="top-bar">
+    <img src="/logo@2x.png">
     <el-menu :default-active="activeIndex" router mode="horizontal">
       <el-menu-item :index="m[1]" v-for="m in menus" :key="m[1]">{{m[0]}}</el-menu-item>
     </el-menu>
