@@ -127,7 +127,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 #### 6-23 TODO
 
 - [x] 1. 【server】增加复制移动Interface接口
-- [x] 2. 【client】曾姐复制移动interface功能
+- [x] 2. 【client】增加复制移动interface功能
 
 ####  二期需求
 
@@ -140,8 +140,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 - [ ] 3. 优化API导入方式--重复api的合并策略
 - [ ] 4. 收集路由信息自动生成路由
 - [ ] 5. 改善TS使用，微重构
-- [ ] 7. 优化API导入方式--重复api的合并策略
-- [ ] 8. 复制功能无效
-- [ ] 9. 接口列表中的每个接口，hover 显示完整api
-- [ ] 10. 编辑数据，例如很长的对象数组，希望可以点击将对象展开或关闭
+- [x] 6. 修改mockdata的优先级应用
+- [x] 9. 接口列表中的每个接口，hover 显示完整api
+- [x] 10. 编辑数据，例如很长的对象数组，希望可以点击将对象展开或关闭
 
