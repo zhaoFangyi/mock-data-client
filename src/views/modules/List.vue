@@ -21,7 +21,7 @@
           <el-card class="module card" >
             <div slot="header" class="card-block">
               <router-link tag="el-link"
-                :to="{ name: 'block-list', params: { id: item.id}, query: {name: item.description,} }">
+                :to="{ name: 'interface-list', params: { id: item.id}, query: {name: item.description,} }">
                 <i class="el-icon-s-management"></i>
                 <span class="break-all">{{item.name}}</span>
               </router-link>
@@ -38,6 +38,11 @@
             </div>
             <div class="break-all">
               {{item.description}}
+            </div>
+            <div class="card-footer">
+              <span class="from-now">
+                {{item.updatedAt | fromNow}}
+              </span>
             </div>
           </el-card>
         </div>
@@ -73,9 +78,18 @@ import api from '@/data/api.js'
 import { serve } from '@/constants'
 import { mapState, mapMutations } from 'vuex'
 import * as types from '@/store/mutation-types'
+import dayjs from 'dayjs'
+
+var relativeTime = require('dayjs/plugin/relativeTime')
+dayjs.extend(relativeTime).locale('zh-cn')
 
 export default {
   name: 'ModulesList',
+  filters: {
+    fromNow: function (value) {
+      return dayjs(value).fromNow();
+    }
+  },
   data () {
     return {
       query: '',
@@ -145,7 +159,7 @@ export default {
           this.getList()
           if (this.mode === 'create') {
             this.$router.push({
-              name: 'block-list',
+              name: 'interface-list',
               params: { id: res.data.id },
               query: { name: this.model.description }
             })
@@ -249,6 +263,19 @@ export default {
       padding-left: 3px;
       white-space: nowrap;
     }
+  }
+  .card-footer {
+    padding-top: 0;
+    background-color: white;
+    border-top: none;
+    color: #666;
+    font-size: 12px;
+    .from-now {
+      float: right;
+    }
+  }
+  /deep/ .el-card__header {
+    padding: 15px;
   }
 }
 .break-all {

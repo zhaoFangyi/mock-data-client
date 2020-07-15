@@ -26,7 +26,7 @@ export default {
   },
   computed: {
     activeIndex () {
-      if (this.$route.name === 'block-list') {
+      if (this.$route.name === 'interface-list') {
         return '/modules/list'
       }
       return this.$route.path

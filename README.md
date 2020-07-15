@@ -136,5 +136,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 ##### 7-6 周TODO
 
 - [ ] 1.  显示更新时间
-- [ ] 2.  code mirror bug fix
+- [x] 2.  code mirror bug fix
 - [ ] 3. 优化API导入方式--重复api的合并策略
+- [ ] 4. 收集路由信息自动生成路由
+- [ ] 5. 改善TS使用，微重构

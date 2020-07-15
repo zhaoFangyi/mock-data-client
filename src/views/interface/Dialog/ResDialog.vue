@@ -105,7 +105,7 @@ export default {
     handleBeautify (e) {
       e.preventDefault()
       if (this.$refs.rCode) {
-        const result = JSON.parse(this.model.res_body)
+        const result = JSON.parse(this.$refs.rCode.cm.getValue())
         const beautified = JSON.stringify(result, null, 2)
         this.$refs.rCode.cm.setValue(beautified)
       }
@@ -113,7 +113,7 @@ export default {
     handleUglify (e) {
       e.preventDefault()
       if (this.$refs.rCode) {
-        const result = JSON.parse(this.model.res_body)
+        const result = JSON.parse(this.$refs.rCode.cm.getValue())
         const beautified = JSON.stringify(result)
         this.$refs.rCode.cm.setValue(beautified)
       }
