@@ -135,8 +135,13 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ##### 7-6 周TODO
 
-- [ ] 1.  显示更新时间
+- [x] 1.  显示更新时间
 - [x] 2.  code mirror bug fix
 - [ ] 3. 优化API导入方式--重复api的合并策略
 - [ ] 4. 收集路由信息自动生成路由
 - [ ] 5. 改善TS使用，微重构
+- [ ] 7. 优化API导入方式--重复api的合并策略
+- [ ] 8. 复制功能无效
+- [ ] 9. 接口列表中的每个接口，hover 显示完整api
+- [ ] 10. 编辑数据，例如很长的对象数组，希望可以点击将对象展开或关闭
+
