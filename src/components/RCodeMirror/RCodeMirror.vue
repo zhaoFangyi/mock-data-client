@@ -50,8 +50,9 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
-.codeMirror {
-  border: 1px solid #d1d5da;
+<style lang="less">
+.cm-s-solarized.CodeMirror {
+  box-shadow: none;
+  border: 1px solid #dddfe6;
 }
 </style>
