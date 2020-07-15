@@ -138,3 +138,6 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 - [ ] 1.  显示更新时间
 - [ ] 2.  code mirror bug fix
 - [ ] 3. 优化API导入方式--重复api的合并策略
+- [ ] 4. 复制功能无效
+- [ ] 5. 接口列表中的每个接口，hover 显示完整api
+- [ ] 6. 编辑数据，例如很长的对象数组，希望可以点击将对象展开或关闭
