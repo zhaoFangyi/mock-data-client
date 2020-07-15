@@ -7,6 +7,9 @@ import store from './store'
 import ElementUI from 'element-ui';
 import VueUi from '@vue/ui'
 
+// 加载dayjs 中文
+import 'dayjs/locale/zh-cn'
+
 import '@vue/ui/dist/vue-ui.css'
 import 'element-ui/lib/theme-chalk/index.css';
 import '@/style/pie.less';

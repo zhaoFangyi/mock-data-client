@@ -24,10 +24,10 @@ const routes = [
           import(/* webpackChunkName: "modules" */ '../views/modules/List')
       },
       {
-        path: '/block/list/:id',
-        name: 'block-list',
+        path: '/interface/list/:id',
+        name: 'interface-list',
         component: () =>
-          import(/* webpackChunkName: "block" */ '../views/block/List')
+          import(/* webpackChunkName: "interface" */ '../views/interface/List.vue')
       },
       {
         path: '/import-data',

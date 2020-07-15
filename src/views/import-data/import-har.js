@@ -4,15 +4,14 @@ const GenerateSchema = require('generate-schema/src/schemas/json.js');
 
 const TYPES = { string: 'String', number: 'Number', boolean: 'Boolean', object: 'Object', array: 'Array', function: 'Function', regexp: 'RegExp', null: 'Null' }
 
+const MAX_BODY_SIZE = 60000
+
 const transformJsonToSchema = json => {
-  console.log('json', json)
   let res = []
   json = json || {}
   const jsonData = jsonParse(json)
-  console.log('jsonData', jsonData)
 
   const jsonTypeData = GenerateSchema(jsonData)
-  console.log('jsonData', jsonData)
   const keys = Object.keys(jsonData)
   if (keys.length) {
     res = keys.map(item => {
@@ -168,8 +167,10 @@ const importHar = function importHar (res) {
 
     res = res.filter(item => {
       if (!item) return false
-      return item.response.content.mimeType.indexOf('application/json') === 0
+      const { mimeType, size } = item.response.content
+      return mimeType.indexOf('application/json') === 0 && size < MAX_BODY_SIZE
     })
+    console.log('importHar -> res', res)
     const interfaceData = { apis: [] }
     // const interfaceData = { apis: [] }
     res = checkInterRepeat(res)

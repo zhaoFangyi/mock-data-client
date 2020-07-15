@@ -179,7 +179,7 @@ export default {
             }
           }
           this.$router.push({
-            name: 'block-list',
+            name: 'interface-list',
             params: {
               id: repositoryId
             },

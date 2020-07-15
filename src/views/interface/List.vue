@@ -37,7 +37,11 @@
                       <span>
                         <a type="primary" @click="handleInterfaceClick(item)">
                           <div class="name">{{item.name}}</div>
-                          <div class="url">{{item.url}}</div>
+                          <!-- <div class="url">{{item.url}}</div> -->
+                          <el-tooltip class="item" effect="dark" :content="item.url" placement="top-start">
+                            <!-- <el-button>上左</el-button> -->
+                            <div class="url">{{item.url}}</div>
+                          </el-tooltip>
                         </a>
                       </span>
                       <div class="toolbar">
@@ -484,7 +488,6 @@ export default {
       }
       .interface {
         position: relative;
-        padding-right: 40px;
         .name {
           position: relative;
           font-size: 13px;
@@ -492,6 +495,7 @@ export default {
           overflow: hidden;
           white-space: nowrap;
           text-overflow: ellipsis;
+          padding-right: 40px;
         }
         .url {
           font-size: 12px;
