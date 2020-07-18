@@ -1,4 +1,4 @@
-# Mock Data
+# MockHub
 
 ## 数据导入
 
@@ -27,13 +27,13 @@
 
 ![step3Img](../assets/carbon1.png)
 
-对于某个API，可能在不同的仓库有不同的response,默认情况下，是返回最新的一条；
+对于某个 API，可能在不同的仓库有不同的 response,默认情况下，是返回最新的一条；
 如果想要指定某个仓库，可以对代理的接口加入一个前缀
 
 ```js
 /api/monitor/getList  => /early-warning-monitor/api/monitor/getLIst
 ```
 
-针对一个接口有不同的res,默认返回的是第一个展示的，可以进行拖拽
+针对一个接口有不同的 res,默认返回的是第一个展示的，可以进行拖拽
 
 ![res-step](../assets/res-step.png)
