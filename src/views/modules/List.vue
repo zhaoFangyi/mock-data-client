@@ -157,13 +157,14 @@ export default {
           this.$message.success('创建成功！')
           this.showForm = false
           this.getList()
-          if (this.mode === 'create') {
-            this.$router.push({
-              name: 'interface-list',
-              params: { id: res.data.id },
-              query: { name: this.model.description }
-            })
-          }
+          // 老板说啦不让跳
+          // if (this.mode === 'create') {
+          //   this.$router.push({
+          //     name: 'interface-list',
+          //     params: { id: res.data.id },
+          //     query: { name: this.model.description }
+          //   })
+          // }
         })
     },
     handleEditModule ({ name, description, id }) {
