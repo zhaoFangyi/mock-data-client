@@ -1,14 +1,15 @@
 <template>
   <section class="moduleListWrapper" v-loading="loading">
     <nav class="toolbar">
-      <el-input
+      <custom-search class="search-input" placeholder="搜索仓库/名称/接口" :data="repositories" position="left"></custom-search>
+      <!-- <el-input
         class="search-input"
         v-model.lazy="query"
         clearable
         placeholder="搜索模块: 名称"
       >
         <el-button slot="append" icon="el-icon-search" @click="getList"></el-button>
-      </el-input>
+      </el-input> -->
       <el-button class="create mb-20" type="primary" @click="openFrom">新建仓库</el-button>
       <el-button class="create mb-20" type="primary" @click="importData()">导入API</el-button>
       <!-- <el-button class="create" type="primary" @click="mockData">mock data</el-button> -->
@@ -78,6 +79,7 @@ import api from '@/data/api.js'
 import { serve } from '@/constants'
 import { mapState, mapMutations } from 'vuex'
 import * as types from '@/store/mutation-types'
+import CustomSearch from '@/components/CustomSearch'
 import dayjs from 'dayjs'
 
 var relativeTime = require('dayjs/plugin/relativeTime')
@@ -85,6 +87,9 @@ dayjs.extend(relativeTime).locale('zh-cn')
 
 export default {
   name: 'ModulesList',
+  components: {
+    CustomSearch
+  },
   filters: {
     fromNow: function (value) {
       return dayjs(value).fromNow();
@@ -141,6 +146,7 @@ export default {
       this.loading = true
       api.getRepositoryList({ key: this.query })
         .then(res => {
+          console.log('getList -> res', res)
           this.moduleList = res.data
           this.setRepositories(res.data)
         })
@@ -157,13 +163,14 @@ export default {
           this.$message.success('创建成功！')
           this.showForm = false
           this.getList()
-          if (this.mode === 'create') {
-            this.$router.push({
-              name: 'interface-list',
-              params: { id: res.data.id },
-              query: { name: this.model.description }
-            })
-          }
+          // 老板说啦不让跳
+          // if (this.mode === 'create') {
+          //   this.$router.push({
+          //     name: 'interface-list',
+          //     params: { id: res.data.id },
+          //     query: { name: this.model.description }
+          //   })
+          // }
         })
     },
     handleEditModule ({ name, description, id }) {

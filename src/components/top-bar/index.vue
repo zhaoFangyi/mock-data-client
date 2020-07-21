@@ -3,7 +3,7 @@
     <el-menu :default-active="activeIndex" router mode="horizontal">
       <el-menu-item index="/">
         <img class="logo" src="/logo@2x.png" alt="">
-        <span class="logo-name">Mock Data</span>
+        <span class="logo-name">MockHub</span>
       </el-menu-item>
       <el-menu-item :index="m[1]" v-for="m in menus" :key="m[1]">{{m[0]}}</el-menu-item>
     </el-menu>

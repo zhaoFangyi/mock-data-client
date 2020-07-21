@@ -1,23 +1,21 @@
 <template>
-  <div class="custom-dropdown-menu dropdown-menu" v-if="nextData.counter !== 0">
-    <div>
+  <div class="custom-dropdown-menu dropdown-menu" :style="{[position]: 0}" v-if="nextData.counter !== 0">
+    <div v-for="repo in nextData.nextRespository.repositories" :key="repo.id">
       <a
         class="dropdown-item dropdown-item-module">
         <span class="label">仓库</span>
-        <Highlight class="dropdown-item-clip" :clip="nextData.nextRespository.name" :seed="seed"></Highlight>
+        <Highlight class="dropdown-item-clip" :clip="repo.name" :seed="seed"></Highlight>
       </a>
-      <template v-if="nextData.nextRespository.interfaces && nextData.nextRespository.interfaces.length">
-        <div v-for="itf in nextData.nextRespository.interfaces" :key="itf.id">
-          <a
-            class="dropdown-item dropdown-item-interface"
-            @click="handleGoItf(itf)">
-            <span class="label">接口</span>
-            <Highlight class="dropdown-item-clip" :clip="itf.name" :seed="seed"></Highlight>
-            <Highlight class="dropdown-item-clip" :clip="itf.method" :seed="seed"></Highlight>
-            <Highlight class="dropdown-item-clip" :clip="itf.url" :seed="seed"></Highlight>
-          </a>
-        </div>
-      </template>
+      <div v-for="itf in repo.interfaces" :key="itf.id">
+        <a
+          class="dropdown-item dropdown-item-interface"
+          @click="handleGoItf(itf, repo)">
+          <span class="label">接口</span>
+          <Highlight class="dropdown-item-clip" :clip="itf.name" :seed="seed"></Highlight>
+          <Highlight class="dropdown-item-clip" :clip="itf.method" :seed="seed"></Highlight>
+          <Highlight class="dropdown-item-clip" :clip="itf.url" :seed="seed"></Highlight>
+        </a>
+      </div>
       <!-- <div class="dropdown-divider" v-if="data.length -1 > index"></div> -->
     </div>
   </div>
@@ -34,14 +32,16 @@ export default {
   },
   props: {
     data: {
-      type: Object,
-      default: () => ({
-        interfaces: []
-      })
+      type: Array,
+      default: () => ([])
     },
     seed: {
       type: String,
       default: ''
+    },
+    position: {
+      type: String,
+      default: 'right'
     }
   },
   data () {
@@ -62,43 +62,67 @@ export default {
       return this.$route.query
     },
     nextData () {
-      const nextRespository = { ...this.data, interfaces: [] }
+      const nextRespository = { repositories: [] }
+      const resposities = [...this.data]
       let counter = 0
       const seed = this.seed.toLowerCase()
-      ;(this.data.interfaces || []).forEach(itf => {
-        const matchInterface =
-          itf.name.toLowerCase().indexOf(seed) !== -1 ||
-          itf.url.toLowerCase().indexOf(seed) !== -1 ||
-          itf.method === seed
-        if (matchInterface) {
+      resposities.forEach((repo = { name: '', description: '' }) => {
+        const nextRepo = { ...repo, interfaces: [] }
+        let matchRepo = repo.name.toLowerCase().indexOf(seed) !== -1 ||
+            repo.description.indexOf(seed) !== -1
+        if (matchRepo) {
           counter++
-          nextRespository.interfaces.push(itf)
+          nextRespository.repositories.push(nextRepo)
         }
+
+        repo.interfaces.forEach(itf => {
+          const nextItf = { ...itf }
+          const matchInterface =
+            itf.name.toLowerCase().indexOf(seed) !== -1 ||
+            itf.url.toLowerCase().indexOf(seed) !== -1 ||
+            itf.method === seed
+          if (matchInterface) {
+            counter++
+            if (!matchRepo) {
+              matchRepo = true
+              nextRespository.repositories.push(nextRepo)
+            }
+            nextRepo.interfaces.push(nextItf)
+          }
+        })
       })
       return { nextRespository, counter }
     }
   },
   methods: {
-    genToRoute (item) {
+    genToRoute (item, repo = { name: '', id: '' }) {
       const { name, params, query } = this.$route
       const newQuery = Object.assign({}, query, {
+        name: repo.name || name,
         itf: item.id,
         mock: ''
       })
+      const newParams = Object.assign({}, params, {
+        id: repo.id
+      })
       return {
-        name,
-        params,
+        name: repo.id ? 'interface-list' : name,
+        params: newParams,
         query: newQuery
       }
     },
-    handleGoItf (itf) {
-      const newRoute = this.genToRoute(itf)
+    handleGoItf (itf, repo) {
+      const newRoute = this.genToRoute(itf, repo)
 
       this.$store.commit(types.INTERFACE_ID_CUR_SET, itf)
       this.$store.dispatch('getCurItf', { id: itf.id })
         .then(res => {
-          this.$router.replace(newRoute)
+          this.$router.push(newRoute)
+          this.clearSeed()
         })
+    },
+    clearSeed () {
+      this.$emit('clear')
     }
   }
 }
@@ -107,7 +131,7 @@ export default {
 <style lang="less" scoped>
 .custom-dropdown-menu {
   position: absolute;
-  right: 0;
+  top: 32px;
   left: auto;
   display: block;
   min-width: 100%;

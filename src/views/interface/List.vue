@@ -11,7 +11,7 @@
         <!-- <span class="fake-link edit el-icon-edit">编辑</span> -->
       </div>
       <div class="blockSearcher">
-        <custom-search></custom-search>
+        <custom-search :data="[repository]"></custom-search>
         <!-- <el-input
           class="input"
           placeholder="搜索"></el-input> -->
