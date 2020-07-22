@@ -22,16 +22,6 @@
         .content Mock 数据支持在线编辑、复制与下载
 </template>
 
-<script>
-
-export default {
-  data () {
-    return {
-    }
-  }
-}
-</script>
-
 <style lang="less" scoped>
 .home-page {
   user-select: none;
@@ -39,6 +29,7 @@ export default {
   padding-top: 100px;
   h1 {
     font-weight: bold;
+    padding-right: 8px;
     .logo {
       width: 50px;
       margin-right: 10px;
@@ -47,6 +38,7 @@ export default {
   }
   .disc {
     font-size: 16px;
+    color: #666;
   }
   .home-btn-wrap {
     margin-top: 50px;
@@ -86,10 +78,10 @@ export default {
     .part {
       width: 33.333%;
       padding: 20px 24px;
-      background: #fafafa;
+      background: #f9fafb;
       border-radius: 10px;
       &:not(:last-child) {
-        margin-right: 30px;
+        margin-right: 40px;
       }
     }
     .title {

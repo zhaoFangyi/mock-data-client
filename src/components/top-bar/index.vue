@@ -1,8 +1,8 @@
 <template>
-  <div class="top-bar">
+  <div class="top-bar" :class="{home: $route.path === '/home'}">
     <el-menu :default-active="activeIndex" router mode="horizontal">
       <el-menu-item index="/">
-        <img class="logo" src="/logo@2x.png" alt="">
+        <img class="logo" src="/logo@3x.png" alt="">
         <span class="logo-name">MockHub</span>
       </el-menu-item>
       <el-menu-item :index="m[1]" v-for="m in menus" :key="m[1]">{{m[0]}}</el-menu-item>
@@ -39,15 +39,25 @@ export default {
   position: sticky;
   top: 0;
   z-index: 2001;
+  /deep/ .el-menu {
+    border-color: #ebedf1;
+  }
+  &.home {
+    /deep/ .el-menu {
+      border-color: transparent;
+    }
+  }
 }
 .logo {
   width: 40px;
+  vertical-align: -16px;
+  margin-right: 10px;
 }
 .logo-name {
   font-size: 17px;
   font-weight: bold;
   font-family: 'Helvetica Neue';
-  margin-left: 10px;
+  vertical-align: -2px;
   color: #555;
 }
 </style>
