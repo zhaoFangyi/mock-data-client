@@ -70,6 +70,7 @@ export default {
       text-decoration: underline;
     }
     &.router-link-exact-active {
+      font-weight: bold;
       color: #2196F3;
     }
   }
