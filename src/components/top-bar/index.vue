@@ -58,8 +58,7 @@ export default {
   }
 }
 .logo {
-  width: 40px;
-  vertical-align: -16px;
+  width: 30px;
   margin-right: 10px;
 }
 .logo-name {

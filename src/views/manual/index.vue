@@ -59,7 +59,7 @@ export default {
   height: calc(100vh - 90px);
   line-height: 1.5;
   font-size: 15px;
-  padding: 0 15px;
+  padding: 0 25px;
   border-right: 1px solid #eee;
   .menu-item {
     margin-bottom: 5px;

@@ -2,12 +2,13 @@
   .home-page
     h1
       img.logo(src="/logo@3x.png", alt="")
-      |MockHub
+      b MockHub
 
     .disc
-      span.decorator-wrap
-        .decorator.d--1
-        .decorator.d--2
+      .decorator-wrap
+        .decorator.d--1(:style="transformStyle()")
+        .decorator.d--2(:style="transformStyle()")
+        .decorator.d--3(:style="transformStyle()")
       |基于 Vue + Node.js 的 API 管理平台
 
     .home-btn-wrap
@@ -28,17 +29,50 @@
     .copyright Copyright © 2020 | GLAB-FE
 </template>
 
+<script>
+export default {
+  data () {
+    return {
+      x: 0,
+      y: 0,
+      centerX: 0,
+      centerY: 0
+    }
+  },
+  mounted () {
+    this.centerX = window.innerWidth / 2
+    this.centerY = window.innerHeight / 2
+    window.addEventListener('mousemove', this.onMouseMove)
+  },
+  destroyed () {
+    window.removeEventListener(this.onMouseMove)
+  },
+  methods: {
+    onMouseMove ({ pageX, pageY }) {
+      this.x = (pageX - this.centerX) / -100
+      this.y = (pageY - this.centerY) / -100
+    },
+    transformStyle (reverse) {
+      return {
+        transform: `translate(${this.x}px, ${this.y}px)`
+      }
+    }
+  }
+}
+</script>
+
 <style lang="less" scoped>
 .home-page {
-  user-select: none;
   text-align: center;
-  padding-top: 120px;
+  padding-top: 130px;
   padding-bottom: 40px;
   h1 {
-    font-weight: bold;
-    padding-right: 8px;
+    position: relative;
+    font-size: 62px;
+    padding-right: 18px;
+    z-index: 1;
     .logo {
-      width: 50px;
+      width: 70px;
       margin-right: 10px;
       vertical-align: sub;
     }
@@ -48,17 +82,20 @@
     color: #666;
     .decorator-wrap {
       position: relative;
+      display: inline;
       .decorator {
         position: absolute;
         background: linear-gradient(-45deg, #03A9F4, #ffffff);
         border-radius: 100%;
         box-shadow: 3px 3px 15px rgb(169, 219, 251);
-        opacity: .4;
+        // transition: transform .1s;
+        z-index: 0;
         &.d--1 {
-          top: -150px;
-          left: -140px;
-          width: 200px;
-          height: 200px;
+          top: -190px;
+          left: -150px;
+          width: 220px;
+          height: 220px;
+          opacity: 0.4;
         }
         &.d--2 {
           top: 140px;
@@ -66,6 +103,15 @@
           width: 50px;
           height: 50px;
           transform: rotate(-130deg);
+          opacity: .6;
+        }
+        &.d--3 {
+          top: 20px;
+          left: 430px;
+          width: 100px;
+          height: 100px;
+          transform: rotate(-30deg);
+          opacity: .2;
         }
       }
     }
