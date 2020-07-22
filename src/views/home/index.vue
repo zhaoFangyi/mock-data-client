@@ -4,7 +4,11 @@
       img.logo(src="/logo@3x.png", alt="")
       |MockHub
 
-    .disc 基于 Vue + Node.js 的 API 管理平台
+    .disc
+      span.decorator-wrap
+        .decorator.d--1
+        .decorator.d--2
+      |基于 Vue + Node.js 的 API 管理平台
 
     .home-btn-wrap
       router-link.home-btn.plain(tag="div", to="/manual") 起步
@@ -42,6 +46,29 @@
   .disc {
     font-size: 16px;
     color: #666;
+    .decorator-wrap {
+      position: relative;
+      .decorator {
+        position: absolute;
+        background: linear-gradient(-45deg, #03A9F4, #ffffff);
+        border-radius: 100%;
+        box-shadow: 3px 3px 15px rgb(169, 219, 251);
+        opacity: .4;
+        &.d--1 {
+          top: -150px;
+          left: -140px;
+          width: 200px;
+          height: 200px;
+        }
+        &.d--2 {
+          top: 140px;
+          left: 330px;
+          width: 50px;
+          height: 50px;
+          transform: rotate(-130deg);
+        }
+      }
+    }
   }
   .home-btn-wrap {
     margin-top: 50px;
