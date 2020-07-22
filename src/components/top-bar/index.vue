@@ -38,7 +38,7 @@ export default {
 .top-bar {
   position: sticky;
   top: 0;
-  z-index: 2001;
+  z-index: 100;
   /deep/ .el-menu {
     border-color: #ebedf1;
     background-color: rgba(255, 255, 255, 0.75);
