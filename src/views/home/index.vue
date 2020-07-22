@@ -13,13 +13,13 @@
     .feature
       .part
         .title API 管理
-        .content 拥有 Module、API、Mock 三个维度，定义每个仓库下所有 API，以及 API 提供的多种 Mock 数据
+        .content 拥有 Module、API、Mock 三个维度，保存了每个仓库下所有 API，以及 API 提供的多种 Mock 数据
       .part
         .title 数据导入
-        .content API 支持 JSON、HAR 格式的文件导入，导入结果可以选则性上传，支出导入到已有仓库以及新建仓库
+        .content API 支持 JSON、HAR 格式的文件导入，导入结果可以选则性上传，支持导入到已有仓库或者新的仓库
       .part
         .title 在线编辑
-        .content Mock 数据支持在线编辑、复制与下载
+        .content Mock 数据支持在线编辑、复制与下载；通过本地代理，你可以在开发项目时获取到稳定的 Mock 数据
 
     .copyright Copyright © 2020 | GLAB-FE
 </template>
