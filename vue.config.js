@@ -6,7 +6,7 @@ module.exports = {
     },
   },
   configureWebpack: {},
-  chainWebpack(config) {
+  chainWebpack: function (config) {
     config.module
       .rule('md')
       .test(/\.md$/)
