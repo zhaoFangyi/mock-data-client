@@ -56,7 +56,7 @@
     background: linear-gradient(-45deg, #2665ff, #0eacfe);
     color: #fff;
     transition: opacity .2s;
-    filter: drop-shadow(2px 2px 10px rgba(14, 170, 254, 0.2));
+    filter: drop-shadow(2px 2px 5px rgba(14, 170, 254, 0.2));
     cursor: pointer;
     &.plain {
       border: 1px solid #0eacfe;
@@ -78,7 +78,7 @@
     text-align: left;
     display: flex;
     width: 90%;
-    max-width: 1000px;
+    max-width: 1200px;
     margin: 120px auto 0;
     .part {
       flex: 1;
