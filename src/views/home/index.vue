@@ -20,13 +20,16 @@
       .part
         .title 在线编辑
         .content Mock 数据支持在线编辑、复制与下载
+
+    .copyright Copyright © 2020 | GLAB-FE
 </template>
 
 <style lang="less" scoped>
 .home-page {
   user-select: none;
   text-align: center;
-  padding-top: 100px;
+  padding-top: 120px;
+  padding-bottom: 40px;
   h1 {
     font-weight: bold;
     padding-right: 8px;
@@ -73,7 +76,7 @@
   .feature {
     text-align: left;
     display: flex;
-    margin: 120px auto 80px;
+    margin: 120px auto 0;
     width: 80%;
     .part {
       width: 33.333%;
@@ -92,6 +95,10 @@
     .content {
       color: #666;
     }
+  }
+  .copyright {
+    margin-top: 200px;
+    color: #ccc;
   }
 }
 </style>
