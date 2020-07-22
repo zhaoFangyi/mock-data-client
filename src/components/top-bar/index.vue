@@ -41,6 +41,15 @@ export default {
   z-index: 2001;
   /deep/ .el-menu {
     border-color: #ebedf1;
+    background-color: rgba(255, 255, 255, 0.75);
+    backdrop-filter: saturate(180%) blur(10px);
+  }
+  /deep/ .el-menu--horizontal {
+    .el-menu-item:focus,
+    .el-menu-item:hover,
+    .el-submenu__title:hover {
+      background: transparent;
+    }
   }
   &.home {
     /deep/ .el-menu {

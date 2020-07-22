@@ -211,7 +211,6 @@ export default {
   margin-right: 6px;
 }
 .moduleListWrapper {
-  height: 100vh;
   overflow: auto;
   padding: 20px;
   .toolbar {

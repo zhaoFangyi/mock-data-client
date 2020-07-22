@@ -38,7 +38,7 @@
                         <a type="primary" @click="handleInterfaceClick(item)">
                           <div class="name">{{item.name}}</div>
                           <!-- <div class="url">{{item.url}}</div> -->
-                          <el-tooltip class="item" effect="dark" :content="item.url" placement="top-start">
+                          <el-tooltip class="item" effect="dark" open-delay="1000" :content="item.url" placement="top-start">
                             <!-- <el-button>上左</el-button> -->
                             <div class="url">{{item.url}}</div>
                           </el-tooltip>
@@ -456,7 +456,7 @@ export default {
 .interfaceList {
   position: sticky;
   top: 10px;
-  height: calc(100vh - 10px);
+  height: calc(100vh - 60px);
   .header {
     .newIntf {
       margin-bottom: 10px;

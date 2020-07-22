@@ -55,7 +55,7 @@
     padding: 0 35px;
     border: 1px solid #00a3ff;
     border-radius: 100px;
-    background: #00a3ff;
+    background: linear-gradient(-45deg, #2665ff, #0eacfe);
     color: #fff;
     transition: opacity .2s;
     cursor: pointer;
