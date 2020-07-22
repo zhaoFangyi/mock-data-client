@@ -198,14 +198,10 @@ export default {
 .handle-data {
   display: flex;
   justify-content: space-evenly;
-  background: #f7f7f7;
 }
 .data-form {
+  padding: 30px;
   width: 100%;
-  padding: 40px;
-  margin: 20px;
-  background: #fff;
-  border-radius: 20px;
 }
 .form {
   max-width: 800px;

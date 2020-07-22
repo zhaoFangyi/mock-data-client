@@ -12,10 +12,9 @@
 
 <script>
 const menus = [
-  ['首页', '/home'],
   ['接口管理', '/modules/list'],
-  ['数据导入', '/import-data'],
   ['接口测试', '/test-api'],
+  ['数据导入', '/import-data'],
   ['使用手册', '/manual']
 ]
 export default {
