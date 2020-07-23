@@ -4,6 +4,7 @@
     width="85%"
     lock-scroll
     :title="title"
+    :close-on-click-modal="false"
     @close="closeModal">
     <el-form :model="model" :rules="rules" size="mini" ref="form">
       <el-form-item label="RES名称">

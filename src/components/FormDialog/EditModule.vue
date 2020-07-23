@@ -4,6 +4,7 @@
     width="500px"
     lock-scroll
     :title="title"
+    :close-on-click-modal="false"
     @close="closeModal">
     <el-form :model="model" size="mini" ref="form">
       <el-form-item lable="名称">

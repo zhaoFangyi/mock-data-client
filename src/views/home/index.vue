@@ -46,7 +46,7 @@ export default {
     window.addEventListener('mousemove', this.onMouseMove)
   },
   destroyed () {
-    window.removeEventListener(this.onMouseMove)
+    window.removeEventListener('mousemove', this.onMouseMove)
   },
   methods: {
     onMouseMove ({ pageX, pageY }) {
