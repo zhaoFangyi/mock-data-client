@@ -5,7 +5,9 @@
         <img class="logo" src="/logo@3x.png" alt="">
         <span class="logo-name">MockHub</span>
       </el-menu-item>
-      <el-menu-item :index="m[1]" v-for="m in menus" :key="m[1]">{{m[0]}}</el-menu-item>
+      <el-menu-item :index="m[1]" v-for="m in menus" :key="m[1]"
+        :class="{'fix-right': m[2]}"
+        >{{m[0]}}</el-menu-item>
     </el-menu>
   </div>
 </template>
@@ -15,7 +17,8 @@ const menus = [
   ['接口管理', '/modules/list'],
   ['接口测试', '/test-api'],
   ['数据导入', '/import-data'],
-  ['使用手册', '/manual']
+  ['使用手册', '/manual'],
+  ['登录', '/login', true]
 ]
 export default {
   data () {
@@ -40,6 +43,7 @@ export default {
   top: 0;
   z-index: 100;
   /deep/ .el-menu {
+    display: flex;
     border-color: #ebedf1;
     background-color: rgba(255, 255, 255, 0.75);
     backdrop-filter: saturate(180%) blur(10px);
@@ -50,6 +54,9 @@ export default {
     .el-submenu__title:hover {
       background: transparent;
     }
+  }
+  .fix-right {
+    margin-left: auto;
   }
   &.home {
     /deep/ .el-menu {

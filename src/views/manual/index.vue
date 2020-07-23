@@ -2,6 +2,8 @@
 .manual-page
   .side-menus-wrap
     .side-menus
+      .mb-20(style="font-size:18px")
+        b 指南
       router-link.menu-item(
         tag="div", v-for="menu in menus", :key="menu.file",
         :to="{query: {f: menu.file}}") {{menu.label}}
@@ -48,26 +50,24 @@ export default {
 .manual-page {
   display: flex;
 }
-.side-menus-wrap {
-  margin: 15px 0;
-}
 .side-menus {
   overflow: auto;
   position: sticky;
-  top: 76px;
+  top: 61px;
   width: 250px;
-  height: calc(100vh - 90px);
+  height: calc(100vh - 61px);
   line-height: 1.5;
   font-size: 15px;
-  padding: 0 25px;
-  border-right: 1px solid #eee;
+  padding: 25px;
+  border-right: 1px solid #ebedf1;
+  background: #f9fafb;
   .menu-item {
-    margin-bottom: 5px;
+    margin-bottom: 12px;
     cursor: pointer;
-    // transition: color .2s;
+    transition: color .1s;
+    color: #4d6277;
     &:hover {
       color: #369cf0;
-      text-decoration: underline;
     }
     &.router-link-exact-active {
       font-weight: bold;

@@ -7,8 +7,8 @@
     .disc
       .decorator-wrap
         .decorator.d--1(:style="transformStyle()")
-        .decorator.d--2(:style="transformStyle()")
-        .decorator.d--3(:style="transformStyle()")
+        .decorator.d--2(:style="transformStyle(-130)")
+        .decorator.d--3(:style="transformStyle(50)")
       |基于 Vue + Node.js 的 API 管理平台
 
     .home-btn-wrap
@@ -39,9 +39,10 @@ export default {
       centerY: 0
     }
   },
-  mounted () {
+  async mounted () {
     this.centerX = window.innerWidth / 2
     this.centerY = window.innerHeight / 2
+    await this.$nextTick()
     window.addEventListener('mousemove', this.onMouseMove)
   },
   destroyed () {
@@ -52,9 +53,9 @@ export default {
       this.x = (pageX - this.centerX) / -100
       this.y = (pageY - this.centerY) / -100
     },
-    transformStyle (reverse) {
+    transformStyle (rotate = 0) {
       return {
-        transform: `translate(${this.x}px, ${this.y}px)`
+        transform: `translate(${this.x}px, ${this.y}px) rotate(${rotate}deg)`
       }
     }
   }
@@ -88,14 +89,15 @@ export default {
         background: linear-gradient(-45deg, #03A9F4, #ffffff);
         border-radius: 100%;
         box-shadow: 3px 3px 15px rgb(169, 219, 251);
-        // transition: transform .1s;
+        transition-property: top, left, opacity;
+        opacity: 0;
         z-index: 0;
         &.d--1 {
           top: -190px;
           left: -150px;
           width: 220px;
           height: 220px;
-          opacity: 0.4;
+          animation: insert1 3s 0.3s forwards;
         }
         &.d--2 {
           top: 140px;
@@ -103,15 +105,15 @@ export default {
           width: 50px;
           height: 50px;
           transform: rotate(-130deg);
-          opacity: .6;
+          animation: insert2 2s 0.4s forwards;
         }
         &.d--3 {
           top: 20px;
           left: 430px;
           width: 100px;
           height: 100px;
-          transform: rotate(-30deg);
-          opacity: .2;
+          transform: rotate(50deg);
+          animation: insert3 2s 0.5s forwards;
         }
       }
     }
@@ -175,6 +177,36 @@ export default {
   .copyright {
     margin-top: 180px;
     color: #999;
+  }
+}
+
+@keyframes insert1 {
+  from {
+    top: -220px;
+    left: -180px;
+  }
+  to {
+    opacity: 0.5;
+  }
+}
+
+@keyframes insert2 {
+  from {
+    top: 180px;
+    left: 350px;
+  }
+  to {
+    opacity: 0.4;
+  }
+}
+
+@keyframes insert3 {
+  from {
+    top: 30px;
+    left: 440px;
+  }
+  to {
+    opacity: 0.2;
   }
 }
 </style>
