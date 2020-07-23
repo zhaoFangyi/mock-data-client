@@ -4,6 +4,7 @@
     width="500px"
     lock-scroll
     title="移动/复制接口"
+    :close-on-click-modal="false"
     @close="closeModal">
     <el-form label-width="100px" :model="model" :rules="rules" size="mini" ref="form">
       <el-form-item label="选择仓库" prop="repositoryId">

@@ -68,14 +68,14 @@ export default {
       const seed = this.seed.toLowerCase()
       resposities.forEach((repo = { name: '', description: '' }) => {
         const nextRepo = { ...repo, interfaces: [] }
-        let matchRepo = repo.name.toLowerCase().indexOf(seed) !== -1 ||
-            repo.description.indexOf(seed) !== -1
+        let matchRepo = (repo.name && repo.name.toLowerCase().indexOf(seed) !== -1) ||
+            (repo.description || '').indexOf(seed) !== -1
         if (matchRepo) {
           counter++
           nextRespository.repositories.push(nextRepo)
         }
 
-        repo.interfaces.forEach(itf => {
+        ;(repo.interfaces || []).forEach(itf => {
           const nextItf = { ...itf }
           const matchInterface =
             itf.name.toLowerCase().indexOf(seed) !== -1 ||

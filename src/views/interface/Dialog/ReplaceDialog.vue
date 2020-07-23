@@ -4,6 +4,7 @@
     width="85%"
     lock-scroll
     title="替换Response"
+    :close-on-click-modal="false"
     @close="closeModal">
     <el-form :model="model" size="mini" ref="form">
       <el-form-item >

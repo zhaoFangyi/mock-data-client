@@ -54,6 +54,7 @@
       :title="mode === 'create'? '新建仓库' : '编辑仓库'"
       width="500px"
       lock-scroll
+      :close-on-click-modal="false"
       :visible.sync="showForm">
       <el-form :model="model" size="mini" ref="form">
         <el-form-item label="仓库名称">

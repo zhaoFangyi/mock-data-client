@@ -30,7 +30,7 @@ const mutations = {
   },
   [types.CREATE_INTERFACE_SUCCEEDED] (state, data) {
     const repository = state.repository
-    repository.interfaces = [...repository.interfaces, data]
+    repository.interfaces = [data, ...repository.interfaces]
     state.repository = repository
   },
   [types.DELETE_INTERFACE_SUCCEEDED] (state, itfId) {

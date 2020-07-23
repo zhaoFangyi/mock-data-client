@@ -4,6 +4,7 @@
     width="85%"
     lock-scroll
     :title="title"
+    :close-on-click-modal="false"
     @close="closeModal">
     <el-form :model="model" size="mini" ref="form">
       <el-form-item label="接口名称">
@@ -12,7 +13,7 @@
       <el-form-item label="接口url">
         <el-input v-model="model.url" placeholder="接口url"></el-input>
       </el-form-item>
-      <el-form-item label="请求方式">
+      <!-- <el-form-item label="请求方式">
         <el-select v-model="model.method" placeholder="请选择">
           <el-option
             v-for="item in Methods"
@@ -21,7 +22,7 @@
             :value="item.value">
           </el-option>
         </el-select>
-      </el-form-item>
+      </el-form-item> -->
     </el-form>
     <div class="dialog-footer" slot="footer">
       <el-button  @click="$emit('close')" size="mini">取消</el-button>
@@ -49,7 +50,9 @@ export default {
     return {
       Methods,
       title: '新建接口',
-      model: {},
+      model: {
+        method: 'POST'
+      },
       showModel: false
     }
   },
