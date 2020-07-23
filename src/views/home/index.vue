@@ -97,7 +97,7 @@ export default {
           left: -150px;
           width: 220px;
           height: 220px;
-          animation: insert1 3s 0.3s forwards;
+          animation: insert1 2s 0.3s forwards;
         }
         &.d--2 {
           top: 140px;
@@ -184,9 +184,10 @@ export default {
   from {
     top: -220px;
     left: -180px;
+    filter: blur(10px);
   }
   to {
-    opacity: 0.5;
+    opacity: 0.45;
   }
 }
 
@@ -197,6 +198,7 @@ export default {
   }
   to {
     opacity: 0.4;
+    filter: blur(3px);
   }
 }
 
@@ -204,6 +206,7 @@ export default {
   from {
     top: 30px;
     left: 440px;
+    filter: blur(6px);
   }
   to {
     opacity: 0.2;
