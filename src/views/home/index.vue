@@ -50,8 +50,8 @@ export default {
   },
   methods: {
     onMouseMove ({ pageX, pageY }) {
-      this.x = (pageX - this.centerX) / -100
-      this.y = (pageY - this.centerY) / -100
+      this.x = (pageX - this.centerX) / -200
+      this.y = (pageY - this.centerY) / -200
     },
     transformStyle (rotate = 0) {
       return {
@@ -131,7 +131,7 @@ export default {
     background: linear-gradient(-45deg, #2665ff, #0eacfe);
     color: #fff;
     transition: opacity .2s;
-    filter: drop-shadow(2px 2px 5px rgba(14, 170, 254, 0.2));
+    filter: drop-shadow(0 0 3px rgba(14, 170, 254, 0.2));
     cursor: pointer;
     &.plain {
       border: 1px solid #0eacfe;

@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     :visible.sync="showModel"
-    width="85%"
+    width="50%"
     lock-scroll
     :title="title"
     :close-on-click-modal="false"
@@ -61,7 +61,7 @@ export default {
       this.showModel = n
     },
     data (v) {
-      this.model = v
+      this.model = { ...v }
     }
   },
   methods: {

@@ -3,7 +3,7 @@
     :visible.sync="showModel"
     width="500px"
     lock-scroll
-    title="移动/复制接口"
+    :title="title"
     :close-on-click-modal="false"
     @close="closeModal">
     <el-form label-width="100px" :model="model" :rules="rules" size="mini" ref="form">
@@ -46,7 +46,7 @@ export default {
   data () {
     return {
       Methods,
-      title: '新建接口',
+      title: '移动/复制接口',
       model: {
         repositoryId: '',
         op: 1
