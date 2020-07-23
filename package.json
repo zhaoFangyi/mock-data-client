@@ -6,7 +6,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "build-docker": "docker build --rm -f \"Dockerfile\" -t fangyi/mock-data-client:latest ."
+    "build-docker": "docker build --rm -f \"Dockerfile\" -t fangyi/mock-data-client:latest .",
+    "docker": "docker build --rm -f \"Dockerfile_dev\" -t fangyi/mock-data-client:latest ."
   },
   "dependencies": {
     "@vue/ui": "^0.11.6",
