@@ -1,18 +1,19 @@
 <template lang="pug">
-  div.pd-20
-    el-form(:model="model" size="mini" ref="form")
-      el-form-item(label="请求方式")
-        el-select(v-model="model.method" placeholder="请选择")
+  .test-api
+    p.tip 请安装 Mig 浏览器扩展以提供浏览器跨域请求能力
+    el-form.request-form(:model="model" size="mini" ref="form")
+      el-form-item(label="")
+        el-select(v-model="model.method" placeholder="请求方式")
           el-option(v-for="item in Methods"
             :key="item.value"
             :label="item.label"
             :value="item.value")
-      el-form-item(label="地址")
-        el-input(v-model="model.path")
+      el-form-item.request-url(label="")
+        el-input(v-model="model.path", placeholder="请求地址")
       el-form-item(label="")
         el-button(:loading="loading" type="primary" @click="reqRealInterface") 发送
         el-button(:loading="loading" type="primary" @click="reqRealInterface") 保存
-    div.response-box
+    .response-box
       el-tabs(v-model="activeName" @tab-click="handleClick")
         el-tab-pane(label="body" name="first")
           RCodeMirror(ref="rCode" v-model="test_res_body")
@@ -140,17 +141,32 @@ export default {
 
       // 对 返回值数据结构 和 定义的 返回数据结构 进行 格式校验
       this.test_res_body = result.body
-      this.test_res_header = result.header
+      this.test_res_header = result.header || {}
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
-.pd-20 {
-  padding: 20px;
+.test-api {
+  padding: 30px;
+}
+.tip {
+  font-size: 12px;
+  color: #aaa;
+  &:before {
+    content: '*'
+  }
+}
+.request-form {
+  display: flex;
+}
+.request-url {
+  flex: 1;
+  margin: 0 10px;
+  max-width: 800px;
 }
 .response-box {
-  padding: 20px;
+  // padding: 20px;
 }
 </style>
