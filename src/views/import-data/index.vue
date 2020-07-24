@@ -2,8 +2,8 @@
   .handle-data
     .data-form
       el-form.form(ref="form", label-suffix=": ", label-width="150px", :rules="rules", :model="form")
-        h2 导入API
-        br
+        //- h2 导入API
+        //- br
         el-form-item(label="是否新建仓库")
           el-checkbox(v-model="isCreateNew")
 

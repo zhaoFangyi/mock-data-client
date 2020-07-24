@@ -15,33 +15,52 @@
 const menus = [{
   label: '数据导入',
   file: 'import-data'
+// }, {
+//   label: '创建仓库、接口、Mock',
+//   file: 'create'
 }, {
   label: '在开发环境使用 Mock 数据',
   file: 'develop'
 }]
 
+const manualMap = menus.reduce((res, item) => {
+  res[item.file] = () => import('@/docs/' + item.file + '.md')
+  return res
+}, {})
+
 export default {
   data () {
-    const manualMap = menus.reduce((res, item) => {
-      res[item.file] = require('@/doc/' + item.file + '.md')
-      return res
-    }, {})
     return {
       menus,
-      manualMap
+      markdownHtml: '...'
     }
   },
-  computed: {
-    markdownHtml () {
-      return this.manualMap[this.$route.query.f] || '试试左边的文章'
+  beforeRouteEnter (to, from, next) {
+    next(vm => to.query.f ? vm.setMarkdown(to.query.f) : vm.redirect())
+  },
+  beforeRouteUpdate (to, from, next) {
+    if (to.query.f) {
+      next()
+      this.setMarkdown(to.query.f)
+    } else {
+      next(!from.query.f)
     }
   },
-  mounted () {
-    !this.$route.query.f && this.$router.replace({
-      query: {
-        f: menus[0].file
-      }
-    })
+  methods: {
+    redirect () {
+      this.$router.replace({
+        query: {
+          f: menus[0].file
+        }
+      })
+    },
+    setMarkdown (file) {
+      manualMap[file] && manualMap[file]().then(mk => {
+        this.markdownHtml = mk.default
+      }, err => {
+        this.markdownHtml = err
+      })
+    }
   }
 }
 </script>
