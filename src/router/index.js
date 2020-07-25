@@ -27,7 +27,13 @@ const routes = [
         path: '/interface/list/:id',
         name: 'interface-list',
         component: () =>
-          import(/* webpackChunkName: "interface" */ '../views/interface/List.vue')
+          import(/* webpackChunkName: "interface-list" */ '../views/interface/List.vue')
+      },
+      {
+        path: '/interface/detail/:id',
+        name: 'interface-detail',
+        component: () =>
+          import(/* webpackChunkName: "interface-detail" */ '../views/interface/Detail.vue')
       },
       {
         path: '/import-data',
