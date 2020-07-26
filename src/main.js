@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import VueCompositionAPI from '@vue/composition-api'
 // import './store/test'
 
 import ElementUI from 'element-ui';
@@ -17,6 +18,8 @@ import '@/style/global.styl'
 import '@/style/index.less'
 
 import '@/data/interceptors'
+
+Vue.use(VueCompositionAPI)
 
 Vue.use(VueUi)
 Vue.use(ElementUI);

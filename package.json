@@ -10,6 +10,7 @@
     "docker": "docker build --rm -f \"Dockerfile_dev\" -t fangyi/mock-data-client:latest ."
   },
   "dependencies": {
+    "@vue/composition-api": "^1.0.0-beta.6",
     "@vue/ui": "^0.11.6",
     "axios": "^0.19.2",
     "clipboard-copy": "^3.1.0",
