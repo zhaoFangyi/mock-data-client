@@ -27,8 +27,8 @@ module.exports = {
         pathRewrite: {
           '^/api': '',
         },
-        // target: 'http://47.96.110.34:38080/'
-        target: 'http://192.168.75.214:9999',
+        target: 'http://47.96.110.34:38080/'
+        // target: 'http://192.168.75.214:9999',
         // target: 'http://localhost:9999'
       },
     },

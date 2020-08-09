@@ -21,3 +21,5 @@ export const curMockData = (state, getter) => {
     return {}
   }
 }
+
+export const curRepo = state => state.repository || {}

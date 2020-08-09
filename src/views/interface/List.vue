@@ -1,202 +1,49 @@
 <template>
-  <article class="blockEditor">
+  <article class="interfaceContainer">
     <div class="header">
-      <span class="title">
-        <i class="el-icon-takeaway-box mr-10"></i>
-        <router-link :to="{name: 'modules-list'}">仓库</router-link>
-        <span class="slash"> / </span>
-        <span>{{$route.query.name}}</span>
-      </span>
-      <div class="toolbar">
-        <!-- <span class="fake-link edit el-icon-edit">编辑</span> -->
-      </div>
-      <div class="blockSearcher">
-        <custom-search :data="[repository]"></custom-search>
-        <!-- <el-input
-          class="input"
-          placeholder="搜索"></el-input> -->
-      </div>
+      <div class="storeTitle">{{ curRepo.name || '/'}}</div>
+      <description-list>
+        <description-item term="项目类型">{{ '--' }}</description-item>
+        <description-item term="API 总数">{{ curRepo.interfaces.length || '--' }}</description-item>
+        <description-item term="协作人员数量">{{ '--' }}</description-item>
+        <description-item term="版本号">{{ '--' }}</description-item>
+        <description-item term="状态码总数">{{ '--' }}</description-item>
+        <description-item term="项目文档总数">{{ '--' }}</description-item>
+        <description-item term="更新时间">{{ formatDate }}</description-item>
+      </description-list>
     </div>
     <div class="body">
-      <div class="interfaceWrapper">
-        <article class="interfaceList">
-          <div class="header">
-            <el-button class="newIntf" @click="openItfDialog">新建接口</el-button>
-          </div>
-          <div class="scrollWrapper">
-            <el-scrollbar>
-              <RSortable :onChange="handleSortItf">
-                <ul class="body">
-                  <li
-                    class="sortable"
-                    :class="{'active': item.id === curItf.id}"
-                    v-for="item in itfs"
-                    :data-id="item.id"
-                    :key="item.id">
-                    <div class="interface">
-                      <span>
-                        <a type="primary" @click="handleInterfaceClick(item)">
-                          <div class="name">{{item.name}}</div>
-                          <!-- <div class="url">{{item.url}}</div> -->
-                          <el-tooltip class="item" effect="dark" open-delay="1000" :content="item.url" placement="top-start">
-                            <!-- <el-button>上左</el-button> -->
-                            <div class="url">{{item.url}}</div>
-                          </el-tooltip>
-                        </a>
-                      </span>
-                      <div class="toolbar">
-                        <el-link class="mr6" icon="el-icon-edit" @click="handleClickEdit(item)"></el-link>
-                        <el-link class="mr6" icon="el-icon-delete" @click="handleClickDel(item)"></el-link>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
-              </RSortable>
-            </el-scrollbar>
-          </div>
-        </article>
-        <article class="interfaceEditor">
-          <div class="interfaceEditorToolbar">
-            <el-button type="primary" size="mini" @click="showMoveItfDialog=true">移动/复制接口</el-button>
-          </div>
-          <div class="interfaceSummary">
-            <div class="header">
-              <copy-to-clipboard :text="curItf.name">
-                <span class="title">{{curItf.name}}</span>
-              </copy-to-clipboard>
-              <ul class="summary">
-                <li>
-                  <copy-to-clipboard
-                    :text="curItf.url"
-                    type="right">
-                    <span class="mr5">
-                      <span class="label">地址：</span>
-                      <a>{{curItf.url}}</a>
-                    </span>
-                  </copy-to-clipboard>
-                </li>
-                <li>
-                  <copy-to-clipboard :text="curItf.method">
-                    <span>
-                      <span class="label">类型：</span>
-                      <span>{{curItf.method}}</span>
-                    </span>
-                  </copy-to-clipboard>
-                </li>
-              </ul>
-            </div>
-            <div class="body">
-              <RSortable :onChange="onChangeRSortable">
-                <ul class="ModuleList clearfix">
-                  <li
-                    v-for="item in mockData"
-                    :data-id="item.id"
-                    :key="item.id"
-                    :class="['sortable', {'active': item.id === curMockData.id}]">
-                    <div class="Module clearfix" @click="onClickRes(item)">
-                      <span class="name">
-                        {{item.name}}
-                      </span>
-                    </div>
-                  </li>
-                  <li data-id="addMock">
-                    <span class="fake-link" @click="openResDialog">
-                      <i class="el-icon-folder-add"></i>
-                      新建Mock
-                    </span>
-                  </li>
-                </ul>
-              </RSortable>
-
-              <div class="component-state-inspector">
-                <vue-json-pretty
-                  selectableType="single"
-                  v-model="selectPath"
-                  :deep="3"
-                  :showSelectController="false"
-                  :highlightMouseoverNode="true"
-                  :data="curMockData.res_body"
-                  @click="handleClick">
-                </vue-json-pretty>
-                <div class="toolbar">
-                  <copy-to-clipboard
-                    type="right"
-                    :showDefaultIcon="false"
-                    :text="copyData">
-                    <el-link
-                      size="mini"
-                      type="text"
-                      icon="el-icon-copy-document">复制</el-link>
-                  </copy-to-clipboard>
-                  <el-link
-                    size="mini"
-                    type="text"
-                    class="replaceWith"
-                    icon="el-icon-edit"
-                    @click="handleReplaceWith">编辑</el-link>
-                  <el-link
-                    size="mini"
-                    type="text"
-                    class="delete"
-                    icon="el-icon-delete"
-                    @click="handleDeleteMock">删除</el-link>
-                  <ReplaceDialog
-                    :visible="showReplaceDialog"
-                    @close="showReplaceDialog=false"></ReplaceDialog>
-                </div>
-                <state-inspector
-                  :state="curMockData.res_body"
-                ></state-inspector>
-              </div>
-            </div>
-          </div>
-        </article>
-      </div>
+      <article class="interfaceList">
+        <div class="header">{{`全部接口共（${itfs.length || 0}）个`}}</div>
+        <div class="tableWrapper">
+          <a-table :columns="columns" :data-source="itfs" :rowKey="record => record.id"></a-table>
+        </div>
+      </article>
     </div>
-    <AddItfDialog :visible="showItfDialog"
-      :data="editItfModel"
-      @close="showItfDialog=false"></AddItfDialog>
-    <ResDialog
-      :visible="showResDialog"
-      :id="curItf.id"
-      :mode="resActionMode"
-      :data="resDialogData"
-      @close="showResDialog=false"></ResDialog>
-    <MoveItfDialog
-      :visible="showMoveItfDialog"
-      @close="showMoveItfDialog=false"></MoveItfDialog>
   </article>
 </template>
 
 <script>
-import VueJsonPretty from 'vue-json-pretty'
-import StateInspector from '@/components/StateInspector/index'
-import CopyToClipboard from '@/components/CopyToClipboard/index'
-import CustomSearch from '@/components/CustomSearch/index'
-import RSortable from '@/components/RSortable/RSortable'
-import store from '@/store/store.js'
-import { parse, set } from '@/utils/util.js'
-import ResDialog from './Dialog/ResDialog'
-import ReplaceDialog from './Dialog/ReplaceDialog'
-import MoveItfDialog from './Dialog/MoveItfDialog'
-import AddItfDialog from './Dialog/AddItfDialog'
+/**
+ * 接口中间层页面，展示该仓库所有接口的 list，并且带有仓库基本信息
+ */
+import DescriptionList from '@/components/description'
+// import store from '@/store/store.js'
+// import { parse, set } from '@/utils/util.js'
 import api from '@/data/api.js'
 import { mapState, mapGetters } from 'vuex'
 import URI from 'urijs'
 import * as types from '@/store/mutation-types.js'
+import dayjs from 'dayjs'
+import { METHOD_TYPE } from './method'
+const DescriptionItem = DescriptionList.Item
+// const columns = ;
 
 export default {
-  name: 'Bolck',
+  name: 'IntetfaceList',
   components: {
-    CopyToClipboard,
-    StateInspector,
-    CustomSearch,
-    VueJsonPretty,
-    RSortable,
-    ResDialog,
-    ReplaceDialog,
-    AddItfDialog,
-    MoveItfDialog
+    DescriptionList,
+    DescriptionItem
   },
   data () {
     return {
@@ -209,7 +56,46 @@ export default {
       editItfModel: '',
       repositoryId: '',
       selectData: '',
-      selectPath: ''
+      selectPath: '',
+      columns: [
+        {
+          title: '接口名称',
+          dataIndex: 'name',
+          key: 'name',
+          ellipsis: true,
+          customRender: (text, record, index) => {
+            const itfId = record.id
+            return <el-link type="primary" onClick={() => this.handleClickDetail(itfId)}>{text}</el-link>
+          }
+        },
+        {
+          title: '接口方法',
+          dataIndex: 'method',
+          key: 'method',
+          width: 100,
+          customRender: (text) => {
+            return <el-tag type={METHOD_TYPE[text]}>{text}</el-tag>
+          }
+        },
+        {
+          title: '接口路径',
+          dataIndex: 'url',
+          key: 'url',
+          ellipsis: true,
+          customRender: (text) => {
+            return <el-tooltip effect="dark" content={text} placement="bottom-end">
+              <div>{text}</div>
+            </el-tooltip>
+          }
+        },
+        {
+          title: '更新时间',
+          dataIndex: 'updatedAt',
+          key: 'updatedAt',
+          ellipsis: true,
+          customRender: text => dayjs(text).format('YYYY-MM-DD HH:mm:ss')
+        }
+      ]
     }
   },
   computed: {
@@ -222,43 +108,34 @@ export default {
     ...mapGetters([
       'curItf',
       'curMockData',
-      'itfs'
+      'itfs',
+      'curRepo'
     ]),
     copyData () {
       return this.selectData || this.curMockData.res_body
+    },
+    formatDate () {
+      return dayjs(this.curRepo.updatedAt).format('YYYY-MM-DD HH:mm:ss')
     }
   },
   created () {
     this.repositoryId = this.$route.params.id
   },
   mounted () {
-    store.$on('field-change', ({ path, value, newKey, remove }) => {
-      console.log(99999, path, value, newKey, remove)
-      try {
-        let parsedValue
-        if (value) {
-          parsedValue = parse(value, true)
-        }
-        set(this.curMockData.res_body, path, parsedValue, (obj, field, value) => {
-          this.$store.commit(types.CHANGE_MOCKDATA_FIELD, {
-            obj,
-            field,
-            value,
-            newKey,
-            remove
-          })
-        })
-        const payload = Object.assign({}, this.curMockData, {
-          res_body: JSON.stringify(this.curMockData.res_body)
-        })
-        this.$store.dispatch('updateMockData', payload)
-      } catch (e) {
-        console.error(e)
-      }
-    })
+    console.log('itfs >>>', this.itfs)
+    console.log('this.repository >>', this.curRepo)
+
     this.getRepositoryById()
   },
   methods: {
+    handleClickDetail (id) {
+      console.log(id)
+      this.$router.push({
+        name: 'interface-detail',
+        params: { itfId: `${id}` },
+        query: { itf: `${id}` }
+      })
+    },
     // 编辑res Mock
     handleReplaceWith () {
       this.$nextTick(() => {
@@ -332,6 +209,7 @@ export default {
           })
         })
     },
+
     deleteItf (params) {
       const isDelSelf = params.id === this.curItfId
       this.$store.dispatch('deleteInterface', params)
@@ -378,264 +256,21 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@brand: #4A7BF7;
+@brand: #4a7bf7;
 .mr5 {
   margin-right: 5px;
 }
 .mr6 {
   margin-right: 6px;
 }
-.blockEditor {
-  > .header {
-    display: flex;
-    align-items: center;
-    position: relative;
-    padding: 20px 30px;
-    background: #fafbfc;
-    > .title {
-      font-size: 20px;
-      margin-right: 10px;
-      .slash {
-        color: #999;
-      }
-    }
-    > .toolbar {
-      flex: 1;
-      display: inline-block;
-      a, .fake-link {
-        margin-right: 10px;
-      }
-    }
-    > .desc {
-      white-space: pre-wrap;
-      margin: 1rem 0 .5rem;
-      color: #666;
-    }
-    .blockSearcher {
-      .input {
-        margin-bottom: 0;
-        width: 200px;
-      }
-    }
-  }
-}
-.interfaceWrapper {
-  display: flex;
-  flex-direction: row;
-  background-color: #ffffff;
-  padding: 20px;
-  .interfaceList {
-    width: 230px;
-    flex-shrink: 0;
-  }
-  .interfaceEditor {
-    overflow-x: hidden;
-    padding: 0 1px;
-    flex-grow: 1;
-  }
-}
-.interfaceEditor {
-  margin-left: 20px;
-  position: relative;
-  .interfaceEditorToolbar {
-    position: absolute;
-    top: 0;
-    right: 0;
-    text-align: center;
-    /deep/ .el-button {
-      margin: 8px;
-    }
-  }
-  .component-state-inspector {
-    display: grid;
-    // grid-template-columns: repeat(2, 1fr);
-    grid-template-columns: 1fr 60px 1fr;
-    padding: 20px;
-  }
-}
-.interfaceList {
-  position: sticky;
-  top: 10px;
-  height: calc(100vh - 60px);
-  .header {
-    .newIntf {
-      margin-bottom: 10px;
-      color: #3f51b5;
-      border: 1px solid rgba(63, 81, 181, 0.5);
-      width: 100%;
-    }
-    margin-bottom: 10px;
-  }
-  .scrollWrapper {
-    border: 1px solid rgba(63, 81, 181, 0.5);
-    border-radius: 4px;
-  }
-  ul.body {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    max-height: calc(100vh - 115px);
-    li {
-      position: relative;
-      padding: 10px;
-      border-bottom: 1px solid rgba(63, 81, 181, 0.5);
-      &:first-child {
-        border-top-left-radius: 3px;
-      }
-      &:last-child {
-        border-bottom: 0;
-        border-bottom-left-radius: 3px;
-      }
-      .interface {
-        position: relative;
-        .name {
-          position: relative;
-          font-size: 13px;
-          width: 100%;
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          padding-right: 40px;
-        }
-        .url {
-          font-size: 12px;
-          width: 100%;
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          color: rgba(0, 0, 0, 0.54);
-        }
-        .toolbar {
-          display: none;
-          position: absolute;
-          right: 0;
-          top: 0;
-          font-size: 14px;
-        }
-      }
-      &:hover {
-        .toolbar{
-          display: block;
-        }
-      }
-      &.active {
-        .interface {
-          .name a {
-            color: #333;
-            &:hover {
-              color: #333;
-            }
-          }
-          .toolbar {
-            display: block;
-          }
-        }
-      }
-      &.active {
-        border-left: 2px solid #3f51b5;
-      }
-    }
-  }
 
-}
-.interfaceSummary {
-  margin-bottom: 20px;
-  > .header {
-    padding: 20px 20px 10px 20px;
-    background-color: #fafbfc;
-    > .title {
-      font-size: 16px;
-      margin-right: 10px;
-    }
-  }
-  .summary {
-    color: #666;
-    font-size: 12px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    li {
-      margin-bottom: 4px;
-      .label {
-        color: #666;
-        margin-right: 6px;
-      }
-    }
-  }
-  > .body {
-    .component-state-inspector {
-      .toolbar {
-        padding-right: 10px;
-        border-right: 1px solid #eee;
-        .copyJson {
-          color: rgb(153, 153, 153);
-        }
-        .replaceWith {
-          display: block;
-          margin-top: 10px;
-        }
-        .delete {
-          display: block;
-          margin-top: 10px;
-        }
-      }
-    }
-  }
-}
-.ModuleList {
-  margin: 0;
-  padding: 0 20px;
-  list-style: none;
-  border-bottom: 1px solid #e1e4e8;
-  background-color: #fafbfc;
-  > li {
-    position: relative;
-    display: block;
-    float: left;
-    margin-bottom: -1px;
-    padding: .8rem 1.2rem;
-    border: 1px solid transparent;
-    border-width: 3px 1px 0px 1px;
-    border-radius: .4rem .4rem 0 0;
-    &.active {
-      border-bottom-color: transparent;
-      background-color: white;
-      cursor: default;
-      border-color: #3f51b5 #e1e4e8 transparent #e1e4e8;
-    }
-    &.active:hover {
-      background-color: white;
-    }
-    > .Module {
-      position: relative;
-      cursor: pointer;
-      .name {
-        color: #586069;
-      }
-      .toolbar {
-        display: inline-block;
-        a, .fake-link {
-          margin-left: 5px;
-          font-size: 14px;
-          color: #999;
-          &:hover {
-            color: @brand;
-          }
-        }
-      }
-    }
-  }
-  > li:hover > .Module {
-    .toolbar {
-      display: inline-block
-    }
-  }
-  > li.active > .Module {
-    a.name {
-      color: #333;
-    }
-    .toolbar {
-      display: inline-block;
+.interfaceContainer {
+  .header {
+    margin: 24px;
+    .storeTitle {
+      font-size: 20px;
+      font-weight: 500;
+      margin-bottom: 20px;
     }
   }
 }

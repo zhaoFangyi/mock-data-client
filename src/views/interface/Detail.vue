@@ -206,7 +206,8 @@ export default {
       editItfModel: '',
       repositoryId: '',
       selectData: '',
-      selectPath: ''
+      selectPath: '',
+      selectItfId: ''
     }
   },
   computed: {
@@ -227,6 +228,8 @@ export default {
   },
   created () {
     this.repositoryId = this.$route.params.id
+    this.selectItfId = this.$route.params.itfId
+    console.log(this.$route)
   },
   mounted () {
     store.$on('field-change', ({ path, value, newKey, remove }) => {
@@ -301,8 +304,9 @@ export default {
     getRepositoryById () {
       this.$store.dispatch('getRepository', this.repositoryId)
         .then(() => {
+          console.log('getRepository >>>', this.selectItfId, this.curItfId)
           const selectHref = new URI(this.$route.fullPath)
-            .setSearch('itf', this.curItfId)
+            .setSearch('itf', this.selectItfId)
             .setSearch('mock', this.curMockId)
             .href()
           this.$router.replace(selectHref)
