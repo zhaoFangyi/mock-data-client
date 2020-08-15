@@ -4,7 +4,7 @@
       <span class="title">
         <i class="el-icon-takeaway-box mr-10"></i>
         <router-link :to="{name: 'modules-list'}">仓库</router-link>
-        <span class="slash"> / </span>
+        <span class="slash">/</span>
         <span>{{$route.query.name}}</span>
       </span>
       <div class="toolbar">
@@ -29,13 +29,20 @@
                     :class="{'active': item.id === curItf.id}"
                     v-for="item in itfs"
                     :data-id="item.id"
-                    :key="item.id">
+                    :key="item.id"
+                  >
                     <div class="interface">
                       <span>
                         <a type="primary" @click="handleInterfaceClick(item)">
                           <div class="name">{{item.name}}</div>
                           <!-- <div class="url">{{item.url}}</div> -->
-                          <el-tooltip class="item" effect="dark" open-delay="1000" :content="item.url" placement="top-start">
+                          <el-tooltip
+                            class="item"
+                            effect="dark"
+                            open-delay="1000"
+                            :content="item.url"
+                            placement="top-start"
+                          >
                             <!-- <el-button>上左</el-button> -->
                             <div class="url">{{item.url}}</div>
                           </el-tooltip>
@@ -59,13 +66,11 @@
           <div class="interfaceSummary">
             <div class="header">
               <copy-to-clipboard :text="curItf.name">
-                <span class="title">{{curItf.name}}</span>
+                <span class="title">{{curItf.name + curItf.id}}</span>
               </copy-to-clipboard>
               <ul class="summary">
                 <li>
-                  <copy-to-clipboard
-                    :text="curItf.url"
-                    type="right">
+                  <copy-to-clipboard :text="curItf.url" type="right">
                     <span class="mr5">
                       <span class="label">地址：</span>
                       <a>{{curItf.url}}</a>
@@ -89,11 +94,10 @@
                     v-for="item in mockData"
                     :data-id="item.id"
                     :key="item.id"
-                    :class="['sortable', {'active': item.id === curMockData.id}]">
+                    :class="['sortable', {'active': item.id === curMockData.id}]"
+                  >
                     <div class="Module clearfix" @click="onClickRes(item)">
-                      <span class="name">
-                        {{item.name}}
-                      </span>
+                      <span class="name">{{item.name}}</span>
                     </div>
                   </li>
                   <li data-id="addMock">
@@ -113,55 +117,44 @@
                   :showSelectController="false"
                   :highlightMouseoverNode="true"
                   :data="curMockData.res_body"
-                  @click="handleClick">
-                </vue-json-pretty>
+                  @click="handleClick"
+                ></vue-json-pretty>
                 <div class="toolbar">
-                  <copy-to-clipboard
-                    type="right"
-                    :showDefaultIcon="false"
-                    :text="copyData">
-                    <el-link
-                      size="mini"
-                      type="text"
-                      icon="el-icon-copy-document">复制</el-link>
+                  <copy-to-clipboard type="right" :showDefaultIcon="false" :text="copyData">
+                    <el-link size="mini" type="text" icon="el-icon-copy-document">复制</el-link>
                   </copy-to-clipboard>
                   <el-link
                     size="mini"
                     type="text"
                     class="replaceWith"
                     icon="el-icon-edit"
-                    @click="handleReplaceWith">编辑</el-link>
+                    @click="handleReplaceWith"
+                  >编辑</el-link>
                   <el-link
                     size="mini"
                     type="text"
                     class="delete"
                     icon="el-icon-delete"
-                    @click="handleDeleteMock">删除</el-link>
-                  <ReplaceDialog
-                    :visible="showReplaceDialog"
-                    @close="showReplaceDialog=false"></ReplaceDialog>
+                    @click="handleDeleteMock"
+                  >删除</el-link>
+                  <ReplaceDialog :visible="showReplaceDialog" @close="showReplaceDialog=false"></ReplaceDialog>
                 </div>
-                <state-inspector
-                  :state="curMockData.res_body"
-                ></state-inspector>
+                <state-inspector :state="curMockData.res_body"></state-inspector>
               </div>
             </div>
           </div>
         </article>
       </div>
     </div>
-    <AddItfDialog :visible="showItfDialog"
-      :data="editItfModel"
-      @close="showItfDialog=false"></AddItfDialog>
+    <AddItfDialog :visible="showItfDialog" :data="editItfModel" @close="showItfDialog=false"></AddItfDialog>
     <ResDialog
       :visible="showResDialog"
       :id="curItf.id"
       :mode="resActionMode"
       :data="resDialogData"
-      @close="showResDialog=false"></ResDialog>
-    <MoveItfDialog
-      :visible="showMoveItfDialog"
-      @close="showMoveItfDialog=false"></MoveItfDialog>
+      @close="showResDialog=false"
+    ></ResDialog>
+    <MoveItfDialog :visible="showMoveItfDialog" @close="showMoveItfDialog=false"></MoveItfDialog>
   </article>
 </template>
 
@@ -256,7 +249,7 @@ export default {
         console.error(e)
       }
     })
-    this.getRepositoryById()
+    this.getInterfaceById()
   },
   methods: {
     // 编辑res Mock
@@ -294,14 +287,14 @@ export default {
     deleteMockData (params) {
       api.deleteMockData(params)
         .then(res => {
-          this.getRepositoryById()
+          this.getInterfaceById()
         })
     },
     openItfDialog () {
       this.editItfModel = ''
       this.showItfDialog = true
     },
-    getRepositoryById () {
+    getInterfaceById () {
       this.$store.dispatch('getRepository', this.repositoryId)
         .then(() => {
           console.log('getRepository >>>', this.selectItfId, this.curItfId)
@@ -379,7 +372,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@brand: #4A7BF7;
+@brand: #4a7bf7;
 .mr5 {
   margin-right: 5px;
 }
@@ -403,13 +396,14 @@ export default {
     > .toolbar {
       flex: 1;
       display: inline-block;
-      a, .fake-link {
+      a,
+      .fake-link {
         margin-right: 10px;
       }
     }
     > .desc {
       white-space: pre-wrap;
-      margin: 1rem 0 .5rem;
+      margin: 1rem 0 0.5rem;
       color: #666;
     }
     .blockSearcher {
@@ -515,7 +509,7 @@ export default {
         }
       }
       &:hover {
-        .toolbar{
+        .toolbar {
           display: block;
         }
       }
@@ -537,7 +531,6 @@ export default {
       }
     }
   }
-
 }
 .interfaceSummary {
   margin-bottom: 20px;
@@ -594,10 +587,10 @@ export default {
     display: block;
     float: left;
     margin-bottom: -1px;
-    padding: .8rem 1.2rem;
+    padding: 0.8rem 1.2rem;
     border: 1px solid transparent;
     border-width: 3px 1px 0px 1px;
-    border-radius: .4rem .4rem 0 0;
+    border-radius: 0.4rem 0.4rem 0 0;
     &.active {
       border-bottom-color: transparent;
       background-color: white;
@@ -615,7 +608,8 @@ export default {
       }
       .toolbar {
         display: inline-block;
-        a, .fake-link {
+        a,
+        .fake-link {
           margin-left: 5px;
           font-size: 14px;
           color: #999;
@@ -628,7 +622,7 @@ export default {
   }
   > li:hover > .Module {
     .toolbar {
-      display: inline-block
+      display: inline-block;
     }
   }
   > li.active > .Module {

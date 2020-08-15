@@ -1,8 +1,7 @@
 <template>
   <article class="interfaceContainer">
     <div class="header">
-      <div class="storeTitle">{{ curRepo.name || '/'}}</div>
-      <description-list>
+      <description-list :title="curRepo.name || '/'">
         <description-item term="项目类型">{{ '--' }}</description-item>
         <description-item term="API 总数">{{ curRepo.interfaces.length || '--' }}</description-item>
         <description-item term="协作人员数量">{{ '--' }}</description-item>
@@ -14,9 +13,14 @@
     </div>
     <div class="body">
       <article class="interfaceList">
-        <div class="header">{{`全部接口共（${itfs.length || 0}）个`}}</div>
+        <div class="title">{{`全部接口共（${itfs.length || 0}）个`}}</div>
         <div class="tableWrapper">
-          <a-table :columns="columns" :data-source="itfs" :rowKey="record => record.id"></a-table>
+          <a-table
+            :loading="loading"
+            :columns="columns"
+            :data-source="itfs"
+            :rowKey="record => record.id"
+          ></a-table>
         </div>
       </article>
     </div>
@@ -30,9 +34,7 @@
 import DescriptionList from '@/components/description'
 // import store from '@/store/store.js'
 // import { parse, set } from '@/utils/util.js'
-import api from '@/data/api.js'
 import { mapState, mapGetters } from 'vuex'
-import URI from 'urijs'
 import * as types from '@/store/mutation-types.js'
 import dayjs from 'dayjs'
 import { METHOD_TYPE } from './method'
@@ -47,16 +49,9 @@ export default {
   },
   data () {
     return {
-      resActionMode: 'add',
-      showResDialog: false,
-      showReplaceDialog: false,
-      showItfDialog: false,
-      showMoveItfDialog: false,
-      resDialogData: '',
-      editItfModel: '',
+      loading: false,
       repositoryId: '',
       selectData: '',
-      selectPath: '',
       columns: [
         {
           title: '接口名称',
@@ -100,20 +95,13 @@ export default {
   },
   computed: {
     ...mapState([
-      'repository',
-      'curItfId',
-      'mockData',
-      'curMockId'
+      'curItfId'
     ]),
     ...mapGetters([
-      'curItf',
-      'curMockData',
       'itfs',
       'curRepo'
     ]),
-    copyData () {
-      return this.selectData || this.curMockData.res_body
-    },
+
     formatDate () {
       return dayjs(this.curRepo.updatedAt).format('YYYY-MM-DD HH:mm:ss')
     }
@@ -122,134 +110,22 @@ export default {
     this.repositoryId = this.$route.params.id
   },
   mounted () {
-    console.log('itfs >>>', this.itfs)
-    console.log('this.repository >>', this.curRepo)
-
     this.getRepositoryById()
   },
   methods: {
     handleClickDetail (id) {
-      console.log(id)
+      this.$store.commit(types.INTERFACE_ID_CUR_SET, { id })
       this.$router.push({
         name: 'interface-detail',
-        params: { itfId: `${id}` },
-        query: { itf: `${id}` }
+        params: { id: `${this.repositoryId}` }
       })
-    },
-    // 编辑res Mock
-    handleReplaceWith () {
-      this.$nextTick(() => {
-        this.resActionMode = 'edit'
-        this.resDialogData = Object.assign({}, this.curMockData, {
-          res_body: JSON.stringify(this.curMockData.res_body, null, 2)
-        })
-        this.showResDialog = true
-      })
-    },
-    // 新增res mock
-    openResDialog () {
-      this.resActionMode = 'add'
-      this.resDialogData = {
-        name: '',
-        res_body: JSON.stringify({})
-      }
-      this.showResDialog = true
-    },
-    handleDeleteMock () {
-      const item = this.curMockData
-      this.$confirm(`确认删除${item.name}吗？`, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      })
-        .then(() => {
-          this.deleteMockData({
-            id: item.id
-          })
-        })
-    },
-    deleteMockData (params) {
-      api.deleteMockData(params)
-        .then(res => {
-          this.getRepositoryById()
-        })
-    },
-    openItfDialog () {
-      this.editItfModel = ''
-      this.showItfDialog = true
     },
     getRepositoryById () {
+      this.loading = true
       this.$store.dispatch('getRepository', this.repositoryId)
-        .then(() => {
-          const selectHref = new URI(this.$route.fullPath)
-            .setSearch('itf', this.curItfId)
-            .setSearch('mock', this.curMockId)
-            .href()
-          this.$router.replace(selectHref)
+        .finally(() => {
+          this.loading = false
         })
-    },
-    handleClickEdit ({ name, url, method, id }) {
-      this.showItfDialog = true
-      this.editItfModel = {
-        name,
-        url,
-        method,
-        id
-      }
-    },
-    handleClickDel (item) {
-      this.$confirm(`确认删除接口-${item.name}吗？`, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      })
-        .then(() => {
-          this.deleteItf({
-            id: item.id
-          })
-        })
-    },
-
-    deleteItf (params) {
-      const isDelSelf = params.id === this.curItfId
-      this.$store.dispatch('deleteInterface', params)
-        .then(() => {
-          if (isDelSelf) {
-            const selectHref = new URI(this.$route.fullPath)
-              .setSearch('itf', this.curItfId)
-              .setSearch('mock', this.curMockId)
-              .href()
-            this.$router.replace(selectHref)
-          }
-        })
-    },
-    onClickRes (item) {
-      const selectHref = new URI(this.$route.fullPath)
-        .setSearch('mock', item.id)
-        .href()
-      this.$router.replace(selectHref)
-      this.$store.commit(types.MOCKDATA_ID_CUR_SET, item)
-    },
-    handleInterfaceClick (item) {
-      this.$store.commit(types.INTERFACE_ID_CUR_SET, item)
-      this.$store.dispatch('getCurItf', { id: item.id }).then(() => {
-        const selectHref = new URI(this.$route.fullPath)
-          .setSearch('itf', item.id)
-          .setSearch('mock', this.curMockId)
-          .href()
-        this.$router.replace(selectHref)
-      })
-    },
-    onChangeRSortable (event, sortable) {
-      const ids = sortable.toArray().filter(item => item !== 'addMock')
-      this.$store.dispatch('sortMockDataList', ids)
-    },
-    handleSortItf (event, sortable) {
-      const ids = sortable.toArray()
-      this.$store.dispatch('sortInterfaceList', ids)
-    },
-    handleClick (path, data, treeName = '') {
-      this.selectData = !data ? data + '' : data // 处理 data = null 的情况
     }
   }
 }
@@ -265,12 +141,15 @@ export default {
 }
 
 .interfaceContainer {
-  .header {
-    margin: 24px;
-    .storeTitle {
-      font-size: 20px;
-      font-weight: 500;
-      margin-bottom: 20px;
+  margin: 24px;
+
+  .body {
+    .interfaceList {
+      .title {
+        font-size: 16px;
+        font-weight: 500;
+        margin-bottom: 20px;
+      }
     }
   }
 }

@@ -4,6 +4,7 @@ export const itfs = state => state.repository.interfaces || []
 
 export const curItf = (state, getter) => {
   const itfs = getter.itfs || []
+
   if (itfs.length) {
     const defaultValue = itfs[0]
     return itfs.find(item => item.id === state.curItfId) || defaultValue
