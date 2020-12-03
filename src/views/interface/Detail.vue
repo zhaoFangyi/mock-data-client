@@ -6,6 +6,7 @@
         <router-link :to="{name: 'modules-list'}">仓库</router-link>
         <span class="slash"> / </span>
         <span>{{$route.query.name}}</span>
+        <span>-{{repository.name}}</span>
       </span>
       <div class="toolbar">
         <!-- <span class="fake-link edit el-icon-edit">编辑</span> -->
