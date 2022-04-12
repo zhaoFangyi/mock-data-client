@@ -27,7 +27,7 @@
     "normalize.css": "^8.0.1",
     "query-string": "^6.12.1",
     "sortablejs": "^1.10.2",
-    "urijs": "^1.19.2",
+    "urijs": "^1.19.11",
     "url": "^0.11.0",
     "vue": "^2.6.11",
     "vue-codemirror": "^4.0.6",
