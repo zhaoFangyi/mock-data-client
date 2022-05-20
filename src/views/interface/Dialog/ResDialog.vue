@@ -106,17 +106,25 @@ export default {
     handleBeautify (e) {
       e.preventDefault()
       if (this.$refs.rCode) {
-        const result = JSON.parse(this.$refs.rCode.cm.getValue())
-        const beautified = JSON.stringify(result, null, 2)
-        this.$refs.rCode.cm.setValue(beautified)
+        try {
+          const result = JSON.parse(this.$refs.rCode.cm.getValue())
+          const beautified = JSON.stringify(result, null, 2)
+          this.$refs.rCode.cm.setValue(beautified)
+        } catch (error) {
+          this.$message.error('格式错误')
+        }
       }
     },
     handleUglify (e) {
       e.preventDefault()
       if (this.$refs.rCode) {
-        const result = JSON.parse(this.$refs.rCode.cm.getValue())
-        const beautified = JSON.stringify(result)
-        this.$refs.rCode.cm.setValue(beautified)
+        try {
+          const result = JSON.parse(this.$refs.rCode.cm.getValue())
+          const beautified = JSON.stringify(result)
+          this.$refs.rCode.cm.setValue(beautified)
+        } catch (error) {
+          this.$message.error('格式错误')
+        }
       }
     },
     closeModal () {
@@ -124,23 +132,28 @@ export default {
       this.$emit('close')
     },
     submit () {
-      this.$refs.form.validate()
-        .then(() => {
-          const params = Object.assign(
-            {},
-            this.model,
-            {
-              interfaceId: this.id,
-              res_body: this.$refs.rCode.cm.getValue()
-            }
-          )
-          const actionName = this.model.id ? 'updateMockData' : 'createMockData'
-          this.$store.dispatch(actionName, params)
-            .then(() => {
-              this.$emit('close')
-              this.model = {}
-            })
-        })
+      try {
+        JSON.parse(this.$refs.rCode.cm.getValue())
+        this.$refs.form.validate()
+          .then(() => {
+            const params = Object.assign(
+              {},
+              this.model,
+              {
+                interfaceId: this.id,
+                res_body: this.$refs.rCode.cm.getValue()
+              }
+            )
+            const actionName = this.model.id ? 'updateMockData' : 'createMockData'
+            this.$store.dispatch(actionName, params)
+              .then(() => {
+                this.$emit('close')
+                this.model = {}
+              })
+          })
+      } catch (e) {
+        this.$message.error('格式错误')
+      }
     }
   }
 }
