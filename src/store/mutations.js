@@ -97,6 +97,15 @@ const mutations = {
       mockIdsMap[id] = index
     })
     state.mockData = [...mockData].sort((a, b) => mockIdsMap[a.id] - mockIdsMap[b.id])
+  },
+  [types.CREATE_EXPECT_SUCCEEDED] (state, data) {
+    console.log(state, data);
+  },
+  [types.UPDATE_EXPECT_SUCCEEDED] (state, data) {
+    console.log(state, data);
+  },
+  [types.EXPECTED_SET] (state, data) {
+    console.log(state, data);
   }
 }
 

@@ -104,3 +104,22 @@ export const sortInterfaceList = async function ({ commit }, ids) {
     // commit(types.SORT_MOCKDATA_FAILED, error)
   }
 }
+
+export const getExpectedList = async function ({ getters, commit, dispatch }, itfId) {
+  try {
+    const res = await api.getExpectList({ itfId })
+    commit(types.EXPECTED_SET, res.data)
+  } catch (error) { }
+}
+export const createExpect = async function ({ commit }, payload) {
+  try {
+    const result = await api.createExpect(payload)
+    commit(types.CREATE_EXPECT_SUCCEEDED, result.data)
+  } catch (error) { }
+}
+export const updateExpect = async function ({ commit }, payload) {
+  try {
+    const result = await api.updateExpect(payload)
+    commit(types.UPDATE_EXPECT_SUCCEEDED, result.data)
+  } catch (error) { }
+}

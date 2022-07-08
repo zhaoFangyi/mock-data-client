@@ -21,3 +21,7 @@ export const curMockData = (state, getter) => {
     return {}
   }
 }
+
+export const curExpect = (state, getter) => {
+  console.log(state);
+}

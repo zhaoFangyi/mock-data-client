@@ -85,8 +85,21 @@
                 </li>
               </ul>
             </div>
-            <div class="body">
-              <RSortable :onChange="onChangeRSortable">
+            <div class="body interfaceArea">
+              <div class="params_contenter">
+                <a @click="newExpect"><i class="el-icon-circle-plus-outline" ></i>新建参数</a>
+                <el-tabs tab-position="left" v-model="activeExpect" @tab-click="handleClickExpect">
+                  <el-tab-pane v-for="exp in curItf.expect" :key="exp.id" :label="exp.name" >
+                    <a slot="label" >
+                      <span>{{exp.name}}</span>
+                      <i class="el-icon-edit" @click="editExpect"></i>
+                      <i class="el-icon-delete" @click="deleteExpect"></i>
+                    </a>
+                  </el-tab-pane>
+                </el-tabs>
+              </div>
+              <div>
+                <RSortable :onChange="onChangeRSortable">
                 <ul class="ModuleList clearfix">
                   <li
                     v-for="item in mockData"
@@ -106,9 +119,8 @@
                     </span>
                   </li>
                 </ul>
-              </RSortable>
-
-              <div class="component-state-inspector">
+                </RSortable>
+                <div class="component-state-inspector">
                 <vue-json-pretty
                   selectableType="single"
                   v-model="selectPath"
@@ -147,6 +159,7 @@
                 <state-inspector
                   :state="curMockData.res_body"
                 ></state-inspector>
+                </div>
               </div>
             </div>
           </div>
@@ -165,6 +178,7 @@
     <MoveItfDialog
       :visible="showMoveItfDialog"
       @close="showMoveItfDialog=false"></MoveItfDialog>
+    <newExpectDialog :id="curItf.id" :visible="newExpectDialog" @close="newExpectDialog=false" :mode="expectMode"></newExpectDialog>
   </article>
 </template>
 
@@ -180,6 +194,7 @@ import ResDialog from './Dialog/ResDialog'
 import ReplaceDialog from './Dialog/ReplaceDialog'
 import MoveItfDialog from './Dialog/MoveItfDialog'
 import AddItfDialog from './Dialog/AddItfDialog'
+import newExpectDialog from './Dialog/newExpectDialog'
 import api from '@/data/api.js'
 import { mapState, mapGetters } from 'vuex'
 import URI from 'urijs'
@@ -196,15 +211,19 @@ export default {
     ResDialog,
     ReplaceDialog,
     AddItfDialog,
-    MoveItfDialog
+    MoveItfDialog,
+    newExpectDialog
   },
   data () {
     return {
       resActionMode: 'add',
+      expectMode: 'add',
+      activeExpect: '',
       showResDialog: false,
       showReplaceDialog: false,
       showItfDialog: false,
       showMoveItfDialog: false,
+      newExpectDialog: false,
       resDialogData: '',
       editItfModel: '',
       repositoryId: '',
@@ -222,7 +241,8 @@ export default {
     ...mapGetters([
       'curItf',
       'curMockData',
-      'itfs'
+      'itfs',
+      'curExpect'
     ]),
     copyData () {
       return this.selectData || this.curMockData.res_body
@@ -232,6 +252,7 @@ export default {
     this.repositoryId = this.$route.params.id
   },
   mounted () {
+    window.hy = this
     store.$on('field-change', ({ path, value, newKey, remove }) => {
       console.log(99999, path, value, newKey, remove)
       try {
@@ -277,6 +298,19 @@ export default {
         res_body: JSON.stringify({})
       }
       this.showResDialog = true
+    },
+    // 新建参数期望
+    newExpect () {
+      this.newExpectDialog = true
+    },
+    // 编辑参数
+    editExpect () {
+      this.expectMode = 'edit'
+      this.newExpectDialog = true
+    },
+    // 删除参数
+    deleteExpect () {
+      console.log(this.curExpect, this.curItf);
     },
     handleDeleteMock () {
       const item = this.curMockData
@@ -361,6 +395,10 @@ export default {
           .href()
         this.$router.replace(selectHref)
       })
+    },
+    handleClickExpect (exp) {
+      console.log(exp, "xxeedsss")
+      this.$store.commit(types.EXPECTED_SET, exp)
     },
     onChangeRSortable (event, sortable) {
       const ids = sortable.toArray().filter(item => item !== 'addMock')
@@ -546,6 +584,15 @@ export default {
     > .title {
       font-size: 16px;
       margin-right: 10px;
+    }
+  }
+  > .body{
+    display: flex;
+    flex-direction: row;
+    .params_contenter{
+      // width: 260px;
+      margin-top: 50px;
+
     }
   }
   .summary {

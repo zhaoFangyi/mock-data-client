@@ -79,5 +79,14 @@ export default {
   },
   bulkImport (params) {
     return axios.post('/interface/bulkImport', params)
+  },
+  // expect 期望
+  getExpectList (params) {
+    return axios.get('/expect/getList', {
+      params
+    })
+  },
+  createExpect (params) {
+    return axios.post('/expect/create', params)
   }
 }

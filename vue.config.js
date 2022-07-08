@@ -29,7 +29,9 @@ module.exports = {
         },
         // target: 'http://47.96.110.34:38080/'
         // target: 'http://192.168.75.168:9999',
+        // target: '192.168.74.185:9999',
         target: 'http://localhost:9999',
+        // target: 'http://192.168.74.69:9999',
         // target: 'http://192.168.74.185:9999'
       },
     },
