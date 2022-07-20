@@ -2,7 +2,9 @@
   <div class="custom-dropdown-menu dropdown-menu" :style="{[position]: 0}" v-if="nextData.counter !== 0">
     <div v-for="repo in nextData.nextRespository.repositories" :key="repo.id">
       <a
-        class="dropdown-item dropdown-item-module">
+        class="dropdown-item dropdown-item-module"
+        @click="handleGoRepo(repo)"
+        >
         <span class="label">仓库</span>
         <Highlight class="dropdown-item-clip" :clip="repo.name" :seed="seed"></Highlight>
       </a>
@@ -120,6 +122,10 @@ export default {
           this.$router.push(newRoute)
           this.clearSeed()
         })
+    },
+    handleGoRepo ({ id, name }) {
+      const repoRoute = { name: 'interface-list', params: { id }, query: { name } }
+      this.$router.push(repoRoute)
     },
     clearSeed () {
       this.$emit('clear')
