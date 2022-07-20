@@ -2,6 +2,7 @@ export const test = state => state.test
 
 export const itfs = state => state.repository.interfaces || []
 
+export const expects = state => state.repository.interfaces.find(i => i.id === state.curItfId).expect
 export const curItf = (state, getter) => {
   const itfs = getter.itfs || []
   if (itfs.length) {
@@ -23,5 +24,11 @@ export const curMockData = (state, getter) => {
 }
 
 export const curExpect = (state, getter) => {
-  console.log(state);
+  const expect = getter.expects || []
+  if (expect.length) {
+    const defExpect = expect[0]
+    return expect.find(i => i.id === state.curExpectId) || defExpect
+  } else {
+    return {}
+  }
 }

@@ -86,17 +86,21 @@
               </ul>
             </div>
             <div class="body interfaceArea">
-              <div class="params_contenter">
+              <div class="params_contenter" >
                 <a @click="newExpect"><i class="el-icon-circle-plus-outline" ></i>新建参数</a>
-                <el-tabs tab-position="left" v-model="activeExpect" @tab-click="handleClickExpect">
-                  <el-tab-pane v-for="exp in curItf.expect" :key="exp.id" :label="exp.name" >
-                    <a slot="label" >
-                      <span>{{exp.name}}</span>
-                      <i class="el-icon-edit" @click="editExpect"></i>
-                      <i class="el-icon-delete" @click="deleteExpect"></i>
-                    </a>
-                  </el-tab-pane>
-                </el-tabs>
+                <el-scroll-bar>
+                  <RSortable>
+                    <ul class="body">
+                      <li  class="sortable params_list" v-for="exp in expects" :key="exp.id" >
+                        <span @click="handleClickExpect(exp)">{{exp.name}}</span>
+                        <div>
+                          <i class="el-icon-edit" @click="editExpect(exp)"></i>
+                          <i class="el-icon-delete" @click="deleteExpect(exp)"></i>
+                        </div>
+                      </li>
+                    </ul>
+                  </RSortable>
+                </el-scroll-bar>
               </div>
               <div>
                 <RSortable :onChange="onChangeRSortable">
@@ -178,7 +182,12 @@
     <MoveItfDialog
       :visible="showMoveItfDialog"
       @close="showMoveItfDialog=false"></MoveItfDialog>
-    <newExpectDialog :id="curItf.id" :visible="newExpectDialog" @close="newExpectDialog=false" :mode="expectMode"></newExpectDialog>
+    <newExpectDialog
+     :id="curItf.id"
+     :visible="newExpectDialog"
+     :mode="expectMode"
+     @success="newExpectSuccess"
+     @close="newExpectDialog=false"></newExpectDialog>
   </article>
 </template>
 
@@ -236,12 +245,14 @@ export default {
       'repository',
       'curItfId',
       'mockData',
-      'curMockId'
+      'curMockId',
+      'curExpectId'
     ]),
     ...mapGetters([
       'curItf',
       'curMockData',
       'itfs',
+      'expects',
       'curExpect'
     ]),
     copyData () {
@@ -295,6 +306,7 @@ export default {
       this.resActionMode = 'add'
       this.resDialogData = {
         name: '',
+        expectId: this.curExpectId,
         res_body: JSON.stringify({})
       }
       this.showResDialog = true
@@ -309,8 +321,15 @@ export default {
       this.newExpectDialog = true
     },
     // 删除参数
-    deleteExpect () {
-      console.log(this.curExpect, this.curItf);
+    deleteExpect (expect) {
+      this.$confirm(`确认删除${expect.name}期望吗`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        api.deleteExpect({ expectId: expect.id })
+        // this.$store.dispatch('deleteExpect', expect.id)
+      })
     },
     handleDeleteMock () {
       const item = this.curMockData
@@ -397,8 +416,14 @@ export default {
       })
     },
     handleClickExpect (exp) {
-      console.log(exp, "xxeedsss")
-      this.$store.commit(types.EXPECTED_SET, exp)
+      this.$store.dispatch('getMockDataList', { expectId: exp.id }).then(() => {
+        const selectHref = new URI(this.$route.fullPath)
+          .setSearch('itf', this.curItfId)
+          .setSearch('mock', this.curMockId)
+          .setSearch('expect', exp.id)
+          .href()
+        this.$router.replace(selectHref)
+      })
     },
     onChangeRSortable (event, sortable) {
       const ids = sortable.toArray().filter(item => item !== 'addMock')
@@ -592,7 +617,18 @@ export default {
     .params_contenter{
       // width: 260px;
       margin-top: 50px;
-
+       ul.body {
+        margin: 0;
+        padding: 0;
+        li.params_list{
+          list-style: none;
+          cursor: pointer;
+          padding: 10px;
+          border-bottom: 1px solid rgba(63, 81, 181, 0.5);
+          display: flex;
+          justify-content: center;
+        }
+       }
     }
   }
   .summary {

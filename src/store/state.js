@@ -8,6 +8,7 @@ const state = {
   repository: {},
   curItfId: curQuery.itf,
   mockData: [],
-  curMockId: curQuery.mock
+  curMockId: curQuery.mock,
+  curExpectId: curQuery.expect
 }
 export default state

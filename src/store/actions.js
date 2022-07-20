@@ -105,16 +105,28 @@ export const sortInterfaceList = async function ({ commit }, ids) {
   }
 }
 
-export const getExpectedList = async function ({ getters, commit, dispatch }, itfId) {
+export const getMockDataList = async function ({ getters, commit, dispatch }, expectId) {
   try {
-    const res = await api.getExpectList({ itfId })
+    const res = await api.getMockDataList(expectId)
     commit(types.EXPECTED_SET, res.data)
+  } catch (error) { }
+}
+export const getExpectedList = async function ({ getters, commit, dispatch }, expectId) {
+  try {
+    // const res = await api.getExpectList(expectId)
+    // commit(types.EXPECTED_SET, res.data)
   } catch (error) { }
 }
 export const createExpect = async function ({ commit }, payload) {
   try {
     const result = await api.createExpect(payload)
     commit(types.CREATE_EXPECT_SUCCEEDED, result.data)
+  } catch (error) { }
+}
+export const deleteExpect = async function ({ getters, commit, dispatch }, payload) {
+  try {
+    await api.deleteExpect(payload)
+    commit(types.DELETE_EXPECT_SUCCEEDED)
   } catch (error) { }
 }
 export const updateExpect = async function ({ commit }, payload) {

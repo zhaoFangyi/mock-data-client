@@ -99,13 +99,20 @@ const mutations = {
     state.mockData = [...mockData].sort((a, b) => mockIdsMap[a.id] - mockIdsMap[b.id])
   },
   [types.CREATE_EXPECT_SUCCEEDED] (state, data) {
-    console.log(state, data);
+    const interfaceId = data.interfaceId
+    const { interfaces } = state.repository
+    const itfs = interfaces.find(i => i.id === interfaceId)
+    itfs.expect = [...itfs.expect, data]
+  },
+  [types.DELETE_EXPECT_SUCCEEDED] (state, data) {
+
   },
   [types.UPDATE_EXPECT_SUCCEEDED] (state, data) {
-    console.log(state, data);
   },
   [types.EXPECTED_SET] (state, data) {
-    console.log(state, data);
+    state.mockData = data.map(item => {
+      return Object.assign({}, item, { res_body: JSON.parse(item.res_body || '{}') })
+    })
   }
 }
 

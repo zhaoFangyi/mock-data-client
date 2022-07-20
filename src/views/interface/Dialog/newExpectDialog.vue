@@ -68,13 +68,7 @@ export default {
         callback()
       }
     }
-    const validateParams = (rule, value, callback) => {
-      if (!value[0].key) {
-        return callback(new Error('参数过滤为必填'))
-      } else {
-        callback()
-      }
-    }
+
     return {
       model: {
         name: '',
@@ -85,9 +79,6 @@ export default {
         name: {
           required: true
         },
-        expectParams: [
-          { required: true, validator: validateParams, trigger: 'blur' }
-        ],
         res_body: [
           { validator: validateValue, trigger: 'blur' }
         ]

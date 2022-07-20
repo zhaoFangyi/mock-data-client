@@ -81,6 +81,9 @@ export default {
     return axios.post('/interface/bulkImport', params)
   },
   // expect 期望
+  getMockDataList (params) {
+    return axios.get('/mockData/getList', { params })
+  },
   getExpectList (params) {
     return axios.get('/expect/getList', {
       params
@@ -88,5 +91,8 @@ export default {
   },
   createExpect (params) {
     return axios.post('/expect/create', params)
+  },
+  deleteExpect (params) {
+    return axios.post('/expect/delete', params)
   }
 }
