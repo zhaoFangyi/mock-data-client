@@ -2,7 +2,7 @@ export const test = state => state.test
 
 export const itfs = state => state.repository.interfaces || []
 
-export const expects = state => state.repository.interfaces.find(i => i.id === state.curItfId).expect
+export const expects = state => state.expects
 export const curItf = (state, getter) => {
   const itfs = getter.itfs || []
   if (itfs.length) {

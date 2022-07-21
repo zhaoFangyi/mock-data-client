@@ -186,6 +186,7 @@
      :id="curItf.id"
      :visible="newExpectDialog"
      :mode="expectMode"
+     :data="expectDialogData"
      @success="newExpectSuccess"
      @close="newExpectDialog=false"></newExpectDialog>
   </article>
@@ -234,6 +235,7 @@ export default {
       showMoveItfDialog: false,
       newExpectDialog: false,
       resDialogData: '',
+      expectDialogData: {},
       editItfModel: '',
       repositoryId: '',
       selectData: '',
@@ -316,9 +318,14 @@ export default {
       this.newExpectDialog = true
     },
     // 编辑参数
-    editExpect () {
+    editExpect ({ name, body }) {
+      const handleBody = Object.entries(JSON.parse(body)).map(v => ({ key: v[0], value: v[1] }))
       this.expectMode = 'edit'
       this.newExpectDialog = true
+      this.expectDialogData = {
+        name,
+        expectParams: handleBody
+      }
     },
     // 删除参数
     deleteExpect (expect) {
@@ -327,8 +334,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        api.deleteExpect({ expectId: expect.id })
-        // this.$store.dispatch('deleteExpect', expect.id)
+        this.$store.dispatch('deleteExpect', expect.id)
       })
     },
     handleDeleteMock () {
@@ -416,7 +422,7 @@ export default {
       })
     },
     handleClickExpect (exp) {
-      this.$store.dispatch('getMockDataList', { expectId: exp.id }).then(() => {
+      this.$store.dispatch('getMockDataList', exp.id).then(() => {
         const selectHref = new URI(this.$route.fullPath)
           .setSearch('itf', this.curItfId)
           .setSearch('mock', this.curMockId)

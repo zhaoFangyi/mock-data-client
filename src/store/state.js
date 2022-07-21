@@ -6,6 +6,7 @@ const state = {
   test: {},
   repositories: [],
   repository: {},
+  expects: [],
   curItfId: curQuery.itf,
   mockData: [],
   curMockId: curQuery.mock,

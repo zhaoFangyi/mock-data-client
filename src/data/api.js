@@ -94,5 +94,8 @@ export default {
   },
   deleteExpect (params) {
     return axios.post('/expect/delete', params)
+  },
+  sortExpectList (params) {
+    return axios.post('expect/sort', params)
   }
 }

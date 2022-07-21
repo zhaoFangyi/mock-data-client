@@ -10,6 +10,7 @@ export const getRepository = async function ({ getters, commit, dispatch }, id) 
     commit(types.REPOSITORY_SET, res.data)
     commit(types.INTERFACE_ID_CUR_SET, getters.curItf)
     dispatch('getCurItf')
+    dispatch('getMockDataList', getters.curExpect.id)
   } catch (err) {
     console.log(err)
   }
@@ -26,7 +27,8 @@ export const getCurItf = async function ({ state, getters, commit }, payload) {
   }
   const res = await api.getInterfaceById(params)
   // commit(types.INTERFACE_CUR_SET, res.data)
-  commit(types.MOCKDATA_SET, res.data.mockData)
+  commit(types.EXPECTED_SET, res.data.expect)
+  // commit(types.MOCKDATA_SET, res.data.mockData)
   commit(types.MOCKDATA_ID_CUR_SET, res.data.mockData[0])
 }
 
@@ -64,7 +66,6 @@ export const moveInterface = async function ({ state, getters, commit, dispatch 
   // commit(types.INTERFACE_CUR_SET)
 }
 export const updateMockData = async function ({ commit }, payload) {
-  console.log('payload', payload)
   const result = await api.updateMockData(payload)
   commit(types.UPDATE_MOCKDATA_SUCCEEDED, result.data)
 }
@@ -105,18 +106,13 @@ export const sortInterfaceList = async function ({ commit }, ids) {
   }
 }
 
-export const getMockDataList = async function ({ getters, commit, dispatch }, expectId) {
+export const getMockDataList = async function ({ getters, commit, dispatch }, id) {
   try {
-    const res = await api.getMockDataList(expectId)
-    commit(types.EXPECTED_SET, res.data)
+    const res = await api.getMockDataList({ expectId: id })
+    commit(types.MOCKDATA_SET, res.data)
   } catch (error) { }
 }
-export const getExpectedList = async function ({ getters, commit, dispatch }, expectId) {
-  try {
-    // const res = await api.getExpectList(expectId)
-    // commit(types.EXPECTED_SET, res.data)
-  } catch (error) { }
-}
+
 export const createExpect = async function ({ commit }, payload) {
   try {
     const result = await api.createExpect(payload)
@@ -125,8 +121,9 @@ export const createExpect = async function ({ commit }, payload) {
 }
 export const deleteExpect = async function ({ getters, commit, dispatch }, payload) {
   try {
-    await api.deleteExpect(payload)
-    commit(types.DELETE_EXPECT_SUCCEEDED)
+    const id = payload.id
+    await api.deleteExpect(id)
+    commit(types.DELETE_EXPECT_SUCCEEDED, id)
   } catch (error) { }
 }
 export const updateExpect = async function ({ commit }, payload) {
@@ -134,4 +131,11 @@ export const updateExpect = async function ({ commit }, payload) {
     const result = await api.updateExpect(payload)
     commit(types.UPDATE_EXPECT_SUCCEEDED, result.data)
   } catch (error) { }
+}
+export const sortExpectList = async function ({ commit }) {
+  // try {
+  //   const count = await api.sortExpectList({ ids })
+  //   commit(types.SORT_EXPECT_SUCCESSDED, {})
+  // } catch (error) {
+  // }
 }

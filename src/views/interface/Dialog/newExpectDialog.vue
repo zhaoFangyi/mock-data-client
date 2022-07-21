@@ -72,8 +72,7 @@ export default {
     return {
       model: {
         name: '',
-        expectParams: [{ key: '', value: '' }],
-        res_body: JSON.stringify({}, null, 2)
+        expectParams: [{ key: '', value: '' }]
       },
       rules: {
         name: {
@@ -108,11 +107,6 @@ export default {
     data (n) {
       console.log('data -> n', n)
       this.model = n
-      // console.log('data -> n', n)
-      // n.res_body = JSON.stringify((n || {}).res_body || {})
-      // this.model = n
-      // console.log('data -> this.model', this.model)
-      // this.$refs.rCode && this.$refs.rCode.cm && this.$refs.rCode.cm.setValue(n.res_body)
     }
   },
   methods: {
