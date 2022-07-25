@@ -97,11 +97,12 @@
                         :key="exp.id"
                         :data-id="exp.id"
                         :class="{'active': exp.id === curExpect.id}"
+                        @click="handleClickExpect(exp)"
                         >
-                        <span class="ellipse_hidden" @click="handleClickExpect(exp)">{{exp.name}}</span>
+                        <span class="ellipse_hidden">{{exp.name}}</span>
                         <div class="actions">
-                          <i class="el-icon-edit" @click="editExpect(exp)"></i>
-                          <i class="el-icon-delete" @click="deleteExpect(exp)"></i>
+                          <i class="el-icon-edit" @click.stop="editExpect(exp)"></i>
+                          <i class="el-icon-delete" @click.stop="deleteExpect(exp)"></i>
                         </div>
                       </li>
                     </ul>
