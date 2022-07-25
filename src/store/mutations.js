@@ -14,6 +14,9 @@ const mutations = {
   [types.INTERFACE_ID_CUR_SET] (state, payload = {}) {
     state.curItfId = payload.id
   },
+  [types.EXPECT_ID_CUR_SET] (state, payload = {}) {
+    state.curExpectId = payload.id
+  },
 
   [types.UPDATE_INTERFACE_SUCCEEDED] (state, data) {
     const repository = state.repository
@@ -103,14 +106,31 @@ const mutations = {
     state.expects = [...expects, data]
   },
   [types.DELETE_EXPECT_SUCCEEDED] (state, expId) {
-    // const { interfaces } = state.repository
-    // const itfs = interfaces.filter(i => i.id !== interfaceId)
-    // itfs.expect = [...itfs.expect, data]
+    state.expects = state.expects.filter(exp => exp.id !== expId)
   },
   [types.UPDATE_EXPECT_SUCCEEDED] (state, data) {
+    const repository = state.repository
+    const itfId = data.id
+    repository.interfaces = repository.interfaces.map(itf => {
+      if (itf.id !== itfId) {
+        return itf
+      }
+      return {
+        ...data
+      }
+    })
+    state.repository = repository
   },
   [types.EXPECTED_SET] (state, data) {
     state.expects = data
+  },
+  [types.SORT_EXPECT_SUCCESSDED] (state, ids) {
+    const expects = state.expects
+    const expectIdsMap = {}
+    ids.forEach((id, index) => {
+      expectIdsMap[id] = index
+    })
+    state.mockData = [...expects].sort((a, b) => expectIdsMap[a.id] - expectIdsMap[b.id])
   }
 }
 

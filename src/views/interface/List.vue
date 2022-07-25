@@ -87,13 +87,19 @@
             </div>
             <div class="body interfaceArea">
               <div class="params_contenter" >
-                <a @click="newExpect"><i class="el-icon-circle-plus-outline" ></i>新建参数</a>
+                <el-button  class="newIntf" @click="newExpect"><i class="el-icon-circle-plus-outline" ></i>新建参数</el-button>
                 <el-scroll-bar>
-                  <RSortable>
+                  <RSortable :onChange="handleExpectItf">
                     <ul class="body">
-                      <li  class="sortable params_list" v-for="exp in expects" :key="exp.id" >
-                        <span @click="handleClickExpect(exp)">{{exp.name}}</span>
-                        <div>
+                      <li
+                        class="sortable params_list"
+                        v-for="exp in expects"
+                        :key="exp.id"
+                        :data-id="exp.id"
+                        :class="{'active': exp.id === curExpect.id}"
+                        >
+                        <span class="ellipse_hidden" @click="handleClickExpect(exp)">{{exp.name}}</span>
+                        <div class="actions">
                           <i class="el-icon-edit" @click="editExpect(exp)"></i>
                           <i class="el-icon-delete" @click="deleteExpect(exp)"></i>
                         </div>
@@ -102,7 +108,7 @@
                   </RSortable>
                 </el-scroll-bar>
               </div>
-              <div>
+              <div class="flex_1">
                 <RSortable :onChange="onChangeRSortable">
                 <ul class="ModuleList clearfix">
                   <li
@@ -318,23 +324,24 @@ export default {
       this.newExpectDialog = true
     },
     // 编辑参数
-    editExpect ({ name, body }) {
-      const handleBody = Object.entries(JSON.parse(body)).map(v => ({ key: v[0], value: v[1] }))
+    editExpect ({ name, body, id }) {
+      const handleBody = body ? Object.entries(JSON.parse(body)).map(v => ({ key: v[0], value: v[1] })) : [{ key: '', value: '' }]
       this.expectMode = 'edit'
       this.newExpectDialog = true
       this.expectDialogData = {
         name,
+        id,
         expectParams: handleBody
       }
     },
     // 删除参数
-    deleteExpect (expect) {
-      this.$confirm(`确认删除${expect.name}期望吗`, '提示', {
+    deleteExpect ({ name, id }) {
+      this.$confirm(`确认删除${name}期望吗`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$store.dispatch('deleteExpect', expect.id)
+        this.$store.dispatch('deleteExpect', { id })
       })
     },
     handleDeleteMock () {
@@ -366,6 +373,7 @@ export default {
           const selectHref = new URI(this.$route.fullPath)
             .setSearch('itf', this.curItfId)
             .setSearch('mock', this.curMockId)
+            .setSearch('expect', this.curExpectId)
             .href()
           this.$router.replace(selectHref)
         })
@@ -422,6 +430,7 @@ export default {
       })
     },
     handleClickExpect (exp) {
+      this.$store.commit(types.EXPECT_ID_CUR_SET, exp)
       this.$store.dispatch('getMockDataList', exp.id).then(() => {
         const selectHref = new URI(this.$route.fullPath)
           .setSearch('itf', this.curItfId)
@@ -438,6 +447,10 @@ export default {
     handleSortItf (event, sortable) {
       const ids = sortable.toArray()
       this.$store.dispatch('sortInterfaceList', ids)
+    },
+    handleExpectItf (event, sortable) {
+      const ids = sortable.toArray()
+      this.$store.dispatch('sortExpectList', ids)
     },
     handleClick (path, data, treeName = '') {
       this.selectData = !data ? data + '' : data // 处理 data = null 的情况
@@ -522,17 +535,17 @@ export default {
     padding: 20px;
   }
 }
-.interfaceList {
-  position: sticky;
-  top: 10px;
-  height: calc(100vh - 60px);
-  .header {
-    .newIntf {
+ .newIntf {
       margin-bottom: 10px;
       color: #3f51b5;
       border: 1px solid rgba(63, 81, 181, 0.5);
       width: 100%;
     }
+.interfaceList {
+  position: sticky;
+  top: 10px;
+  height: calc(100vh - 60px);
+  .header {
     margin-bottom: 10px;
   }
   .scrollWrapper {
@@ -621,18 +634,33 @@ export default {
     display: flex;
     flex-direction: row;
     .params_contenter{
-      // width: 260px;
-      margin-top: 50px;
+      text-align: center;
+      width: 144px;
        ul.body {
         margin: 0;
         padding: 0;
+        border: 1px solid rgba(63, 81, 181, 0.5);
+        border-radius: 4px;
         li.params_list{
           list-style: none;
           cursor: pointer;
           padding: 10px;
-          border-bottom: 1px solid rgba(63, 81, 181, 0.5);
           display: flex;
-          justify-content: center;
+          justify-content: space-between;
+          border-bottom: 1px solid rgba(63, 81, 181, 0.5);
+          &:first-child {
+            border-top-left-radius: 3px;
+          }
+          &:last-child {
+            border-bottom: 0;
+            border-bottom-left-radius: 3px;
+          }
+          .actions{
+            flex: 0 0 auto;
+          }
+          &.active {
+          background-color: #f2f5ff;
+          }
         }
        }
     }
@@ -670,6 +698,14 @@ export default {
       }
     }
   }
+}
+.flex_1{
+  flex:1
+}
+.ellipse_hidden {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .ModuleList {
   margin: 0;

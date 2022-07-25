@@ -9,7 +9,8 @@ export const getRepository = async function ({ getters, commit, dispatch }, id) 
     const res = await api.getRepositoryById({ id })
     commit(types.REPOSITORY_SET, res.data)
     commit(types.INTERFACE_ID_CUR_SET, getters.curItf)
-    dispatch('getCurItf')
+    await dispatch('getCurItf')
+    commit(types.EXPECT_ID_CUR_SET, getters.curExpect)
     dispatch('getMockDataList', getters.curExpect.id)
   } catch (err) {
     console.log(err)
@@ -20,16 +21,18 @@ export const getRepository = async function ({ getters, commit, dispatch }, id) 
 
 // }
 
-export const getCurItf = async function ({ state, getters, commit }, payload) {
+export const getCurItf = async function ({ state, getters, commit, dispatch }, payload) {
   const params = {
     id: state.curItfId,
     ...payload
   }
   const res = await api.getInterfaceById(params)
   // commit(types.INTERFACE_CUR_SET, res.data)
-  commit(types.EXPECTED_SET, res.data.expect)
+  const expects = res.data.expect
+  commit(types.EXPECTED_SET, expects)
   // commit(types.MOCKDATA_SET, res.data.mockData)
-  commit(types.MOCKDATA_ID_CUR_SET, res.data.mockData[0])
+  // commit(types.MOCKDATA_ID_CUR_SET, res.data.mockData[0])
+  dispatch('getMockDataList', expects[0].id)
 }
 
 export const updateInterface = async function ({ commit }, payload) {
@@ -122,20 +125,21 @@ export const createExpect = async function ({ commit }, payload) {
 export const deleteExpect = async function ({ getters, commit, dispatch }, payload) {
   try {
     const id = payload.id
-    await api.deleteExpect(id)
+    await api.deleteExpect(payload)
     commit(types.DELETE_EXPECT_SUCCEEDED, id)
   } catch (error) { }
 }
-export const updateExpect = async function ({ commit }, payload) {
+export const updateExpect = async function ({ getters, commit, dispatch }, payload) {
   try {
     const result = await api.updateExpect(payload)
     commit(types.UPDATE_EXPECT_SUCCEEDED, result.data)
+    await dispatch('getCurItf')
   } catch (error) { }
 }
-export const sortExpectList = async function ({ commit }) {
-  // try {
-  //   const count = await api.sortExpectList({ ids })
-  //   commit(types.SORT_EXPECT_SUCCESSDED, {})
-  // } catch (error) {
-  // }
+export const sortExpectList = async function ({ commit }, ids) {
+  try {
+    const count = await api.sortExpectList({ ids })
+    commit(types.SORT_EXPECT_SUCCESSDED, { count, ids })
+  } catch (error) {
+  }
 }

@@ -92,6 +92,9 @@ export default {
   createExpect (params) {
     return axios.post('/expect/create', params)
   },
+  updateExpect (params) {
+    return axios.post('/expect/update', params)
+  },
   deleteExpect (params) {
     return axios.post('/expect/delete', params)
   },

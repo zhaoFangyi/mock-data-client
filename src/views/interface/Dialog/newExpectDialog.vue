@@ -172,6 +172,9 @@ export default {
                   expectParams: [{ key: '', value: '' }]
                 }
               })
+              .catch((err) => {
+                console.log(err)
+              })
           })
       } catch (e) {
         this.$message.error('格式错误')
