@@ -313,6 +313,7 @@ export default {
     // 新增res mock
     openResDialog () {
       this.resActionMode = 'add'
+      console.log(this.curExpectId,"curExpectIdcurExpectId")
       this.resDialogData = {
         name: '',
         expectId: this.curExpectId,
@@ -422,10 +423,13 @@ export default {
     },
     handleInterfaceClick (item) {
       this.$store.commit(types.INTERFACE_ID_CUR_SET, item)
+      const defaultExpect = item?.expect?.[0]
+      this.$store.commit(types.EXPECT_ID_CUR_SET, defaultExpect)
       this.$store.dispatch('getCurItf', { id: item.id }).then(() => {
         const selectHref = new URI(this.$route.fullPath)
           .setSearch('itf', item.id)
           .setSearch('mock', this.curMockId)
+          .setSearch('expect',defaultExpect.id)
           .href()
         this.$router.replace(selectHref)
       })

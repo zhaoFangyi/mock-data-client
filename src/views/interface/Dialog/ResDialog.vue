@@ -144,6 +144,7 @@ export default {
                 res_body: this.$refs.rCode.cm.getValue()
               }
             )
+            console.log(params)
             const actionName = this.model.id ? 'updateMockData' : 'createMockData'
             this.$store.dispatch(actionName, params)
               .then(() => {
