@@ -1,0 +1,18 @@
+{
+  "name": "crossrequest",
+  "version": "0.0.1",
+  "description": "crossRequest",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Bener",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/chrome": "^0.0.208"
+  },
+  "dependencies": {
+    "prettier": "^2.8.3"
+  }
+}

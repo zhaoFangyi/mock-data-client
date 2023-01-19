@@ -1,0 +1,18 @@
+{
+  "name": "crossRequest",
+  "version": "0.0.1",
+  "author": "Bener",
+  "manifest_version": 2,
+  "description": "crossRequest",
+  "web_accessible_resources": ["inject.js"],
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "content_scripts": [
+    {
+      "js": ["content.js"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "permissions": ["tabs"]
+}
